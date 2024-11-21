@@ -1,5 +1,3 @@
-
-
 class Controller:
     def __init__(self, view):
         self.view = view
@@ -25,5 +23,5 @@ class Controller:
     def end_match(self, players):
         pass
 
-    def get_players(self):
+    def get_player(self):
         pass

@@ -18,6 +18,3 @@ class Tournament:
         self.players_list = players_list
         self.description = description
         self.number_of_rounds = number_of_rounds
-
-    def save_tournament(self):
-        pass
