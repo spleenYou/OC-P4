@@ -25,3 +25,7 @@ class Controller:
 
     def get_player(self):
         pass
+
+    def menu(self):
+        choix_user = self.view.main_menu()
+        print(choix_user)

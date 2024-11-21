@@ -7,7 +7,7 @@ from views.base import View
 def main():
     view = View()
     game = Controller(view)
-    game.start_tournament()
+    game.menu()
 
 
 if __name__ == "__main__":
