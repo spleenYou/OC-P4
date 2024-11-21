@@ -37,25 +37,25 @@ class Controller:
         pass
 
     def main_menu(self):
-        user_choice = None
-        while not user_choice:
-            user_choice = self.view.prompt_menu(self.const.MAIN)
-            if user_choice == self.const.START_TOURNAMENT:
+        user_menu_choice = None
+        while not user_menu_choice:
+            user_menu_choice = self.view.prompt_menu(self.const.MAIN)
+            if user_menu_choice == self.const.START_TOURNAMENT:
                 self.start_tournament()
-            elif user_choice == self.const.RESUME_TOURNAMENT:
+            elif user_menu_choice == self.const.RESUME_TOURNAMENT:
                 list_tournaments = self.list_tournaments()
                 tournaments_number = len(list_tournaments)
-                tournament_choice = self.view.prompt_for_list_tournaments(list_tournaments)
+                tournament_choice = self.view.prompt_menu(self.const.RESUME_TOURNAMENT, list_tournaments)
                 if int(tournament_choice) == 0 or int(tournament_choice) > tournaments_number:
-                    user_choice = None
+                    user_menu_choice = None
                 else:
                     self.resume_tournament(tournament_choice)
-            elif user_choice == self.const.LIST_TOURNAMENTS:
+            elif user_menu_choice == self.const.LIST_TOURNAMENTS:
                 print("liste")
-            elif user_choice == self.const.LIST_PLAYERS:
+            elif user_menu_choice == self.const.LIST_PLAYERS:
                 print("players")
-            elif user_choice == self.const.QUIT:
+            elif user_menu_choice == self.const.QUIT:
                 print('Au revoir !')
                 break
             else:
-                user_choice = None
+                user_menu_choice = None
