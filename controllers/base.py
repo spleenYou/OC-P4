@@ -1,16 +1,55 @@
+import re
+import os
 from constante.constante import Constante
+from models.tournament import Tournament
+from models.player import Player
 
 
 class Controller:
     def __init__(self, view):
         self.view = view
         self.const = Constante()
+        self.players = []
+        self.tournament = ''
 
     def run(self):
         pass
 
     def start_tournament(self):
-        print("début du tournoi")
+        new_player = True
+        player_informations_error_message = ""
+        birthday_verification_re = re.compile('^[0-9]{2}-[0-9]{2}-[0-9]{4}$')
+        chess_id_verification_re = re.compile('^[A-Z]{2}[0-9]{4}$')
+        name = self.view.prompt_for_tournament_name()
+        if name == '':
+            return self.main_menu()
+        place = self.view.prompt_for_tournament_place()
+        while new_player:
+            player_informations = self.view.prompt_for_new_player(player_informations_error_message)
+            player_informations_error_message = ""
+            if player_informations['name'] != "":
+                if not birthday_verification_re.match(player_informations['birthday']):
+                    player_informations_error_message = 'Date de naissance incorrecte'
+                if not chess_id_verification_re.match(player_informations['chess_id']):
+                    player_informations_error_message = 'Chess id invalide'
+                if player_informations_error_message == '':
+                    self.players.append(Player(player_informations['surname'],
+                                               player_informations['name'],
+                                               player_informations['birthday'],
+                                               player_informations['chess_id']))
+            elif len(self.players) > 0:
+                new_player = False
+            else:
+                return self.main_menu()
+        description = self.view.prompt_for_tournament_description()
+        number_of_rounds = 4
+        self.tournament = Tournament(name=name,
+                                     place=place,
+                                     round_number=0,
+                                     players_list=self.players,
+                                     description=description,
+                                     number_of_rounds=number_of_rounds)
+        print(self.tournament)
 
     def list_tournaments(self):
         return ["tournoi"]  # à refaire
@@ -56,6 +95,6 @@ class Controller:
                 print("players")
             elif user_menu_choice == self.const.QUIT:
                 print('Au revoir !')
-                break
+                os._exit(os.EX_OK)
             else:
                 user_menu_choice = None

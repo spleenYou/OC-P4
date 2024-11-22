@@ -16,22 +16,23 @@ class Menus:
         os.system(command)
 
     def headset_menu(self, menu_title):
-        spaces_needed = 28 - len(menu_title)
-        spaces_needed_left = int(spaces_needed / 2)
-        spaces_needed_right = int(spaces_needed / 2)
-
-        if spaces_needed % 2:
-            spaces_needed_right = spaces_needed_right + 1
-            print(spaces_needed)
         self.clear_screen()
         print("******************************\n"
               "* Bienvenue sur le           *\n"
               "*      gestionnaire de       *\n"
               "*           tournoi d'echecs *\n"
-              "******************************\n"
-              "                              \n"
-              "******************************\n"
-              f"*{" "*spaces_needed_left}{menu_title}{" "*spaces_needed_right}*\n"
+              "******************************\n")
+        self.message_view(menu_title)
+
+    def message_view(self, message):
+        spaces_needed = 28 - len(message)
+        spaces_needed_left = int(spaces_needed / 2)
+        spaces_needed_right = int(spaces_needed / 2)
+
+        if spaces_needed % 2:
+            spaces_needed_right = spaces_needed_right + 1
+        print("******************************\n"
+              f"*{" "*spaces_needed_left}{message}{" "*spaces_needed_right}*\n"
               "******************************\n")
 
     def main_menu(self):

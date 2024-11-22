@@ -8,19 +8,34 @@ class View:
         self.menu_view = Menus()
 
     def prompt_for_tournament_name(self):
-        pass
+        self.menu_view.headset_menu('Nom du tournoi')
+        tournament_name = input('Quel est le nom du tournoi ? ')
+        return tournament_name
 
     def prompt_for_tournament_place(self):
-        pass
+        self.menu_view.headset_menu('Emplacement du tournoi')
+        tournament_place = input('Veuillez entrer l\'emplacement du tournoi : ')
+        return tournament_place
 
     def prompt_for_tournament_number_of_rounds(self):
         pass
 
-    def prompt_for_new_player(self):
-        pass
+    def prompt_for_new_player(self, error_message):
+        player_informations = {}
+        self.menu_view.headset_menu('Nouveau joueur')
+        if error_message != "":
+            self.menu_view.message_view(error_message)
+        player_informations['name'] = input('Quel est le prénom du joueur ? ').capitalize()
+        if player_informations['name'] != "":
+            player_informations['surname'] = input('Quel est le nom de famille du joueur ? ').upper()
+            player_informations['birthday'] = input('Quel est la date de naissance du joueur ? [DD-MM-YYYY] ')
+            player_informations['chess_id'] = input('Quel est l\'identifiant du joueur ? ').upper()
+        return player_informations
 
     def prompt_for_tournament_description(self):
-        pass
+        self.menu_view.headset_menu('Description du tournoi')
+        tournament_description = input('Veuillez entrer la description du tournoi : ')
+        return tournament_description
 
     def prompt_for_tournament_new_tournament(self):
         pass
