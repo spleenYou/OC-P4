@@ -29,10 +29,10 @@ class Menus:
         spaces_needed_left = int(spaces_needed / 2)
         spaces_needed_right = int(spaces_needed / 2)
 
-        if spaces_needed % 2:
+        if spaces_needed % 2 == 1:
             spaces_needed_right = spaces_needed_right + 1
         print("******************************\n"
-              f"*{" "*spaces_needed_left}{message}{" "*spaces_needed_right}*\n"
+              f"*{' '*spaces_needed_left}{message}{' '*spaces_needed_right}*\n"
               "******************************\n")
 
     def main_menu(self):

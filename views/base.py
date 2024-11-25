@@ -18,19 +18,31 @@ class View:
         return tournament_place
 
     def prompt_for_tournament_number_of_rounds(self):
-        pass
+        self.menu_view.headset_menu('Nombre de tours')
+        number_of_rounds = input('Combien de tours comprend le tournoi ? ')
+        return number_of_rounds
+
+    def prompt_for_tournament_number_players(self, error_message):
+        self.menu_view.headset_menu('Nombre de joueurs')
+        if error_message != "":
+            self.show_message(title='Erreur', message=error_message)
+        number_players = input('Combien de joueurs participent au tournoi ? ')
+        return number_players
 
     def prompt_for_new_player(self, error_message):
         player_informations = {}
         self.menu_view.headset_menu('Nouveau joueur')
         if error_message != "":
-            self.menu_view.message_view(error_message)
+            self.show_message(title='Erreur', message=error_message)
         player_informations['name'] = input('Quel est le prénom du joueur ? ').capitalize()
         if player_informations['name'] != "":
             player_informations['surname'] = input('Quel est le nom de famille du joueur ? ').upper()
             player_informations['birthday'] = input('Quel est la date de naissance du joueur ? [DD-MM-YYYY] ')
             player_informations['chess_id'] = input('Quel est l\'identifiant du joueur ? ').upper()
         return player_informations
+
+    def prompt_for_add_player_choice(self):
+        pass
 
     def prompt_for_tournament_description(self):
         self.menu_view.headset_menu('Description du tournoi')
@@ -43,7 +55,7 @@ class View:
     def prompt_menu(self, menu_choice, list_to_show=[]):
         if menu_choice == self.const.MAIN:
             self.menu_view.main_menu()
-            user_choice = input("Quel est votre choix ? ")
+            user_choice = input('Quel est votre choix ? ')
             if user_choice == "1":
                 return self.const.START_TOURNAMENT
             elif user_choice == "2":
@@ -58,5 +70,11 @@ class View:
                 return None
         elif menu_choice == self.const.RESUME_TOURNAMENT:
             self.menu_view.list_tournaments_menu(list_to_show)
-            tournament_choice = input("Quel tournoi reprendre ?")
+            tournament_choice = input('Quel tournoi reprendre ?')
             return tournament_choice
+
+    def show_message(self, title, message, need_pause=False):
+        self.menu_view.headset_menu(title)
+        self.menu_view.message_view(message)
+        if need_pause:
+            input('Appuyer sur une touche pour continuer...')
