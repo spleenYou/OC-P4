@@ -18,8 +18,10 @@ class Tournament:
         self.date_start = date_start
         self.date_stop = date_stop
         self.round_number = round_number
-        self.rounds_list = rounds_list
-        self.rounds = 0
+        if rounds_list is None:
+            self.rounds_list = []
+        else:
+            self.rounds_list = rounds_list
         self.players_list = players_list
         self.description = description
         self.number_of_rounds = number_of_rounds

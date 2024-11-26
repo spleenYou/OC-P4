@@ -1,4 +1,4 @@
-import random
+from random import Random
 
 
 class Match:
@@ -7,8 +7,7 @@ class Match:
         self.define_color()
 
     def define_color(self):
-        color_choice = random.Random()
-        color_choice.shuffle(self.list_players)
+        Random().shuffle(self.list_players)
         self.white_color_player = self.list_players[0]
         self.black_color_player = self.list_players[1]
 
