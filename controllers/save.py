@@ -7,13 +7,33 @@ class Save:
         self.const = constante.Constante()
 
     def save_tournament(self, new_tournament, tournaments_list):
-        tournament_already_save = False
+        tournament_update = False
+        tournaments_list_dict = []
         if len(tournaments_list) > 0:
             for tournament in tournaments_list:
                 if tournament.id == new_tournament.id:
-                    pass
-        if tournament_already_save:
-            pass
+                    tournament = new_tournament
+                    tournament_update = True
+        if not tournament_update:
+            tournaments_list.append(new_tournament)
+        for tournament in tournaments_list:
+            players_list = []
+            for player in tournament.players_list:
+                players_list.append({'chess_id': player.chess_id})
+            tournaments_list_dict.append({'name': tournament.name,
+                                          'place': tournament.place,
+                                          'round_number': tournament.round_number,
+                                          'players_list': players_list,
+                                          'description': tournament.description,
+                                          'id': tournament.id,
+                                          'date_start': tournament.date_start,
+                                          'date_stop': tournament.date_stop,
+                                          'number_of_rounds': tournament.round_number})
+        self.save_data(self.const.FILENAME_TOURNAMENTS_LIST, tournaments_list_dict)
+        if tournament_update:
+            return "Sauvegarde du tournoi mis à jour"
+        else:
+            return "Tournoi sauvegardé"
 
     def save_player(self, new_player, players_list):
         player_already_save = False

@@ -1,5 +1,4 @@
 import datetime
-from controllers import load
 
 
 class Tournament:
@@ -9,8 +8,8 @@ class Tournament:
                  round_number,
                  players_list,
                  description,
-                 id=0,
-                 date_start=datetime.date.today(),
+                 id,
+                 date_start="{:%d-%m-%Y}".format(datetime.date.today()),
                  date_stop='',
                  number_of_rounds=4):
         self.name = name
@@ -23,8 +22,6 @@ class Tournament:
         self.description = description
         self.number_of_rounds = number_of_rounds
         self.id = id
-        if id == 0:
-            self.id = self.get_id()
 
     def __str__(self):
         for player in self.players_list:
@@ -36,8 +33,3 @@ class Tournament:
               f'Description : {self.description}\n'
               f'Nombre de tours : {self.number_of_rounds}')
         return ""
-
-    def get_id(self):
-        tournaments = load.Load().load_data_tournaments()
-        number_of_tournaments = len(tournaments)
-        return number_of_tournaments
