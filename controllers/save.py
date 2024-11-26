@@ -1,15 +1,21 @@
 import json
+from constante import constante
 
 
 class Save:
     def __init__(self):
-        pass
+        self.const = constante.Constante()
 
-    def save_tournament(self, tournament):
-        pass
+    def save_tournament(self, new_tournament, tournaments_list):
+        tournament_already_save = False
+        if len(tournaments_list) > 0:
+            for tournament in tournaments_list:
+                if tournament.id == new_tournament.id:
+                    pass
+        if tournament_already_save:
+            pass
 
     def save_player(self, new_player, players_list):
-        file_name_players_list = 'players.json'
         player_already_save = False
         if len(players_list) > 0:
             for player in players_list:
@@ -20,7 +26,7 @@ class Save:
                                  'name': new_player.name,
                                  'birthday': new_player.birthday,
                                  'chess_id': new_player.chess_id})
-            self.save_data(file_name_players_list, players_list)
+            self.save_data(self.const.LIST_PLAYERS, players_list)
             return 'Joueur sauvegardé'
         else:
             return 'Le joueur existe déja'
