@@ -6,6 +6,7 @@ class Tournament:
                  name,
                  place,
                  round_number,
+                 rounds_list,
                  players_list,
                  description,
                  id,
@@ -17,6 +18,7 @@ class Tournament:
         self.date_start = date_start
         self.date_stop = date_stop
         self.round_number = round_number
+        self.rounds_list = rounds_list
         self.rounds = 0
         self.players_list = players_list
         self.description = description

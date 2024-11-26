@@ -6,17 +6,17 @@ class Save:
     def __init__(self):
         self.const = constante.Constante()
 
-    def save_tournament(self, new_tournament, tournaments_list):
+    def save_tournament(self, tournament_to_save, tournaments_list):
         tournament_update = False
         new_list_tournaments = []
         if len(tournaments_list) > 0:
             for tournament in tournaments_list:
-                if tournament.id == new_tournament.id:
-                    tournament = new_tournament
+                if tournament.id == tournament_to_save.id:
+                    tournament = tournament_to_save
                     tournament_update = True
                 new_list_tournaments.append(tournament)
         if not tournament_update:
-            new_list_tournaments.append(new_tournament)
+            new_list_tournaments.append(tournament_to_save)
         tournaments_list_dict = []
         for tournament in new_list_tournaments:
             players_list = []
@@ -30,7 +30,8 @@ class Save:
                                           'id': tournament.id,
                                           'date_start': tournament.date_start,
                                           'date_stop': tournament.date_stop,
-                                          'number_of_rounds': tournament.round_number})
+                                          'number_of_rounds': tournament.round_number,
+                                          'rounds_list': tournament.rounds_list})
         self.save_data(self.const.FILENAME_TOURNAMENTS_LIST, tournaments_list_dict)
         if tournament_update:
             return "Sauvegarde du tournoi mis à jour"
@@ -52,12 +53,6 @@ class Save:
             return 'Joueur sauvegardé'
         else:
             return 'Le joueur existe déja'
-
-    def save_round(self, round):
-        pass
-
-    def save_match(self, match):
-        pass
 
     def save_data(self, filename, content_file):
         with open(f'data/{filename}', 'w') as file:

@@ -131,7 +131,6 @@ class Controller:
     def check_path_data_exist(self):
         if not os.path.exists('data/'):
             os.makedirs('data/')
-        self.check_files_data_exist()
 
     def check_files_data_exist(self):
         if not os.path.isfile(f'data/{self.const.PATH_FILE_PLAYERS_LIST}'):

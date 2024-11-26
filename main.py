@@ -8,6 +8,7 @@ def main():
     view = View()
     game = Controller(view)
     game.check_path_data_exist()
+    game.check_files_data_exist()
     game.main_menu()
 
 

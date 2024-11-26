@@ -39,7 +39,8 @@ class Load:
                                                id=tournament_data_dict['id'],
                                                date_start=tournament_data_dict['date_start'],
                                                date_stop=tournament_data_dict['date_stop'],
-                                               number_of_rounds=tournament_data_dict['number_of_rounds']))
+                                               number_of_rounds=tournament_data_dict['number_of_rounds'],
+                                               rounds_list=tournament_data_dict['rounds_list']))
         return tournaments_list
 
     def get_player_data_by_chess_id(self, chess_id):
