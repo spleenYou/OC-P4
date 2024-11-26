@@ -127,3 +127,16 @@ class Controller:
                 os._exit(os.EX_OK)
             else:
                 user_menu_choice = None
+
+    def check_path_data_exist(self):
+        if not os.path.exists('data/'):
+            os.makedirs('data/')
+        self.check_files_data_exist()
+
+    def check_files_data_exist(self):
+        if not os.path.isfile(f'data/{self.const.PATH_FILE_PLAYERS_LIST}'):
+            with open(f'data/{self.const.PATH_FILE_PLAYERS_LIST}', 'w', newline='') as file:
+                file.write('[]')
+        if not os.path.isfile(f'data/{self.const.PATH_FILE_TOURNAMENTS_LIST}'):
+            with open(f'data/{self.const.PATH_FILE_TOURNAMENTS_LIST}', mode='w', newline='') as file:
+                file.write('[]')

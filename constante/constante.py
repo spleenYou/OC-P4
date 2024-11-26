@@ -6,3 +6,5 @@ class Constante:
     LIST_TOURNAMENTS = 4
     LIST_PLAYERS = 5
     QUIT = 6
+    PATH_FILE_PLAYERS_LIST = 'players.json'
+    PATH_FILE_TOURNAMENTS_LIST = 'tournaments.json'
