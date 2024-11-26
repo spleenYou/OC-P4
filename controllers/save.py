@@ -8,15 +8,17 @@ class Save:
 
     def save_tournament(self, new_tournament, tournaments_list):
         tournament_update = False
-        tournaments_list_dict = []
+        new_list_tournaments = []
         if len(tournaments_list) > 0:
             for tournament in tournaments_list:
                 if tournament.id == new_tournament.id:
                     tournament = new_tournament
                     tournament_update = True
+                new_list_tournaments.append(tournament)
         if not tournament_update:
-            tournaments_list.append(new_tournament)
-        for tournament in tournaments_list:
+            new_list_tournaments.append(new_tournament)
+        tournaments_list_dict = []
+        for tournament in new_list_tournaments:
             players_list = []
             for player in tournament.players_list:
                 players_list.append({'chess_id': player.chess_id})

@@ -5,7 +5,7 @@ class Player:
         self.name = name
         self.birthday = birthday
         self.chess_id = chess_id
-    
+
     def __str__(self):
         return (f'Nom du joueur : {self.surname}\n'
                 f'Prénom du joueur : {self.name}\n'
