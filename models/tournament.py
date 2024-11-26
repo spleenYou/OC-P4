@@ -1,4 +1,5 @@
 import datetime
+from controllers import load
 
 
 class Tournament:
@@ -37,4 +38,6 @@ class Tournament:
         return ""
 
     def get_id(self):
-        pass
+        tournaments = load.Load().load_data_tournaments()
+        number_of_tournaments = len(tournaments)
+        return number_of_tournaments
