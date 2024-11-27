@@ -8,3 +8,6 @@ class Constante:
     QUIT = 6
     FILENAME_PLAYERS_LIST = 'players.json'
     FILENAME_TOURNAMENTS_LIST = 'tournaments.json'
+    WHITE_PLAYER = "1"
+    BLACK_PLAYER = "2"
+    NO_WINNER = "0"

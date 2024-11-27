@@ -20,8 +20,12 @@ class Save:
         tournaments_list_dict = []
         for tournament in new_list_tournaments:
             players_list = []
+            rounds_list = []
             for player in tournament.players_list:
                 players_list.append({'chess_id': player.chess_id})
+            for round_list in tournament.rounds_list:
+                for match in round_list:
+                    rounds_list.append([match.score[0], match.score[1]])
             tournaments_list_dict.append({'name': tournament.name,
                                           'place': tournament.place,
                                           'round_number': tournament.round_number,
@@ -30,8 +34,7 @@ class Save:
                                           'id': tournament.id,
                                           'date_start': tournament.date_start,
                                           'date_stop': tournament.date_stop,
-                                          'number_of_rounds': tournament.round_number,
-                                          'rounds_list': tournament.rounds_list})
+                                          'rounds_list': rounds_list})
         self.save_data(self.const.FILENAME_TOURNAMENTS_LIST, tournaments_list_dict)
         if tournament_update:
             return "Sauvegarde du tournoi mis à jour"
