@@ -48,7 +48,7 @@ class Menus:
             if player:
                 self.decorated_text(f" - {player.surname} {player.name}", align="left")
             else:
-                self.decorated_text(" - Non défini")
+                self.decorated_text(" - Non défini", align="left")
 
     @decoration
     def head_menu(self):
