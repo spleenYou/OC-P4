@@ -1,5 +1,3 @@
-"""Entry point."""
-
 from controllers.base import Controller
 from views.base import View
 

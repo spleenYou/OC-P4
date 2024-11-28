@@ -1,10 +1,9 @@
 from views.menus import Menus
-from constante.constante import Constante
+import constant.constant as CONST
 
 
 class View:
     def __init__(self):
-        self.const = Constante()
         self.menu_view = Menus()
 
     def prompt_for_tournament_name(self):
@@ -53,22 +52,22 @@ class View:
         pass
 
     def prompt_menu(self, menu_choice, list_to_show=[]):
-        if menu_choice == self.const.MAIN:
+        if menu_choice == CONST.MAIN:
             self.menu_view.main_menu()
             user_choice = input('Quel est votre choix ? ')
             if user_choice == "1":
-                return self.const.START_TOURNAMENT
+                return CONST.START_TOURNAMENT
             elif user_choice == "2":
-                return self.const.RESUME_TOURNAMENT
+                return CONST.RESUME_TOURNAMENT
             elif user_choice == "3":
-                return self.const.LIST_TOURNAMENTS
+                return CONST.LIST_TOURNAMENTS
             elif user_choice == "4":
-                return self.const.LIST_PLAYERS
-            elif user_choice == "5":
-                return self.const.QUIT
+                return CONST.LIST_PLAYERS
+            elif user_choice == "0":
+                return CONST.QUIT
             else:
                 return None
-        elif menu_choice == self.const.RESUME_TOURNAMENT:
+        elif menu_choice == CONST.RESUME_TOURNAMENT:
             self.menu_view.list_tournaments_menu(list_to_show)
             tournament_choice = input('Quel tournoi reprendre ?')
             return tournament_choice

@@ -1,11 +1,8 @@
 import os
-from constante.constante import Constante
+import constant.constant as CONST
 
 
 class Menus:
-    def __init__(self):
-        self.const = Constante()
-
     def clear_screen(self):
         """
         Clean the console for all os
@@ -45,7 +42,7 @@ class Menus:
               "*   2- Reprendre un tournoi  *\n"
               "*   3- Liste des tournois    *\n"
               "*   4- Liste des joueurs     *\n"
-              "*   5- Quitter               *\n"
+              "*   0- Quitter               *\n"
               "*                            *\n"
               "******************************\n")
 

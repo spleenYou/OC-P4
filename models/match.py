@@ -1,13 +1,13 @@
 from random import Random
-from constante import constante
+import constant.constant as CONST
 
 
 class Match:
     def __init__(self, list_players, score=None):
         self.list_players = list_players
-        self.define_color()
-        self.const = constante.Constante()
         self.score = score
+        if score is None:
+            self.define_color()
 
     def define_color(self):
         Random().shuffle(self.list_players)
@@ -16,11 +16,11 @@ class Match:
 
     def define_score(self, winner_player):
         match winner_player:
-            case self.const.NO_WINNER:
+            case CONST.NO_WINNER:
                 self.score = ([self.white_color_player.chess_id, 0.5], [self.black_color_player.chess_id, 0.5])
-            case self.const.WHITE_PLAYER:
+            case CONST.WHITE_PLAYER:
                 self.score = ([self.white_color_player.chess_id, 1], [self.black_color_player.chess_id, 0])
-            case self.const.BLACK_PLAYER:
+            case CONST.BLACK_PLAYER:
                 self.score = ([self.white_color_player.chess_id, 0], [self.black_color_player.chess_id, 1])
             case _:
                 pass

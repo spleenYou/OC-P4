@@ -20,7 +20,7 @@ class Round:
         if self.round_number == 1:
             Random().shuffle(self.players_list)
         else:
-            self.players_list = reversed(sorted(self.players_list, key=lambda player: player.score))
+            self.players_list = sorted(self.players_list, key=lambda player: player.score, reverse=True)
             self.check_previous_meeting()
 
     def check_previous_meeting(self):

@@ -1,15 +1,18 @@
 import re
 import os
-from constante.constante import Constante
+import constant.constant as CONST
 from models.tournament import Tournament
 from models.player import Player
+from controllers.load import Load
+from controllers.save import Save
 
 
 class Controller:
     def __init__(self, view):
         self.view = view
-        self.const = Constante()
-        self.tournament = ''
+        self.save = Save()
+        self.list_players = Load().read_file_players()
+        self.list_tournaments = Load().read_file_tournaments()
 
     def run(self):
         pass
@@ -21,8 +24,7 @@ class Controller:
         place = self.view.prompt_for_tournament_place()
 
         description = self.view.prompt_for_tournament_description()
-
-        number_of_rounds = 0
+        number_of_rounds = 1
         while number_of_rounds < 4:
             number_of_rounds = self.view.prompt_for_tournament_number_of_rounds()
             if number_of_rounds != '':
@@ -107,22 +109,22 @@ class Controller:
     def main_menu(self):
         user_menu_choice = None
         while not user_menu_choice:
-            user_menu_choice = self.view.prompt_menu(self.const.MAIN)
-            if user_menu_choice == self.const.START_TOURNAMENT:
+            user_menu_choice = self.view.prompt_menu(CONST.MAIN)
+            if user_menu_choice == CONST.START_TOURNAMENT:
                 self.start_tournament()
-            elif user_menu_choice == self.const.RESUME_TOURNAMENT:
+            elif user_menu_choice == CONST.RESUME_TOURNAMENT:
                 list_tournaments = self.list_tournaments()
                 tournaments_number = len(list_tournaments)
-                tournament_choice = self.view.prompt_menu(self.const.RESUME_TOURNAMENT, list_tournaments)
+                tournament_choice = self.view.prompt_menu(CONST.RESUME_TOURNAMENT, list_tournaments)
                 if int(tournament_choice) == 0 or int(tournament_choice) > tournaments_number:
                     user_menu_choice = None
                 else:
                     self.resume_tournament(tournament_choice)
-            elif user_menu_choice == self.const.LIST_TOURNAMENTS:
+            elif user_menu_choice == CONST.LIST_TOURNAMENTS:
                 print("liste")
-            elif user_menu_choice == self.const.LIST_PLAYERS:
+            elif user_menu_choice == CONST.LIST_PLAYERS:
                 print("players")
-            elif user_menu_choice == self.const.QUIT:
+            elif user_menu_choice == CONST.QUIT:
                 print('Au revoir !')
                 os._exit(os.EX_OK)
             else:
@@ -133,9 +135,9 @@ class Controller:
             os.makedirs('data/')
 
     def check_files_data_exist(self):
-        if not os.path.isfile(f'data/{self.const.PATH_FILE_PLAYERS_LIST}'):
-            with open(f'data/{self.const.PATH_FILE_PLAYERS_LIST}', 'w', newline='') as file:
+        if not os.path.isfile(f'data/{CONST.FILENAME_PLAYERS_LIST}'):
+            with open(f'data/{CONST.FILENAME_PLAYERS_LIST}', 'w', newline='') as file:
                 file.write('[]')
-        if not os.path.isfile(f'data/{self.const.PATH_FILE_TOURNAMENTS_LIST}'):
-            with open(f'data/{self.const.PATH_FILE_TOURNAMENTS_LIST}', mode='w', newline='') as file:
+        if not os.path.isfile(f'data/{CONST.FILENAME_TOURNAMENTS_LIST}'):
+            with open(f'data/{CONST.FILENAME_TOURNAMENTS_LIST}', mode='w', newline='') as file:
                 file.write('[]')
