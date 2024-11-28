@@ -3,19 +3,17 @@ import constant.constant as CONST
 
 
 class Save:
-    def save_tournament(self, tournament_to_save, tournaments_list):
-        if len(tournaments_list) > 0:
-            for tournament in tournaments_list:
-                if tournament.id == tournament_to_save.id:
-                    tournaments_list.remove(tournament)
-        tournaments_list.append(tournament_to_save)
+    def save_tournament(self, tournaments_list):
         tournaments_list_dict = []
         for tournament in tournaments_list:
             players_list = []
             rounds_list = []
             matches_list = []
             for player in tournament.players_list:
-                players_list.append({'chess_id': player.chess_id})
+                chess_id = ''
+                if len(player):
+                    chess_id = player.chess_id
+                players_list.append({'chess_id': chess_id})
             for rounds in tournament.rounds_list:
                 for match in rounds:
                     matches_list.append([match.score[0], match.score[1]])

@@ -31,7 +31,10 @@ class Load:
             rounds_list = []
             matches_list = []
             for player in tournament_data_dict['players_list']:
-                players_list.append(self.find_player_data_by_chess_id(player['chess_id']))
+                player_data = ''
+                if len(player['chess_id']):
+                    player_data = self.find_player_data_by_chess_id(player['chess_id'])
+                players_list.append(player_data)
             for round in tournament_data_dict['rounds_list']:
                 for match in round:
                     matches_list.append([match[0], match[1]])

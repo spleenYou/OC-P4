@@ -3,6 +3,16 @@ import constant.constant as CONST
 
 
 class Menus:
+    def decoration(function):
+        def text_decorated(*args, **kwargs):
+            print(CONST.STARS_LINE_FULL)
+            print(CONST.STARS_LINE)
+            function(*args)
+            print(CONST.STARS_LINE)
+            print(CONST.STARS_LINE_FULL)
+            print()
+        return text_decorated
+
     def clear_screen(self):
         """
         Clean the console for all os
@@ -12,43 +22,85 @@ class Menus:
             command = 'cls'
         os.system(command)
 
-    def headset_menu(self, menu_title):
+    def view_menu(self, title, menu, thing_to_show=None):
         self.clear_screen()
-        print("******************************\n"
-              "* Bienvenue sur le           *\n"
-              "*      gestionnaire de       *\n"
-              "*           tournoi d'echecs *\n"
-              "******************************\n")
-        self.message_view(menu_title)
+        self.head_menu()
+        self.title_menu(title)
+        match menu:
+            case CONST.MAIN:
+                self.main_menu()
+            case CONST.MENU_LIST_TOURNAMENTS:
+                self.list_tournaments_menu(thing_to_show)
+            case CONST.SHOW_TOURNAMENT_INFORMATIONS:
+                self.show_tournament_information(thing_to_show)
+            case _:
+                pass
 
-    def message_view(self, message):
-        spaces_needed = 28 - len(message)
-        spaces_needed_left = int(spaces_needed / 2)
-        spaces_needed_right = int(spaces_needed / 2)
+    @decoration
+    def show_tournament_information(self, tournament):
+        self.decorated_text(f" Nom : {tournament.name}", align="left")
+        self.decorated_text(f" Emplacement : {tournament.place}", align="left")
+        self.decorated_text(f" description : {tournament.description}", align="left")
+        self.decorated_text(f" Nombre de tours : {tournament.number_of_rounds}", align="left")
+        self.decorated_text(f" Tour effectué : {tournament.round_number}", align="left")
+        self.decorated_text(f" Nombre de joueurs : {len(tournament.players_list)}", align="left")
+        for player in tournament.players_list:
+            if player:
+                self.decorated_text(f" - {player.surname} {player.name}", align="left")
+            else:
+                self.decorated_text(" - Non défini")
 
-        if spaces_needed % 2 == 1:
-            spaces_needed_right = spaces_needed_right + 1
-        print("******************************\n"
-              f"*{' '*spaces_needed_left}{message}{' '*spaces_needed_right}*\n"
-              "******************************\n")
+    @decoration
+    def head_menu(self):
+        self.decorated_text("Bienvenue sur le", align="left")
+        self.decorated_text("gestionnaire de")
+        self.decorated_text("tournoi d'echecs", align="right")
 
+    @decoration
     def main_menu(self):
-        self.headset_menu("Menu principal")
-        print("******************************\n"
-              "*                            *\n"
-              "* Que souhaitez-vous faire ? *\n"
-              "*                            *\n"
-              "*   1- Nouveau tournoi       *\n"
-              "*   2- Reprendre un tournoi  *\n"
-              "*   3- Liste des tournois    *\n"
-              "*   4- Liste des joueurs     *\n"
-              "*   0- Quitter               *\n"
-              "*                            *\n"
-              "******************************\n")
+        self.decorated_text("1- Nouveau tournoi", align="left")
+        self.decorated_text("2- Reprendre un tournoi", align="left")
+        self.decorated_text("3- Liste des tournois", align="left")
+        self.decorated_text("4- Liste des joueurs", align="left")
+        self.decorated_text("0- Quitter", align="left")
 
-    def list_tournaments_menu(self, list_tournaments):
-        self.headset_menu("Liste des tournois")
-        for tournament in list_tournaments:
-            print(f"*{tournament}*\n")
-        print("*                            *\n"
-              "******************************\n")
+    @decoration
+    def title_menu(self, title):
+        self.decorated_text(title)
+
+    @decoration
+    def list_tournaments_menu(self, tounaments_list):
+        for tournament in tounaments_list:
+            tournament_view = f'{tounaments_list.index(tournament)} - {tournament.name}'
+            self.decorated_text(tournament_view)
+
+    def decorated_text(self, text='', align="center"):
+        if text == CONST.TOP_DECORATION:
+            print(CONST.STARS_LINE_FULL)
+            print(CONST.STARS_LINE)
+            pass
+        elif text == CONST.BOTTOM_DECORATION:
+            print(CONST.STARS_LINE)
+            print(CONST.STARS_LINE_FULL)
+            pass
+        else:
+            spaces_needed = CONST.FRAME_LENGHT - 2*CONST.NUMBER_SIDE_STARS - len(text)
+            match align:
+                case "left":
+                    spaces_left = 1
+                    spaces_right = spaces_needed - spaces_left
+                case "right":
+                    spaces_right = 1
+                    spaces_left = spaces_needed - spaces_right
+                case "center":
+                    spaces_left = int(spaces_needed / 2)
+                    spaces_right = int(spaces_needed / 2)
+                    if spaces_needed % 2 == 1:
+                        spaces_right = spaces_right + 1
+                case _:
+                    spaces_left = 1
+                    spaces_right = 1
+            print(f"{'*'*CONST.NUMBER_SIDE_STARS}"
+                  f"{' '*spaces_left}{text}"
+                  f"{' '*spaces_right}"
+                  f"{'*'*CONST.NUMBER_SIDE_STARS}")

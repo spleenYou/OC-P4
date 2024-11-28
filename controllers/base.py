@@ -1,5 +1,4 @@
 import re
-import os
 import constant.constant as CONST
 from models.tournament import Tournament
 from models.player import Player
@@ -12,19 +11,15 @@ class Controller:
         self.view = view
         self.save = Save()
         self.list_players = Load().read_file_players()
-        self.list_tournaments = Load().read_file_tournaments()
+        self.tournaments_list = Load().read_file_tournaments()
 
-    def run(self):
-        pass
-
-    def start_tournament(self):
+    def create_tournament(self):
         name = self.view.prompt_for_tournament_name()
         if name == '':
             return self.main_menu()
         place = self.view.prompt_for_tournament_place()
-
         description = self.view.prompt_for_tournament_description()
-        number_of_rounds = 1
+        number_of_rounds = 0
         while number_of_rounds < 4:
             number_of_rounds = self.view.prompt_for_tournament_number_of_rounds()
             if number_of_rounds != '':
@@ -33,40 +28,55 @@ class Controller:
                     self.view.show_message(title="Erreur", message="Le nombre de tour minimum est 4", need_pause=True)
             else:
                 number_of_rounds = 0
-
-        number_players_validate = False
+        min_players = 6
+        number_players = 0
         error_message = ''
-        while not number_players_validate:
-            number_players = self.view.prompt_for_tournament_number_players(error_message)
+        while number_players < min_players:
+            if error_message != '':
+                self.view.show_message(title="Erreur", message=error_message, need_pause=True)
+            number_players = self.view.prompt_for_tournament_number_players()
             if number_players != '':
                 number_players = int(number_players)
                 if (number_players % 2) == 0:
-                    if number_players <= (number_of_rounds + 2):
-                        number_players_validate = True
-                    else:
+                    if number_players < (number_of_rounds + 2):
                         error_message = f'Nombre de joueurs minimum : {number_of_rounds + 2}'
                 else:
                     error_message = 'Nombre de participants impaires'
             else:
-                error_message = 'Nombre de participant non rentré'
-        self.players = [4]
-        self.tournament = Tournament(name=name,
-                                     place=place,
-                                     round_number=0,
-                                     players_list=self.players,
-                                     description=description,
-                                     number_of_rounds=number_of_rounds)
-        print(self.tournament)
-        self.get_players()
+                error_message = 'Nombre de participant invalide'
+        players_list = []
+        for i in range(number_players):
+            players_list.append([])
+        rounds_list = []
+        for i in range(number_of_rounds):
+            rounds_list.append([])
+        tournament = Tournament(id=len(self.tournaments_list)+1,
+                                name=name,
+                                place=place,
+                                players_list=players_list,
+                                description=description,
+                                number_of_rounds=number_of_rounds,
+                                rounds_list=rounds_list)
+        self.tournaments_list.append(tournament)
+        self.save.save_tournament(self.tournaments_list)
+        return tournament
 
-    def list_tournaments(self):
-        return ["tournoi"]  # à refaire
+    def run_tournament(self, tournament):
+        self.view.show_tournament_information(tournament)
+        players_list_complete = self.check_players(tournament.players_list)
+        if not players_list_complete:
+            self.add_player(tournament.players_list)
 
-    def resume_tournament(self, tournament):
-        print("Résumé du tournoi")
+    def check_players(self, players_list):
+        for player in players_list:
+            if not isinstance(player, Player):
+                return False
+        return True
 
-    def end_tournament(self):
-        pass
+    def choice_tournament(self):
+        tournament_choice = self.view.prompt_menu(CONST.MENU_LIST_TOURNAMENTS, self.tournaments_list)
+        tournament = self.tournaments_list[int(tournament_choice) - 1]
+        return tournament
 
     def start_round(self):
         pass
@@ -81,7 +91,11 @@ class Controller:
         pass
 
     def get_players(self):
-        self.view.prompt_for_add_player_choice()
+        add_choice = self.view.prompt_for_add_player_choice()
+        print(add_choice)
+
+    def add_existant_player(self):
+        pass
 
     def add_new_player(self):
         new_player = True
@@ -106,38 +120,7 @@ class Controller:
             else:
                 return self.main_menu()
 
-    def main_menu(self):
-        user_menu_choice = None
-        while not user_menu_choice:
-            user_menu_choice = self.view.prompt_menu(CONST.MAIN)
-            if user_menu_choice == CONST.START_TOURNAMENT:
-                self.start_tournament()
-            elif user_menu_choice == CONST.RESUME_TOURNAMENT:
-                list_tournaments = self.list_tournaments()
-                tournaments_number = len(list_tournaments)
-                tournament_choice = self.view.prompt_menu(CONST.RESUME_TOURNAMENT, list_tournaments)
-                if int(tournament_choice) == 0 or int(tournament_choice) > tournaments_number:
-                    user_menu_choice = None
-                else:
-                    self.resume_tournament(tournament_choice)
-            elif user_menu_choice == CONST.LIST_TOURNAMENTS:
-                print("liste")
-            elif user_menu_choice == CONST.LIST_PLAYERS:
-                print("players")
-            elif user_menu_choice == CONST.QUIT:
-                print('Au revoir !')
-                os._exit(os.EX_OK)
-            else:
-                user_menu_choice = None
-
-    def check_path_data_exist(self):
-        if not os.path.exists('data/'):
-            os.makedirs('data/')
-
-    def check_files_data_exist(self):
-        if not os.path.isfile(f'data/{CONST.FILENAME_PLAYERS_LIST}'):
-            with open(f'data/{CONST.FILENAME_PLAYERS_LIST}', 'w', newline='') as file:
-                file.write('[]')
-        if not os.path.isfile(f'data/{CONST.FILENAME_TOURNAMENTS_LIST}'):
-            with open(f'data/{CONST.FILENAME_TOURNAMENTS_LIST}', mode='w', newline='') as file:
-                file.write('[]')
+    def ask_menu_choice(self, menu):
+        if menu == CONST.MAIN:
+            menu_choice = self.view.prompt_menu(CONST.MAIN)
+        return menu_choice

@@ -1,5 +1,4 @@
 import datetime
-from models.round import Round
 
 
 class Tournament:
@@ -17,20 +16,23 @@ class Tournament:
         self.place = place
         self.date_start = date_start
         self.date_stop = date_stop
-        self.round_number = len(rounds_list)
         self.rounds_list = rounds_list
+        self.round_number = self.count_round_numer()
         self.players_list = players_list
         self.description = description
         self.number_of_rounds = number_of_rounds
         self.id = id
 
-    def start_round(self):
-        self.round_number = self.round_number + 1
-        new_round = Round(self.round_number, self.players_list, self.rounds_list)
-        self.rounds_list.append(new_round.define_matches())
-
     def matches_in_progress(self):
         return self.rounds_list[self.round_number - 1]
+
+    def count_round_numer(self):
+        round_number = 0
+        for round in self.rounds_list:
+            if len(round) == 0:
+                break
+            round_number = round_number + 1
+        return round_number
 
     def __str__(self):
         for player in self.players_list:
