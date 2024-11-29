@@ -18,16 +18,29 @@ class Tournament:
         self.date_start = date_start
         self.date_stop = date_stop
         self.rounds_list = rounds_list
-        self.round_number = self.count_round_numer()
+        self.round_number = self.count_round_number()
         self.players_list = players_list
         self.description = description
         self.number_of_rounds = number_of_rounds
         self.id = id
 
+    def is_finished(self):
+        if self.round_number < self.number_of_rounds:
+            return False
+        if self.matches_finished():
+            return True
+        return False
+
+    def round_in_progress(self):
+        for round in self.rounds_list:
+            if not round.all_matches_finished():
+                return round
+        return None
+
     def matches_in_progress(self):
         return self.rounds_list[self.round_number - 1]
 
-    def count_round_numer(self):
+    def count_round_number(self):
         round_number = 0
         for round in self.rounds_list:
             if len(round) == 0:

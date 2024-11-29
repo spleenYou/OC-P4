@@ -3,10 +3,15 @@ from models.match import Match
 
 
 class Round:
-    def __init__(self, round_number, players_list, previous_matches_list):
+    def __init__(self, round_number, players_list, matches_list):
         self.players_list = players_list
         self.round_number = round_number
-        self.previous_matches_list = previous_matches_list
+        self.matches_list = []
+        if matches_list:
+            self.matches_list = matches_list
+        else:
+            for i in range(len(players_list)):
+                self.matches_list.append(())
 
     def define_matches(self):
         matches_list = []
@@ -23,11 +28,6 @@ class Round:
             self.players_list = sorted(self.players_list, key=lambda player: player.score, reverse=True)
             self.check_previous_meeting()
 
-    def check_previous_meeting(self):
-        list_to_checked = self.players_list
-        checked_list = [list_to_checked[0]]
-        del list_to_checked[0]
-        for player in self.players_list:
-            for round in self.previous_matches_list:
-                for match in round:
-                    pass
+    def all_matches_finished(self):
+        for match in self.matches_list:
+            return False

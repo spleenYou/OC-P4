@@ -60,13 +60,13 @@ class View:
         update_choice = input("Souhaitez-vous mettre à jour le joueur (y/n) ?")
         return update_choice
 
-    def prompt_menu(self, menu_choice, list_to_show=[]):
+    def prompt_menu(self, menu_choice, list_to_show=None):
         if menu_choice == CONST.MAIN:
-            self.menu.view_menu("Menu principal", menu_choice)
+            self.menu.view_menu("Menu principal", menu_choice, list_to_show)
             user_choice = input('Quel est votre choix ? ')
             if user_choice == "1":
                 return CONST.CREATE_TOURNAMENT
-            elif user_choice == "2":
+            elif user_choice == "2" and not list_to_show:
                 return CONST.RESUME_TOURNAMENT
             elif user_choice == "3":
                 return CONST.LIST_TOURNAMENTS
@@ -82,6 +82,6 @@ class View:
             return tournament_choice
 
     def show_message(self, title, message, need_pause=False):
-        self.menu.view_menu(message)
+        self.menu.view_menu(title, CONST.MESSAGE, message)
         if need_pause:
             input('Appuyer sur une touche pour continuer...')

@@ -25,7 +25,7 @@ class Controller:
             if number_of_rounds != '':
                 number_of_rounds = int(number_of_rounds)
                 if number_of_rounds < 4:
-                    self.view.show_message(title="Erreur", message="Le nombre de tour minimum est 4", need_pause=True)
+                    self.view.show_message("Erreur", "Le nombre de tour minimum est 4", True)
             else:
                 number_of_rounds = 0
         min_players = 6
@@ -33,7 +33,7 @@ class Controller:
         error_message = ''
         while number_players < min_players:
             if error_message != '':
-                self.view.show_message(title="Erreur", message=error_message, need_pause=True)
+                self.view.show_message("Erreur", error_message, True)
             number_players = self.view.prompt_for_tournament_number_players()
             if number_players != '':
                 number_players = int(number_players)
@@ -48,8 +48,12 @@ class Controller:
         for i in range(number_players):
             players_list.append([])
         rounds_list = []
+        matches_number = int(number_players / 2)
         for i in range(number_of_rounds):
-            rounds_list.append([])
+            matches_list = []
+            for j in range(matches_number):
+                matches_list.append(())
+            rounds_list.append(matches_list)
         tournament = Tournament(id=len(self.tournaments_list)+1,
                                 name=name,
                                 place=place,
@@ -65,6 +69,9 @@ class Controller:
         self.view.show_tournament_information(tournament)
         if not tournament.has_all_players():
             self.add_player(tournament)
+        while not tournament.is_finished():
+            self.view.show_message(f"Début du round {tournament.round_number}", "Constitution des matchs", True)
+            self.start_round(tournament.round_in_progress())
 
     def choice_tournament(self):
         tournament_choice = None
@@ -111,26 +118,6 @@ class Controller:
         else:
             return True
 
-    def player_in_list(self, list_to_check, player_to_check):
-        # a verif
-        all_chess_id = []
-        for player in list_to_check:
-            if player:
-                all_chess_id.append(player.chess_id)
-        if player_to_check.chess_id in all_chess_id:
-            return True
-        return False
-
-    def update_players_list(self, players_list, new_player):
-        list_update = []
-        for player in players_list:
-            if isinstance(player, Player):
-                if player.chess_id == new_player.chess_id:
-                    list_update.append(new_player)
-                else:
-                    list_update.append(player)
-        players_list = list_update
-
     def add_new_player(self):
         new_player = True
         player_informations_error_message = ""
@@ -154,7 +141,12 @@ class Controller:
             else:
                 return self.main_menu()
 
-    def ask_menu_choice(self, menu):
+    def is_first_time(self):
+        if self.tournaments_list == []:
+            return True
+        return False
+
+    def ask_menu_choice(self, menu, first_time):
         if menu == CONST.MAIN:
-            menu_choice = self.view.prompt_menu(CONST.MAIN)
+            menu_choice = self.view.prompt_menu(CONST.MAIN, first_time)
         return menu_choice

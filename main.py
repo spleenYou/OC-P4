@@ -8,12 +8,13 @@ def main():
     view = View()
     game = Controller(view)
     user_menu_choice = None
+    tournament_choiced = None
     while user_menu_choice is None:
-        user_menu_choice = game.ask_menu_choice(CONST.MAIN)
+        user_menu_choice = game.ask_menu_choice(CONST.MAIN, game.is_first_time())
         if user_menu_choice == CONST.CREATE_TOURNAMENT:
-            tournament = game.create_tournament()
+            tournament_choiced = game.create_tournament()
         elif user_menu_choice == CONST.RESUME_TOURNAMENT:
-            tournament = game.choice_tournament()
+            tournament_choiced = game.choice_tournament()
         elif user_menu_choice == CONST.LIST_TOURNAMENTS:
             print("liste")
         elif user_menu_choice == CONST.LIST_PLAYERS:
@@ -24,8 +25,8 @@ def main():
         else:
             user_menu_choice = None
 
-        if tournament:
-            game.run_tournament(tournament)
+        if tournament_choiced:
+            game.run_tournament(tournament_choiced)
 
 
 if __name__ == "__main__":

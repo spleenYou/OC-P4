@@ -22,13 +22,13 @@ class Menus:
             command = 'cls'
         os.system(command)
 
-    def view_menu(self, title, menu='', thing_to_show=None):
+    def view_menu(self, title, view='', thing_to_show=None):
         self.clear_screen()
         self.head_menu()
         self.title_menu(title)
-        match menu:
+        match view:
             case CONST.MAIN:
-                self.main_menu()
+                self.main_menu(thing_to_show)
             case CONST.MENU_LIST_TOURNAMENTS:
                 self.list_tournaments_menu(thing_to_show)
             case CONST.SHOW_TOURNAMENT_INFORMATIONS:
@@ -37,8 +37,14 @@ class Menus:
                 self.show_player_choice(thing_to_show)
             case CONST.UPDATE_PLAYER_CHOICE:
                 self.show_players_with_same_chess_id(thing_to_show)
+            case CONST.MESSAGE:
+                self.show_message(thing_to_show)
             case _:
                 pass
+
+    @decoration
+    def show_message(self, thing_to_show):
+        self.decorated_text(thing_to_show)
 
     @decoration
     def show_players_with_same_chess_id(self, players_data):
@@ -76,13 +82,15 @@ class Menus:
 
     @decoration
     def head_menu(self):
-        self.decorated_text("Gestionnaire de", align="left")
-        self.decorated_text("tournoi d'echecs", align="right")
+        self.decorated_text("Gestionnaire de tournoi d'echecs")
 
     @decoration
-    def main_menu(self):
+    def main_menu(self, first_time):
         self.decorated_text("1- Nouveau tournoi", align="left")
-        self.decorated_text("2- Reprendre un tournoi", align="left")
+        if first_time:
+            self.decorated_text("Pas de tournoi enregistré", align="left")
+        else:
+            self.decorated_text("2- Reprendre un tournoi", align="left")
         self.decorated_text("3- Liste des tournois", align="left")
         self.decorated_text("4- Liste des joueurs", align="left")
         self.decorated_text("0- Quitter", align="left")
@@ -111,10 +119,10 @@ class Menus:
             spaces_needed = CONST.FRAME_LENGHT - 2*CONST.NUMBER_SIDE_STARS - len(text)
             match align:
                 case "left":
-                    spaces_left = 1
+                    spaces_left = CONST.SPACE_REQUIRED
                     spaces_right = spaces_needed - spaces_left
                 case "right":
-                    spaces_right = 1
+                    spaces_right = CONST.SPACE_REQUIRED
                     spaces_left = spaces_needed - spaces_right
                 case "center":
                     spaces_left = int(spaces_needed / 2)
@@ -122,8 +130,8 @@ class Menus:
                     if spaces_needed % 2 == 1:
                         spaces_right = spaces_right + 1
                 case _:
-                    spaces_left = 1
-                    spaces_right = 1
+                    spaces_left = CONST.SPACE_REQUIRED
+                    spaces_right = CONST.SPACE_REQUIRED
             print(f"{'*'*CONST.NUMBER_SIDE_STARS}"
                   f"{' '*spaces_left}{text}"
                   f"{' '*spaces_right}"
