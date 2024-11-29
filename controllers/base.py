@@ -10,7 +10,7 @@ class Controller:
     def __init__(self, view):
         self.view = view
         self.save = Save()
-        self.list_players = Load().read_file_players()
+        self.all_players_list = Load().read_file_players()
         self.tournaments_list = Load().read_file_tournaments()
 
     def create_tournament(self):
@@ -58,44 +58,78 @@ class Controller:
                                 number_of_rounds=number_of_rounds,
                                 rounds_list=rounds_list)
         self.tournaments_list.append(tournament)
-        self.save.save_tournament(self.tournaments_list)
+        self.save.save_tournaments(self.tournaments_list)
         return tournament
 
     def run_tournament(self, tournament):
         self.view.show_tournament_information(tournament)
-        players_list_complete = self.check_players(tournament.players_list)
-        if not players_list_complete:
-            self.add_player(tournament.players_list)
-
-    def check_players(self, players_list):
-        for player in players_list:
-            if not isinstance(player, Player):
-                return False
-        return True
+        if not tournament.has_all_players():
+            self.add_player(tournament)
 
     def choice_tournament(self):
-        tournament_choice = self.view.prompt_menu(CONST.MENU_LIST_TOURNAMENTS, self.tournaments_list)
-        tournament = self.tournaments_list[int(tournament_choice) - 1]
-        return tournament
+        tournament_choice = None
+        while tournament_choice is None:
+            tournament_choice = self.view.prompt_menu(CONST.MENU_LIST_TOURNAMENTS, self.tournaments_list)
+            if int(tournament_choice) == CONST.QUIT:
+                return None
+            elif int(tournament_choice) > len(self.tournaments_list):
+                tournament_choice = None
+        return self.tournaments_list[int(tournament_choice) - 1]
 
-    def start_round(self):
-        pass
+    def add_player(self, tournament):
+        players_list_choice = []
+        for player in self.all_players_list:
+            if player not in tournament.players_list:
+                players_list_choice.append(player)
+        while not tournament.has_all_players():
+            index_player_to_add = None
+            while index_player_to_add is None:
+                index_player_to_add = self.view.prompt_for_player_choice(players_list_choice)
+                if self.is_int(index_player_to_add):
+                    index_player_to_add = int(index_player_to_add)
+                    if index_player_to_add > 0 and index_player_to_add <= len(players_list_choice):
+                        new_player = players_list_choice[index_player_to_add - 1]
+                        tournament.add_player(new_player)
+                        players_list_choice.remove(new_player)
+                    elif index_player_to_add == 0:
+                        player_informations = self.view.prompt_for_new_player()
+                        new_player = Player(player_informations['surname'],
+                                            player_informations['name'],
+                                            player_informations['birthday'],
+                                            player_informations['chess_id'])
+                        self.all_players_list.append(new_player)
+                        self.save.save_player(self.all_players_list)
+                else:
+                    index_player_to_add = None
+        self.save.save_tournaments(self.tournaments_list)
 
-    def end_turn(self):
-        pass
+    def is_int(self, value_to_check):
+        try:
+            int(value_to_check)
+        except ValueError:
+            return False
+        else:
+            return True
 
-    def start_match(self, players):
-        pass
+    def player_in_list(self, list_to_check, player_to_check):
+        # a verif
+        all_chess_id = []
+        for player in list_to_check:
+            if player:
+                all_chess_id.append(player.chess_id)
+        if player_to_check.chess_id in all_chess_id:
+            return True
+        return False
 
-    def end_match(self, players):
-        pass
-
-    def get_players(self):
-        add_choice = self.view.prompt_for_add_player_choice()
-        print(add_choice)
-
-    def add_existant_player(self):
-        pass
+    def update_players_list(self, players_list, new_player):
+        list_update = []
+        for player in players_list:
+            if isinstance(player, Player):
+                if player.chess_id == new_player.chess_id:
+                    list_update.append(new_player)
+                else:
+                    list_update.append(player)
+        players_list = list_update
 
     def add_new_player(self):
         new_player = True

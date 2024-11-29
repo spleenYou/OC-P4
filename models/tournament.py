@@ -1,4 +1,5 @@
 import datetime
+from models.player import Player
 
 
 class Tournament:
@@ -33,6 +34,18 @@ class Tournament:
                 break
             round_number = round_number + 1
         return round_number
+
+    def add_player(self, new_player):
+        for i in range(len(self.players_list)):
+            if self.players_list[i] == []:
+                self.players_list[i] = new_player
+                break
+
+    def has_all_players(self):
+        for player in self.players_list:
+            if not isinstance(player, Player):
+                return False
+        return True
 
     def __str__(self):
         for player in self.players_list:

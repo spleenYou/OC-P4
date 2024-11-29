@@ -31,7 +31,7 @@ class Load:
             rounds_list = []
             matches_list = []
             for player in tournament_data_dict['players_list']:
-                player_data = ''
+                player_data = []
                 if len(player['chess_id']):
                     player_data = self.find_player_data_by_chess_id(player['chess_id'])
                 players_list.append(player_data)
@@ -51,14 +51,15 @@ class Load:
         return tournaments_list
 
     def find_player_data_by_chess_id(self, chess_id):
+        player_find = []
         players_list_dict = self.read_json_file(CONST.FILENAME_PLAYERS_LIST)
         for player_data_dict in players_list_dict:
             if player_data_dict['chess_id'] == chess_id:
-                player = Player(player_data_dict['surname'],
-                                player_data_dict['name'],
-                                player_data_dict['birthday'],
-                                player_data_dict['chess_id'])
-        return player
+                player_find = Player(player_data_dict['surname'],
+                                     player_data_dict['name'],
+                                     player_data_dict['birthday'],
+                                     player_data_dict['chess_id'])
+        return player_find
 
     def read_json_file(self, FILENAME):
         with open(f'data/{FILENAME}', 'r') as json_data:

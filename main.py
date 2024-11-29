@@ -8,7 +8,6 @@ def main():
     view = View()
     game = Controller(view)
     user_menu_choice = None
-    tournament = None
     while user_menu_choice is None:
         user_menu_choice = game.ask_menu_choice(CONST.MAIN)
         if user_menu_choice == CONST.CREATE_TOURNAMENT:
@@ -24,6 +23,7 @@ def main():
             os._exit(os.EX_OK)
         else:
             user_menu_choice = None
+
         if tournament:
             game.run_tournament(tournament)
 

@@ -1,9 +1,10 @@
 import json
 import constant.constant as CONST
+from models.player import Player
 
 
 class Save:
-    def save_tournament(self, tournaments_list):
+    def save_tournaments(self, tournaments_list):
         tournaments_list_dict = []
         for tournament in tournaments_list:
             players_list = []
@@ -11,7 +12,7 @@ class Save:
             matches_list = []
             for player in tournament.players_list:
                 chess_id = ''
-                if len(player):
+                if isinstance(player, Player):
                     chess_id = player.chess_id
                 players_list.append({'chess_id': chess_id})
             for rounds in tournament.rounds_list:
@@ -30,21 +31,14 @@ class Save:
         self.save_data(CONST.FILENAME_TOURNAMENTS_LIST, tournaments_list_dict)
         return "Tournoi sauvegardé"
 
-    def save_player(self, new_player, players_list):
-        player_already_save = False
-        if len(players_list) > 0:
-            for player in players_list:
-                if player.chess_id == new_player.chess_id:
-                    player_already_save = True
-        if not player_already_save:
-            players_list.append({'surname': new_player.surname,
-                                 'name': new_player.name,
-                                 'birthday': new_player.birthday,
-                                 'chess_id': new_player.chess_id})
-            self.save_data(CONST.LIST_PLAYERS, players_list)
-            return 'Joueur sauvegardé'
-        else:
-            return 'Le joueur existe déja'
+    def save_player(self, all_players_list):
+        players_list_to_save = []
+        for player in all_players_list:
+            players_list_to_save.append({'surname': player.surname,
+                                         'name': player.name,
+                                         'birthday': player.birthday,
+                                         'chess_id': player.chess_id})
+        self.save_data(CONST.FILENAME_PLAYERS_LIST, players_list_to_save)
 
     def save_data(self, filename, content_file):
         with open(f'data/{filename}', 'w') as file:

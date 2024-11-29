@@ -7,7 +7,7 @@ class Menus:
         def text_decorated(*args, **kwargs):
             print(CONST.STARS_LINE_FULL)
             print(CONST.STARS_LINE)
-            function(*args)
+            function(*args, **kwargs)
             print(CONST.STARS_LINE)
             print(CONST.STARS_LINE_FULL)
             print()
@@ -22,7 +22,7 @@ class Menus:
             command = 'cls'
         os.system(command)
 
-    def view_menu(self, title, menu, thing_to_show=None):
+    def view_menu(self, title, menu='', thing_to_show=None):
         self.clear_screen()
         self.head_menu()
         self.title_menu(title)
@@ -33,8 +33,32 @@ class Menus:
                 self.list_tournaments_menu(thing_to_show)
             case CONST.SHOW_TOURNAMENT_INFORMATIONS:
                 self.show_tournament_information(thing_to_show)
+            case CONST.MENU_PLAYER_CHOICE:
+                self.show_player_choice(thing_to_show)
+            case CONST.UPDATE_PLAYER_CHOICE:
+                self.show_players_with_same_chess_id(thing_to_show)
             case _:
                 pass
+
+    @decoration
+    def show_players_with_same_chess_id(self, players_data):
+        for player in players_data:
+            if players_data.index(player) == 0:
+                self.decorated_text(f"Pour le Chess ID : {player.chess_id}", align="left")
+                self.decorated_text("")
+                self.decorated_text("Anciennes données :", align="left")
+            else:
+                self.decorated_text("Nouvelles données :", align="left")
+            self.decorated_text(f" Nom de famille : {player.surname}", align="left")
+            self.decorated_text(f" Prénom : {player.name}", align="left")
+            self.decorated_text(f" Date de naissance : {player.birthday}", align="left")
+
+    @decoration
+    def show_player_choice(self, players_list):
+        for player in players_list:
+            text = f"{players_list.index(player) + 1} - {player.surname} {player.name} ({player.chess_id})"
+            self.decorated_text(text, align="left")
+        self.decorated_text(text="0 - Nouveau joueur", align="left")
 
     @decoration
     def show_tournament_information(self, tournament):
@@ -52,8 +76,7 @@ class Menus:
 
     @decoration
     def head_menu(self):
-        self.decorated_text("Bienvenue sur le", align="left")
-        self.decorated_text("gestionnaire de")
+        self.decorated_text("Gestionnaire de", align="left")
         self.decorated_text("tournoi d'echecs", align="right")
 
     @decoration
@@ -71,8 +94,9 @@ class Menus:
     @decoration
     def list_tournaments_menu(self, tounaments_list):
         for tournament in tounaments_list:
-            tournament_view = f'{tounaments_list.index(tournament)} - {tournament.name}'
-            self.decorated_text(tournament_view)
+            tournament_view = f'{tounaments_list.index(tournament) + 1} - {tournament.name}'
+            self.decorated_text(tournament_view, align="left")
+        self.decorated_text("0 - Annuler", align="left")
 
     def decorated_text(self, text='', align="center"):
         if text == CONST.TOP_DECORATION:

@@ -12,23 +12,23 @@ class View:
         return tournament_name
 
     def prompt_for_tournament_place(self):
-        self.menu.headset_menu('Emplacement du tournoi')
+        self.menu.view_menu('Emplacement du tournoi')
         tournament_place = input('Veuillez entrer l\'emplacement du tournoi : ')
         return tournament_place
 
     def prompt_for_tournament_number_of_rounds(self):
-        self.menu.headset_menu('Nombre de tours')
+        self.menu.view_menu('Nombre de tours')
         number_of_rounds = input('Combien de tours comprend le tournoi ? ')
         return number_of_rounds
 
     def prompt_for_tournament_number_players(self):
-        self.menu.headset_menu('Nombre de joueurs')
+        self.menu.view_menu('Nombre de joueurs')
         number_players = input('Combien de joueurs participent au tournoi ? ')
         return number_players
 
     def prompt_for_new_player(self):
         player_informations = {}
-        self.menu.headset_menu('Nouveau joueur')
+        self.menu.view_menu('Nouveau joueur')
         player_informations['name'] = input('Quel est le prénom du joueur ? ').capitalize()
         if player_informations['name'] != "":
             player_informations['surname'] = input('Quel est le nom de famille du joueur ? ').upper()
@@ -37,7 +37,7 @@ class View:
         return player_informations
 
     def prompt_for_tournament_description(self):
-        self.menu.headset_menu('Description du tournoi')
+        self.menu.view_menu('Description du tournoi')
         tournament_description = input('Veuillez entrer la description du tournoi : ')
         return tournament_description
 
@@ -49,10 +49,16 @@ class View:
         self.menu.view_menu("Information sur le tournoi", CONST.SHOW_TOURNAMENT_INFORMATIONS, tournament)
         input('Appuyer sur une touche pour continuer...')
 
-    def prompt_for_add_player_choice(self):
-        self.menu.headset_menu("Choix joueur")
-        self.menu.stars_line(full=True)
-        self.menu.stars_line()
+    def prompt_for_player_choice(self, players_list):
+        self.menu.view_menu(title="Ajout d'un joueur", menu=CONST.MENU_PLAYER_CHOICE, thing_to_show=players_list)
+        add_player_choice = input("Comment ajouter le joueur ? ")
+        return add_player_choice
+
+    def prompt_for_player_update(self, old_player_informations, new_player):
+        players_data = [old_player_informations, new_player]
+        self.menu.view_menu(title="Doublon détecté", menu=CONST.UPDATE_PLAYER_CHOICE, thing_to_show=players_data)
+        update_choice = input("Souhaitez-vous mettre à jour le joueur (y/n) ?")
+        return update_choice
 
     def prompt_menu(self, menu_choice, list_to_show=[]):
         if menu_choice == CONST.MAIN:
@@ -76,7 +82,6 @@ class View:
             return tournament_choice
 
     def show_message(self, title, message, need_pause=False):
-        self.menu.headset_menu(title)
-        self.menu.message_view(message)
+        self.menu.view_menu(message)
         if need_pause:
             input('Appuyer sur une touche pour continuer...')
