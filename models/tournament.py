@@ -84,4 +84,6 @@ class Tournament:
             self.check_previous_meeting()
 
     def make_matches(self):
-        return self.rounds_list[self.round_number].make_matches(self.players_list_sort)
+        matches_list = self.rounds_list[self.round_number].make_matches(self.players_list_sort)
+        self.round_number = self.round_number + 1
+        return matches_list

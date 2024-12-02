@@ -68,11 +68,13 @@ class Controller:
         if not tournament.has_all_players():
             self.add_player(tournament)
         while not tournament.is_finished():
-            self.view.show_message(f"Début du round {tournament.round_number + 1}", "Constitution des matchs")
+            round_number_show = tournament.round_number + 1
             tournament.sort_list()
+            self.view.show_message(f"Début du round {round_number_show}", "Constitution des matchs")
             matches_list = tournament.make_matches()
-            self.view.show_matches_list(tournament.round_number + 1, matches_list)
-            self.view.show_message(f"Fin des matchs du round {tournament.round_number + 1}", "Inscription des résultats")
+            self.view.show_matches_list(round_number_show, matches_list)
+            self.view.show_message(f"Fin des matchs du round {round_number_show}",
+                                   "Inscription des résultats")
 
     def choice_tournament(self):
         tournament_choice = None
