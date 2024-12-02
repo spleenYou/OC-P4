@@ -71,7 +71,7 @@ class Menus:
         self.decorated_text(f" Nom : {tournament.name}", align="left")
         self.decorated_text(f" Emplacement : {tournament.place}", align="left")
         self.decorated_text(f" description : {tournament.description}", align="left")
-        self.decorated_text(f" Nombre de tours : {tournament.number_of_rounds}", align="left")
+        self.decorated_text(f" Nombre de tours : {tournament.number_of_rounds()}", align="left")
         self.decorated_text(f" Tour effectué : {tournament.round_number}", align="left")
         self.decorated_text(f" Nombre de joueurs : {len(tournament.players_list)}", align="left")
         for player in tournament.players_list:

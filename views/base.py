@@ -50,7 +50,7 @@ class View:
         input('Appuyer sur une touche pour continuer...')
 
     def prompt_for_player_choice(self, players_list):
-        self.menu.view_menu(title="Ajout d'un joueur", menu=CONST.MENU_PLAYER_CHOICE, thing_to_show=players_list)
+        self.menu.view_menu(title="Ajout d'un joueur", view=CONST.MENU_PLAYER_CHOICE, thing_to_show=players_list)
         add_player_choice = input("Comment ajouter le joueur ? ")
         return add_player_choice
 

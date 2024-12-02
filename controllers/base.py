@@ -2,6 +2,7 @@ import re
 import constant.constant as CONST
 from models.tournament import Tournament
 from models.player import Player
+from models.match import Match
 from controllers.load import Load
 from controllers.save import Save
 
@@ -44,23 +45,19 @@ class Controller:
                     error_message = 'Nombre de participants impaires'
             else:
                 error_message = 'Nombre de participant invalide'
-        players_list = []
-        for i in range(number_players):
-            players_list.append([])
-        rounds_list = []
-        matches_number = int(number_players / 2)
-        for i in range(number_of_rounds):
-            matches_list = []
-            for j in range(matches_number):
-                matches_list.append(())
-            rounds_list.append(matches_list)
         tournament = Tournament(id=len(self.tournaments_list)+1,
                                 name=name,
                                 place=place,
-                                players_list=players_list,
-                                description=description,
-                                number_of_rounds=number_of_rounds,
-                                rounds_list=rounds_list)
+                                description=description)
+        for i in range(number_players):
+            tournament.add_player([])
+        matches_number = int(number_players / 2)
+        for i in range(number_of_rounds):
+            tournament.add_round()
+        for j in tournament.rounds_list:
+            for k in range(matches_number):
+                match = Match((["", 0], ["", 0]))
+                j.add_match(match)
         self.tournaments_list.append(tournament)
         self.save.save_tournaments(self.tournaments_list)
         return tournament
@@ -70,8 +67,8 @@ class Controller:
         if not tournament.has_all_players():
             self.add_player(tournament)
         while not tournament.is_finished():
-            self.view.show_message(f"Début du round {tournament.round_number}", "Constitution des matchs", True)
-            self.start_round(tournament.round_in_progress())
+            self.view.show_message(f"Début du round {tournament.round_number + 1}", "Constitution des matchs", True)
+            self.start_round(tournament.round_number + 1)
 
     def choice_tournament(self):
         tournament_choice = None
