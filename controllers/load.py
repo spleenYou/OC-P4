@@ -1,17 +1,11 @@
 import json
-from models.player import Player
 from models.tournament import Tournament
+from models.round import Round
+from models.player import Player
 import constant.constant as CONST
 
 
 class Load:
-
-    def __init__(self):
-        pass
-
-    def load_tournament(self, tournament):
-        pass
-
     def read_file_players(self):
         players_list = []
         players_list_dict = self.read_json_file(CONST.FILENAME_PLAYERS_LIST)
@@ -28,17 +22,26 @@ class Load:
             tournaments_list_dict = json.load(json_data)
         for tournament_data_dict in tournaments_list_dict:
             players_list = []
-            rounds_list = []
-            matches_list = []
             for player in tournament_data_dict['players_list']:
                 player_data = []
                 if len(player['chess_id']):
                     player_data = self.find_player_data_by_chess_id(player['chess_id'])
                 players_list.append(player_data)
+            rounds_list = []
+            round_players_list = []
             for round in tournament_data_dict['rounds_list']:
+                matches_list = []
+                match_players_list = []
                 for match in round:
-                    matches_list.append([match[0], match[1]])
-                rounds_list.append(matches_list)
+                    score_list = []
+                    for score in match:
+                        player = self.find_player_data_by_chess_id(score[0])
+                        score_list.append([player, score[1]])
+                        match_players_list.append(player)
+                    match_players_list.append(score_list)
+                    matches_list.append(match_players_list, score_list)
+                    round_players_list.append(match_players_list)
+                rounds_list.append(Round(round_players_list, matches_list))
             tournaments_list.append(Tournament(name=tournament_data_dict['name'],
                                                place=tournament_data_dict['place'],
                                                players_list=players_list,

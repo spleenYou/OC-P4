@@ -50,13 +50,13 @@ class View:
         input('Appuyer sur une touche pour continuer...')
 
     def prompt_for_player_choice(self, players_list):
-        self.menu.view_menu(title="Ajout d'un joueur", menu=CONST.MENU_PLAYER_CHOICE, thing_to_show=players_list)
+        self.menu.view_menu("Ajout d'un joueur", CONST.MENU_PLAYER_CHOICE, players_list)
         add_player_choice = input("Comment ajouter le joueur ? ")
         return add_player_choice
 
     def prompt_for_player_update(self, old_player_informations, new_player):
         players_data = [old_player_informations, new_player]
-        self.menu.view_menu(title="Doublon détecté", menu=CONST.UPDATE_PLAYER_CHOICE, thing_to_show=players_data)
+        self.menu.view_menu("Doublon détecté", CONST.UPDATE_PLAYER_CHOICE, players_data)
         update_choice = input("Souhaitez-vous mettre à jour le joueur (y/n) ?")
         return update_choice
 

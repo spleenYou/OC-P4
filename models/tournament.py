@@ -1,5 +1,6 @@
 import datetime
 from models.player import Player
+from models.round import Round
 
 
 class Tournament:
@@ -23,11 +24,12 @@ class Tournament:
         self.description = description
         self.number_of_rounds = number_of_rounds
         self.id = id
+        self.round = Round()
 
     def is_finished(self):
         if self.round_number < self.number_of_rounds:
             return False
-        if self.matches_finished():
+        if self.rounds_list[-1].all_matches_finished():
             return True
         return False
 
@@ -43,9 +45,10 @@ class Tournament:
     def count_round_number(self):
         round_number = 0
         for round in self.rounds_list:
-            if len(round) == 0:
-                break
-            round_number = round_number + 1
+            if self.round.is_finished():
+                round_number = round_number + 1
+            else:
+                return round_number
         return round_number
 
     def add_player(self, new_player):

@@ -19,9 +19,10 @@ class Save:
                 matches_list = []
                 for match in rounds:
                     if isinstance(match, Match):
-                        matches_list.append([match.score[0], match.score[1]])
+                        matches_list.append([[match.white_color_player.chess_id, match.white_color_player.score],
+                                             [match.black_color_player.chess_id, match.black_color_player.score]])
                     else:
-                        matches_list.append(([], []))
+                        matches_list.append((["", 0], ["", 0]))
                 rounds_list.append(matches_list)
             tournaments_list_dict.append({'name': tournament.name,
                                           'place': tournament.place,
