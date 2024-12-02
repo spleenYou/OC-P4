@@ -1,7 +1,5 @@
 import json
 from models.tournament import Tournament
-from models.round import Round
-from models.match import Match
 from models.player import Player
 import constant.constant as CONST
 
@@ -29,18 +27,18 @@ class Load:
                                     date_start=tournament_data_dict['date_start'],
                                     date_stop=tournament_data_dict['date_stop'])
             for player in tournament_data_dict['players_list']:
-                player_data = None
+                player_data = []
                 if len(player['chess_id']):
                     player_data = self.find_player_data_by_chess_id(player['chess_id'])
                 tournament.add_player(player_data)
             for round in tournament_data_dict['rounds_list']:
-                matches_list = []
+                new_round = tournament.add_round()
                 for match in round:
+                    new_match = new_round.add_match()
                     score_list = []
                     for score in match:
                         score_list.append([self.find_player_data_by_chess_id(score[0]), score[1]])
-                    matches_list.append(Match(score_list))
-                tournament.add_round(Round(matches_list=matches_list))
+                    new_match.define_score_table(score_list)
             tournaments_list.append(tournament)
         return tournaments_list
 

@@ -17,7 +17,7 @@ class Controller:
     def create_tournament(self):
         name = self.view.prompt_for_tournament_name()
         if name == '':
-            return self.main_menu()
+            return None
         place = self.view.prompt_for_tournament_place()
         description = self.view.prompt_for_tournament_description()
         number_of_rounds = 0
@@ -54,10 +54,11 @@ class Controller:
         matches_number = int(number_players / 2)
         for i in range(number_of_rounds):
             tournament.add_round()
-        for j in tournament.rounds_list:
+        for new_round in tournament.rounds_list:
+            matches_list = []
             for k in range(matches_number):
-                match = Match((["", 0], ["", 0]))
-                j.add_match(match)
+                matches_list.append(Match((["", 0], ["", 0])))
+            new_round.matches_list = matches_list
         self.tournaments_list.append(tournament)
         self.save.save_tournaments(self.tournaments_list)
         return tournament
@@ -68,7 +69,8 @@ class Controller:
             self.add_player(tournament)
         while not tournament.is_finished():
             self.view.show_message(f"Début du round {tournament.round_number + 1}", "Constitution des matchs", True)
-            self.start_round(tournament.round_number + 1)
+            tournament.sort_list()
+            matches_list = tournament.make_matches()
 
     def choice_tournament(self):
         tournament_choice = None

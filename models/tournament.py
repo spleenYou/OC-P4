@@ -29,15 +29,6 @@ class Tournament:
                 return False
         return True
 
-    def round_in_progress(self):
-        for round in self.rounds_list:
-            if not round.all_matches_finished():
-                return round
-        return None
-
-    def matches_in_progress(self):
-        return self.rounds_list[self.round_number - 1]
-
     def count_round_number(self):
         round_number = 0
         for round in self.rounds_list:
@@ -48,13 +39,21 @@ class Tournament:
         return round_number
 
     def add_player(self, new_player):
-        self.players_list.append(new_player)
+        if len(self.players_list) and new_player != []:
+            for i in range(len(self.players_list)):
+                if self.players_list[i] == []:
+                    self.players_list[i] = new_player
+                    return None
+            self.players_list.append(new_player)
+        else:
+            self.players_list.append(new_player)
+        return None
 
     def add_round(self, round=None):
         if round is None:
             round = Round()
         self.rounds_list.append(round)
-        return None
+        return round
 
     def has_all_players(self):
         for player in self.players_list:
@@ -76,10 +75,13 @@ class Tournament:
     def number_of_rounds(self):
         return len(self.rounds_list)
 
-# a refaire
     def sort_list(self):
-        if self.round_number == 1:
+        if self.round_number == 0:
             Random().shuffle(self.players_list)
+            self.players_list_sort = self.players_list
         else:
             self.players_list = sorted(self.players_list, key=lambda player: player.score, reverse=True)
             self.check_previous_meeting()
+
+    def make_matches(self):
+        return self.rounds_list[self.round_number].make_matches(self.players_list_sort)

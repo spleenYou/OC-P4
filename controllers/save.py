@@ -21,7 +21,7 @@ class Save:
                 if isinstance(round, Round):
                     for match in round.matches_list:
                         if isinstance(match, Match):
-                            matches_list.append([match.score[0], match.score[1]])
+                            matches_list.append(match.score_table)
                         else:
                             matches_list.append((["", 0], ["", 0]))
                 else:
