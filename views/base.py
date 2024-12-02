@@ -60,6 +60,10 @@ class View:
         update_choice = input("Souhaitez-vous mettre à jour le joueur (y/n) ?")
         return update_choice
 
+    def show_matches_list(self, round_number, matches_list):
+        self.menu.view_menu(f"Voici les matchs du Round {round_number}", CONST.SHOW_MATCHES_LIST, matches_list)
+        input('Appuyer sur une touche pour continuer...')
+
     def prompt_menu(self, menu_choice, list_to_show=None):
         if menu_choice == CONST.MAIN:
             self.menu.view_menu("Menu principal", menu_choice, list_to_show)
@@ -81,7 +85,6 @@ class View:
             tournament_choice = input('Quel tournoi reprendre ? ')
             return tournament_choice
 
-    def show_message(self, title, message, need_pause=False):
+    def show_message(self, title, message):
         self.menu.view_menu(title, CONST.MESSAGE, message)
-        if need_pause:
-            input('Appuyer sur une touche pour continuer...')
+        input('Appuyer sur une touche pour continuer...')

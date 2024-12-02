@@ -26,7 +26,7 @@ class Controller:
             if number_of_rounds != '':
                 number_of_rounds = int(number_of_rounds)
                 if number_of_rounds < 4:
-                    self.view.show_message("Erreur", "Le nombre de tour minimum est 4", True)
+                    self.view.show_message("Erreur", "Le nombre de tour minimum est 4")
             else:
                 number_of_rounds = 0
         min_players = 6
@@ -34,7 +34,7 @@ class Controller:
         error_message = ''
         while number_players < min_players:
             if error_message != '':
-                self.view.show_message("Erreur", error_message, True)
+                self.view.show_message("Erreur", error_message)
             number_players = self.view.prompt_for_tournament_number_players()
             if number_players != '':
                 number_players = int(number_players)
@@ -68,9 +68,11 @@ class Controller:
         if not tournament.has_all_players():
             self.add_player(tournament)
         while not tournament.is_finished():
-            self.view.show_message(f"Début du round {tournament.round_number + 1}", "Constitution des matchs", True)
+            self.view.show_message(f"Début du round {tournament.round_number + 1}", "Constitution des matchs")
             tournament.sort_list()
             matches_list = tournament.make_matches()
+            self.view.show_matches_list(tournament.round_number + 1, matches_list)
+            self.view.show_message(f"Fin des matchs du round {tournament.round_number + 1}", "Inscription des résultats")
 
     def choice_tournament(self):
         tournament_choice = None

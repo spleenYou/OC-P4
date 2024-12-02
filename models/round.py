@@ -34,5 +34,5 @@ class Round:
         players_list_per_match = []
         for players_list in self.matches_list:
             players_list_per_match.append({'white_player': players_list.score_table[0][0],
-                                           'black player': players_list.score_table[1][0]})
+                                           'black_player': players_list.score_table[1][0]})
         return players_list_per_match

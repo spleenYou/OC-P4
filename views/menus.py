@@ -39,8 +39,24 @@ class Menus:
                 self.show_players_with_same_chess_id(thing_to_show)
             case CONST.MESSAGE:
                 self.show_message(thing_to_show)
+            case CONST.SHOW_MATCHES_LIST:
+                self.show_matches_list(thing_to_show)
             case _:
                 pass
+
+    @decoration
+    def show_matches_list(self, matches_list):
+        for i in range(len(matches_list)):
+            white_player = matches_list[i]['white_player']
+            black_player = matches_list[i]['black_player']
+            self.decorated_text(f"Match {i + 1} :", align="left")
+            self.decorated_text(f" - Joueur blanc : {white_player.surname} "
+                                f"{white_player.name} "
+                                f"({white_player.chess_id})", align="left")
+            self.decorated_text(f" - Joueur noir : {black_player.surname} "
+                                f"{black_player.name} "
+                                f"({black_player.chess_id})", align="left")
+            self.decorated_text("")
 
     @decoration
     def show_message(self, thing_to_show):
