@@ -31,12 +31,10 @@ class Tournament:
         return True
 
     def count_round_number(self):
-        round_number = 0
         for round in self.rounds_list:
-            if isinstance(round, Round):
-                if not round.is_finished():
-                    return None
-                self.round_number = round_number + 1
+            if not round.is_finished():
+                return None
+            self.round_number = self.round_number + 1
 
     def add_player(self, new_player):
         if len(self.players_list) and new_player != []:
@@ -49,9 +47,8 @@ class Tournament:
             self.players_list.append(new_player)
         return None
 
-    def add_round(self, round=None):
-        if round is None:
-            round = Round()
+    def add_round(self):
+        round = Round()
         self.rounds_list.append(round)
         return round
 
@@ -69,7 +66,26 @@ class Tournament:
             Random().shuffle(self.players_list)
             self.players_list_sort = self.players_list
         else:
-            pass
+            new_list_sort = []
+            list_players = self.players_list_sort
+            while len(list_players):
+                i = 1
+                if self.already_meet(list_players[0], list_players[i]):
+                    i = i + 1
+                else:
+                    new_list_sort.append(list_players[0])
+                    new_list_sort.append(list_players[i])
+                    list_players.remove(list_players[i])
+                    list_players.remove(list_players[0])
+            self.players_list_sort = new_list_sort
+
+    def already_meet(self, player_one, player_two):
+        for round in self.rounds_list:
+            for match in round.matches_list:
+                if (any(player_one in player for player in match.score_table)
+                   and any(player_two in player for player in match.score_table)):
+                    return True
+        return False
 
     def sort_list_by_score(self):
         self.players_list_sort = sorted(self.players_list, key=lambda player: player.score, reverse=True)

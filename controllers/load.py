@@ -40,22 +40,31 @@ class Load:
                         if score[0] == "null":
                             player = None
                         else:
-                            player = self.find_player_data_by_chess_id(score[0])
+                            player = self.find_player_data_by_chess_id(score[0], tournament.players_list)
                         score_list.append([player, score[1]])
                     new_match.define_score_table(score_list)
+                    if player is not None:
+                        new_match.update_score()
+            tournament.sort_list_by_score()
+            tournament.count_round_number()
             tournaments_list.append(tournament)
         return tournaments_list
 
-    def find_player_data_by_chess_id(self, chess_id):
+    def find_player_data_by_chess_id(self, chess_id, players_list=None):
         player_find = []
-        players_list_dict = self.read_json_file(CONST.FILENAME_PLAYERS_LIST)
-        for player_data_dict in players_list_dict:
-            if player_data_dict['chess_id'] == chess_id:
-                player_find = Player(player_data_dict['surname'],
-                                     player_data_dict['name'],
-                                     player_data_dict['birthday'],
-                                     player_data_dict['chess_id'])
-                return player_find
+        if players_list is not None:
+            for player in players_list:
+                if player.chess_id == chess_id:
+                    return player
+        else:
+            players_list_dict = self.read_json_file(CONST.FILENAME_PLAYERS_LIST)
+            for player_data_dict in players_list_dict:
+                if player_data_dict['chess_id'] == chess_id:
+                    player_find = Player(player_data_dict['surname'],
+                                         player_data_dict['name'],
+                                         player_data_dict['birthday'],
+                                         player_data_dict['chess_id'])
+                    return player_find
         return None
 
     def read_json_file(self, FILENAME):

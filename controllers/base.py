@@ -65,7 +65,6 @@ class Controller:
         return tournament
 
     def run_tournament(self, tournament):
-        tournament.count_round_number()
         self.view.show_tournament_information(tournament)
         if not tournament.has_all_players():
             self.add_player(tournament)
@@ -85,9 +84,6 @@ class Controller:
             self.view.show_ranking(tournament.players_list_sort)
             self.save.save_tournaments(self.tournaments_list)
             tournament.next_round()
-
-    def update_players_score(self):
-        pass
 
     def choice_tournament(self):
         tournament_choice = None

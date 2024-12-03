@@ -19,10 +19,13 @@ class Save:
                 for match in round.matches_list:
                     scores_list = []
                     for score in match.score_table:
+                        chess_id = score[0]
                         if score[0] is not None:
-                            score[0] = score[0].chess_id
-                        scores_list.append([score[0], score[1]])
-                    matches_list.append(match.score_table)
+                            chess_id = score[0].chess_id
+                        else:
+                            chess_id = "null"
+                        scores_list.append([chess_id, score[1]])
+                    matches_list.append(scores_list)
                 rounds_list.append(matches_list)
             tournaments_list_dict.append({'name': tournament.name,
                                           'place': tournament.place,

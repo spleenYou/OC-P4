@@ -22,11 +22,9 @@ class Round:
 
     def is_finished(self):
         for match in self.matches_list:
-            if isinstance(match, Match):
-                if not match.is_played():
-                    return False
-                return True
-            return False
+            if not match.is_played():
+                return False
+        return True
 
     def make_matches(self, players_list):
         for i in range(0, len(self.matches_list)):
