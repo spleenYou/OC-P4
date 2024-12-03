@@ -2,6 +2,7 @@ import re
 import constant.constant as CONST
 from models.tournament import Tournament
 from models.player import Player
+from models.match import Match
 from controllers.load import Load
 from controllers.save import Save
 
@@ -16,7 +17,7 @@ class Controller:
     def create_tournament(self):
         name = self.view.prompt_for_tournament_name()
         if name == '':
-            return self.main_menu()
+            return None
         place = self.view.prompt_for_tournament_place()
         description = self.view.prompt_for_tournament_description()
         number_of_rounds = 0
@@ -25,7 +26,7 @@ class Controller:
             if number_of_rounds != '':
                 number_of_rounds = int(number_of_rounds)
                 if number_of_rounds < 4:
-                    self.view.show_message("Erreur", "Le nombre de tour minimum est 4", True)
+                    self.view.show_message("Erreur", "Le nombre de tour minimum est 4")
             else:
                 number_of_rounds = 0
         min_players = 6
@@ -33,7 +34,7 @@ class Controller:
         error_message = ''
         while number_players < min_players:
             if error_message != '':
-                self.view.show_message("Erreur", error_message, True)
+                self.view.show_message("Erreur", error_message)
             number_players = self.view.prompt_for_tournament_number_players()
             if number_players != '':
                 number_players = int(number_players)
@@ -44,23 +45,21 @@ class Controller:
                     error_message = 'Nombre de participants impaires'
             else:
                 error_message = 'Nombre de participant invalide'
-        players_list = []
-        for i in range(number_players):
-            players_list.append([])
-        rounds_list = []
-        matches_number = int(number_players / 2)
-        for i in range(number_of_rounds):
-            matches_list = []
-            for j in range(matches_number):
-                matches_list.append(())
-            rounds_list.append(matches_list)
         tournament = Tournament(id=len(self.tournaments_list)+1,
                                 name=name,
                                 place=place,
-                                players_list=players_list,
-                                description=description,
-                                number_of_rounds=number_of_rounds,
-                                rounds_list=rounds_list)
+                                description=description)
+        for i in range(number_players):
+            tournament.add_player([])
+        matches_number = int(number_players / 2)
+        for i in range(number_of_rounds):
+            tournament.add_round()
+        for new_round in tournament.rounds_list:
+            matches_list = []
+            for k in range(matches_number):
+                matches_list.append(Match())
+                matches_list[k].define_score_table(([None, 0], [None, 0]))
+            new_round.matches_list = matches_list
         self.tournaments_list.append(tournament)
         self.save.save_tournaments(self.tournaments_list)
         return tournament
@@ -70,8 +69,24 @@ class Controller:
         if not tournament.has_all_players():
             self.add_player(tournament)
         while not tournament.is_finished():
-            self.view.show_message(f"Début du round {tournament.round_number}", "Constitution des matchs", True)
-            self.start_round(tournament.round_in_progress())
+            round_number_show = tournament.round_number + 1
+            tournament.sort_list()
+            self.view.show_message(f"Début du round {round_number_show}", "Constitution des matchs")
+            matches_list = tournament.rounds_list[tournament.round_number].matches_list
+            tournament.make_matches()
+            self.view.show_matches_list(round_number_show, matches_list)
+            self.view.show_message(f"Fin des matchs du round {round_number_show}",
+                                   "Inscription des résultats")
+            for match in matches_list:
+                winner_player = self.view.prompt_for_winner_player(match)
+                match.define_score(winner_player)
+            tournament.sort_list_by_score()
+            self.view.show_ranking(tournament.players_list_sort)
+            self.save.save_tournaments(self.tournaments_list)
+            tournament.next_round()
+
+    def update_players_score(self):
+        pass
 
     def choice_tournament(self):
         tournament_choice = None

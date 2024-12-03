@@ -27,6 +27,8 @@ def main():
 
         if tournament_choiced:
             game.run_tournament(tournament_choiced)
+        else:
+            user_menu_choice = None
 
 
 if __name__ == "__main__":

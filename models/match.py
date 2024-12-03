@@ -3,35 +3,38 @@ import constant.constant as CONST
 
 
 class Match:
-    def __init__(self, players_list, score=None):
-        self.players_list = players_list
-        self.score = score
-        if score is None:
-            self.define_color()
-
-    def define_color(self):
-        Random().shuffle(self.players_list)
-        self.white_color_player = self.players_list[0]
-        self.black_color_player = self.players_list[1]
-
-    def is_finished(self):
-        if self.score is not None:
-            return True
-        return False
+    def __init__(self):
+        self.score_table = []
 
     def define_score(self, winner_player):
         match winner_player:
             case CONST.NO_WINNER:
-                self.score = ([self.white_color_player, 0.5], [self.black_color_player, 0.5])
+                self.score_table[0][1] = 0.5
+                self.score_table[1][1] = 0.5
             case CONST.WHITE_PLAYER:
-                self.score = ([self.white_color_player, 1], [self.black_color_player, 0])
+                self.score_table[0][1] = 1
+                self.score_table[1][1] = 0
             case CONST.BLACK_PLAYER:
-                self.score = ([self.white_color_player, 0], [self.black_color_player, 1])
+                self.score_table[0][1] = 0
+                self.score_table[1][1] = 1
             case _:
                 pass
-        self.update_players_score()
+        self.update_score()
+        return None
 
-    def update_players_score(self):
-        if self.score is not None:
-            self.white_color_player.score = self.white_color_player.score + self.score[0][1]
-            self.black_color_player.score = self.black_color_player.score + self.score[1][1]
+    def update_score(self):
+        self.score_table[0][0].score = self.score_table[0][0].score + self.score_table[0][1]
+        self.score_table[1][0].score = self.score_table[1][0].score + self.score_table[1][1]
+
+    def define_score_table(self, score_table):
+        self.score_table = score_table
+
+    def define_players_colors(self, players_list):
+        Random().shuffle(players_list)
+        self.score_table[0][0] = players_list[0]
+        self.score_table[1][0] = players_list[1]
+
+    def is_played(self):
+        if self.score_table[0][1] == 0 and self.score_table[1][1] == 0:
+            return False
+        return True

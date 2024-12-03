@@ -39,8 +39,57 @@ class Menus:
                 self.show_players_with_same_chess_id(thing_to_show)
             case CONST.MESSAGE:
                 self.show_message(thing_to_show)
+            case CONST.SHOW_MATCHES_LIST:
+                self.show_matches_list(thing_to_show)
+            case CONST.SHOW_MATCH:
+                self.show_match(thing_to_show)
             case _:
                 pass
+
+    def show(self, title, show='', thing_to_show=None):
+        self.clear_screen()
+        self.head_menu()
+        self.title_menu(title)
+        match show:
+            case CONST.SHOW_RANKING:
+                self.show_ranking(thing_to_show)
+            case _:
+                pass
+
+    @decoration
+    def show_ranking(self, players_list):
+        for i in range(len(players_list)):
+            player = players_list[i]
+            self.decorated_text(f"{i + 1} - "
+                                f"{player.surname} "
+                                f"{player.name} "
+                                f"({player.chess_id}) : "
+                                f"{player.score}", align="left")
+
+    @decoration
+    def show_match(self, match):
+        self.decorated_text(f"    0 - {match.score_table[0][0].surname} "
+                            f"{match.score_table[0][0].name} "
+                            f"({match.score_table[0][0].chess_id})", align="left")
+        self.decorated_text(f"    1 - {match.score_table[1][0].surname} "
+                            f"{match.score_table[1][0].name} "
+                            f"({match.score_table[1][0].chess_id})", align="left")
+        self.decorated_text("    2 - Match nul", align="left")
+
+    @decoration
+    def show_matches_list(self, matches_list):
+        for i in range(len(matches_list)):
+            white_player = matches_list[i].score_table[0][0]
+            black_player = matches_list[i].score_table[1][0]
+            self.decorated_text(f"Match {i + 1} :", align="left")
+            self.decorated_text(f" - Joueur blanc : {white_player.surname} "
+                                f"{white_player.name} "
+                                f"({white_player.chess_id})", align="left")
+            self.decorated_text(f" - Joueur noir : {black_player.surname} "
+                                f"{black_player.name} "
+                                f"({black_player.chess_id})", align="left")
+            if (i + 1) < len(matches_list):
+                self.decorated_text("")
 
     @decoration
     def show_message(self, thing_to_show):
@@ -71,7 +120,7 @@ class Menus:
         self.decorated_text(f" Nom : {tournament.name}", align="left")
         self.decorated_text(f" Emplacement : {tournament.place}", align="left")
         self.decorated_text(f" description : {tournament.description}", align="left")
-        self.decorated_text(f" Nombre de tours : {tournament.number_of_rounds}", align="left")
+        self.decorated_text(f" Nombre de tours : {tournament.number_of_rounds()}", align="left")
         self.decorated_text(f" Tour effectué : {tournament.round_number}", align="left")
         self.decorated_text(f" Nombre de joueurs : {len(tournament.players_list)}", align="left")
         for player in tournament.players_list:

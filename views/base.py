@@ -26,6 +26,11 @@ class View:
         number_players = input('Combien de joueurs participent au tournoi ? ')
         return number_players
 
+    def show_ranking(self, players_list):
+        self.menu.show('Classement :', CONST.SHOW_RANKING, players_list)
+        input('Appuyer sur une touche pour continuer...')
+        return None
+
     def prompt_for_new_player(self):
         player_informations = {}
         self.menu.view_menu('Nouveau joueur')
@@ -50,7 +55,7 @@ class View:
         input('Appuyer sur une touche pour continuer...')
 
     def prompt_for_player_choice(self, players_list):
-        self.menu.view_menu("Ajout d'un joueur", CONST.MENU_PLAYER_CHOICE, players_list)
+        self.menu.view_menu(title="Ajout d'un joueur", view=CONST.MENU_PLAYER_CHOICE, thing_to_show=players_list)
         add_player_choice = input("Comment ajouter le joueur ? ")
         return add_player_choice
 
@@ -59,6 +64,15 @@ class View:
         self.menu.view_menu("Doublon détecté", CONST.UPDATE_PLAYER_CHOICE, players_data)
         update_choice = input("Souhaitez-vous mettre à jour le joueur (y/n) ?")
         return update_choice
+
+    def show_matches_list(self, round_number, matches_list):
+        self.menu.view_menu(f"Voici les matchs du Round {round_number}", CONST.SHOW_MATCHES_LIST, matches_list)
+        input('Appuyer sur une touche pour continuer...')
+
+    def prompt_for_winner_player(self, match):
+        self.menu.view_menu("Résultat du match :", CONST.SHOW_MATCH, match)
+        winner_player = input("Qui est le vainqueur ? ")
+        return winner_player
 
     def prompt_menu(self, menu_choice, list_to_show=None):
         if menu_choice == CONST.MAIN:
@@ -81,7 +95,6 @@ class View:
             tournament_choice = input('Quel tournoi reprendre ? ')
             return tournament_choice
 
-    def show_message(self, title, message, need_pause=False):
+    def show_message(self, title, message):
         self.menu.view_menu(title, CONST.MESSAGE, message)
-        if need_pause:
-            input('Appuyer sur une touche pour continuer...')
+        input('Appuyer sur une touche pour continuer...')
