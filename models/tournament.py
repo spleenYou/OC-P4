@@ -18,7 +18,7 @@ class Tournament:
         self.date_start = date_start
         self.date_stop = date_stop
         self.rounds_list = []
-        self.round_number = self.count_round_number()
+        self.round_number = 0
         self.players_list = []
         self.description = description
         self.id = id
@@ -35,9 +35,8 @@ class Tournament:
         for round in self.rounds_list:
             if isinstance(round, Round):
                 if not round.is_finished():
-                    return round_number
-                round_number = round_number + 1
-        return round_number
+                    return None
+                self.round_number = round_number + 1
 
     def add_player(self, new_player):
         if len(self.players_list) and new_player != []:

@@ -37,7 +37,7 @@ class Load:
                     new_match = new_round.add_match()
                     score_list = []
                     for score in match:
-                        if score[0] != "null":
+                        if score[0] == "null":
                             player = None
                         else:
                             player = self.find_player_data_by_chess_id(score[0])

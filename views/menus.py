@@ -32,7 +32,7 @@ class Menus:
             case CONST.MENU_LIST_TOURNAMENTS:
                 self.list_tournaments_menu(thing_to_show)
             case CONST.SHOW_TOURNAMENT_INFORMATIONS:
-                self.show_tournament_information(thing_to_show)
+                self.show_tournament_informations(thing_to_show)
             case CONST.MENU_PLAYER_CHOICE:
                 self.show_player_choice(thing_to_show)
             case CONST.UPDATE_PLAYER_CHOICE:
@@ -116,7 +116,7 @@ class Menus:
         self.decorated_text(text="0 - Nouveau joueur", align="left")
 
     @decoration
-    def show_tournament_information(self, tournament):
+    def show_tournament_informations(self, tournament):
         self.decorated_text(f" Nom : {tournament.name}", align="left")
         self.decorated_text(f" Emplacement : {tournament.place}", align="left")
         self.decorated_text(f" description : {tournament.description}", align="left")

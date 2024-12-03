@@ -65,6 +65,7 @@ class Controller:
         return tournament
 
     def run_tournament(self, tournament):
+        tournament.count_round_number()
         self.view.show_tournament_information(tournament)
         if not tournament.has_all_players():
             self.add_player(tournament)
