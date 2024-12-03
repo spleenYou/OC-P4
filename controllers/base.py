@@ -57,7 +57,8 @@ class Controller:
         for new_round in tournament.rounds_list:
             matches_list = []
             for k in range(matches_number):
-                matches_list.append(Match((["", 0], ["", 0])))
+                matches_list.append(Match())
+                matches_list[k].define_score_table(([None, 0], [None, 0]))
             new_round.matches_list = matches_list
         self.tournaments_list.append(tournament)
         self.save.save_tournaments(self.tournaments_list)
@@ -71,10 +72,21 @@ class Controller:
             round_number_show = tournament.round_number + 1
             tournament.sort_list()
             self.view.show_message(f"Début du round {round_number_show}", "Constitution des matchs")
-            matches_list = tournament.make_matches()
+            matches_list = tournament.rounds_list[tournament.round_number].matches_list
+            tournament.make_matches()
             self.view.show_matches_list(round_number_show, matches_list)
             self.view.show_message(f"Fin des matchs du round {round_number_show}",
                                    "Inscription des résultats")
+            for match in matches_list:
+                winner_player = self.view.prompt_for_winner_player(match)
+                match.define_score(winner_player)
+            tournament.sort_list_by_score()
+            self.view.show_ranking(tournament.players_list_sort)
+            self.save.save_tournaments(self.tournaments_list)
+            tournament.next_round()
+
+    def update_players_score(self):
+        pass
 
     def choice_tournament(self):
         tournament_choice = None

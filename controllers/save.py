@@ -1,8 +1,6 @@
 import json
 import constant.constant as CONST
 from models.player import Player
-from models.match import Match
-from models.round import Round
 
 
 class Save:
@@ -18,14 +16,13 @@ class Save:
                 players_list.append({'chess_id': chess_id})
             for round in tournament.rounds_list:
                 matches_list = []
-                if isinstance(round, Round):
-                    for match in round.matches_list:
-                        if isinstance(match, Match):
-                            matches_list.append(match.score_table)
-                        else:
-                            matches_list.append((["", 0], ["", 0]))
-                else:
-                    matches_list = round
+                for match in round.matches_list:
+                    scores_list = []
+                    for score in match.score_table:
+                        if score[0] is not None:
+                            score[0] = score[0].chess_id
+                        scores_list.append([score[0], score[1]])
+                    matches_list.append(match.score_table)
                 rounds_list.append(matches_list)
             tournaments_list_dict.append({'name': tournament.name,
                                           'place': tournament.place,

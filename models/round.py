@@ -31,8 +31,4 @@ class Round:
     def make_matches(self, players_list):
         for i in range(0, len(self.matches_list)):
             self.matches_list[i].define_players_colors([players_list[i * 2], players_list[(i * 2) + 1]])
-        players_list_per_match = []
-        for players_list in self.matches_list:
-            players_list_per_match.append({'white_player': players_list.score_table[0][0],
-                                           'black_player': players_list.score_table[1][0]})
-        return players_list_per_match
+        return None

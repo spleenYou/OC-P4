@@ -9,17 +9,22 @@ class Match:
     def define_score(self, winner_player):
         match winner_player:
             case CONST.NO_WINNER:
-                self.define_score_table([self.white_color_player.chess_id, 0.5],
-                                        [self.black_color_player.chess_id, 0.5])
+                self.score_table[0][1] = 0.5
+                self.score_table[1][1] = 0.5
             case CONST.WHITE_PLAYER:
-                self.define_score_table([self.white_color_player.chess_id, 1],
-                                        [self.black_color_player.chess_id, 0])
+                self.score_table[0][1] = 1
+                self.score_table[1][1] = 0
             case CONST.BLACK_PLAYER:
-                self.define_score_table([self.white_color_player.chess_id, 0],
-                                        [self.black_color_player.chess_id, 1])
+                self.score_table[0][1] = 0
+                self.score_table[1][1] = 1
             case _:
                 pass
-        return self.score_table
+        self.update_score()
+        return None
+
+    def update_score(self):
+        self.score_table[0][0].score = self.score_table[0][0].score + self.score_table[0][1]
+        self.score_table[1][0].score = self.score_table[1][0].score + self.score_table[1][1]
 
     def define_score_table(self, score_table):
         self.score_table = score_table

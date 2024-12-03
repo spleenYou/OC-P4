@@ -26,6 +26,11 @@ class View:
         number_players = input('Combien de joueurs participent au tournoi ? ')
         return number_players
 
+    def show_ranking(self, players_list):
+        self.menu.show('Classement :', CONST.SHOW_RANKING, players_list)
+        input('Appuyer sur une touche pour continuer...')
+        return None
+
     def prompt_for_new_player(self):
         player_informations = {}
         self.menu.view_menu('Nouveau joueur')
@@ -63,6 +68,11 @@ class View:
     def show_matches_list(self, round_number, matches_list):
         self.menu.view_menu(f"Voici les matchs du Round {round_number}", CONST.SHOW_MATCHES_LIST, matches_list)
         input('Appuyer sur une touche pour continuer...')
+
+    def prompt_for_winner_player(self, match):
+        self.menu.view_menu("Résultat du match :", CONST.SHOW_MATCH, match)
+        winner_player = input("Qui est le vainqueur ? ")
+        return winner_player
 
     def prompt_menu(self, menu_choice, list_to_show=None):
         if menu_choice == CONST.MAIN:

@@ -61,6 +61,26 @@ class Tournament:
                 return False
         return True
 
+    def number_of_rounds(self):
+        return len(self.rounds_list)
+
+    def sort_list(self):
+        if self.round_number == 0:
+            Random().shuffle(self.players_list)
+            self.players_list_sort = self.players_list
+        else:
+            pass
+
+    def sort_list_by_score(self):
+        self.players_list_sort = sorted(self.players_list, key=lambda player: player.score, reverse=True)
+
+    def next_round(self):
+        self.round_number = self.round_number + 1
+
+    def make_matches(self):
+        self.rounds_list[self.round_number].make_matches(self.players_list_sort)
+        return None
+
     def __str__(self):
         for player in self.players_list:
             print(player)
@@ -71,19 +91,3 @@ class Tournament:
               f'Description : {self.description}\n'
               f'Nombre de tours : {self.number_of_rounds}')
         return ""
-
-    def number_of_rounds(self):
-        return len(self.rounds_list)
-
-    def sort_list(self):
-        if self.round_number == 0:
-            Random().shuffle(self.players_list)
-            self.players_list_sort = self.players_list
-        else:
-            self.players_list = sorted(self.players_list, key=lambda player: player.score, reverse=True)
-            self.check_previous_meeting()
-
-    def make_matches(self):
-        matches_list = self.rounds_list[self.round_number].make_matches(self.players_list_sort)
-        self.round_number = self.round_number + 1
-        return matches_list

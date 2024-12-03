@@ -37,7 +37,11 @@ class Load:
                     new_match = new_round.add_match()
                     score_list = []
                     for score in match:
-                        score_list.append([self.find_player_data_by_chess_id(score[0]), score[1]])
+                        if score[0] != "null":
+                            player = None
+                        else:
+                            player = self.find_player_data_by_chess_id(score[0])
+                        score_list.append([player, score[1]])
                     new_match.define_score_table(score_list)
             tournaments_list.append(tournament)
         return tournaments_list
