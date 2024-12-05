@@ -26,7 +26,7 @@ def main():
             user_menu_choice = None
 
         if tournament_choiced:
-            game.run_tournament(tournament_choiced)
+            user_menu_choice = game.run_tournament(tournament_choiced)
         else:
             user_menu_choice = None
 

@@ -22,12 +22,10 @@ class Tournament:
         self.players_list = []
         self.description = description
         self.id = id
-        self.round = Round()
 
     def is_finished(self):
-        for round in self.rounds_list:
-            if not round.is_finished():
-                return False
+        if self.round_number < self.number_of_rounds():
+            return False
         return True
 
     def count_round_number(self):

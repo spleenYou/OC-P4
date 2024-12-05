@@ -69,21 +69,28 @@ class Controller:
         if not tournament.has_all_players():
             self.add_player(tournament)
         while not tournament.is_finished():
+            self.view.show_ranking(tournament.players_list_sort)
             round_number_show = tournament.round_number + 1
             tournament.sort_list()
-            self.view.show_message(f"Début du round {round_number_show}", "Constitution des matchs")
             matches_list = tournament.rounds_list[tournament.round_number].matches_list
             tournament.make_matches()
             self.view.show_matches_list(round_number_show, matches_list)
             self.view.show_message(f"Fin des matchs du round {round_number_show}",
                                    "Inscription des résultats")
             for match in matches_list:
-                winner_player = self.view.prompt_for_winner_player(match)
-                match.define_score(winner_player)
+                match_define = False
+                while not match_define:
+                    winner_player = self.view.prompt_for_winner_player(match)
+                    if self.is_int(winner_player):
+                        winner_player = int(winner_player)
+                        if (winner_player >= 0) and (winner_player <= 2):
+                            match_define = match.define_score(winner_player)
             tournament.sort_list_by_score()
-            self.view.show_ranking(tournament.players_list_sort)
             self.save.save_tournaments(self.tournaments_list)
             tournament.next_round()
+        self.view.show_message("Tournoi terminé", "Voici le résultat du tournoi")
+        self.view.show_end_tournament(tournament.players_list_sort)
+        return None
 
     def choice_tournament(self):
         tournament_choice = None

@@ -43,8 +43,19 @@ class Menus:
                 self.show_matches_list(thing_to_show)
             case CONST.SHOW_MATCH:
                 self.show_match(thing_to_show)
+            case CONST.SHOW_END_TOURNAMENT:
+                self.show_end_tournament(thing_to_show)
             case _:
                 pass
+
+    @decoration
+    def show_end_tournament(self, players_list):
+        for i in range(len(players_list)):
+            self.decorated_text(f"{i + 1} - "
+                                f"{players_list[i].surname} "
+                                f"{players_list[i].name} "
+                                f"({players_list[i].chess_id}) "
+                                f"avec {players_list[i].score} pt(s)")
 
     def show(self, title, show='', thing_to_show=None):
         self.clear_screen()
@@ -68,13 +79,13 @@ class Menus:
 
     @decoration
     def show_match(self, match):
-        self.decorated_text(f"    0 - {match.score_table[0][0].surname} "
+        self.decorated_text(f"    1 - {match.score_table[0][0].surname} "
                             f"{match.score_table[0][0].name} "
                             f"({match.score_table[0][0].chess_id})", align="left")
-        self.decorated_text(f"    1 - {match.score_table[1][0].surname} "
+        self.decorated_text(f"    2 - {match.score_table[1][0].surname} "
                             f"{match.score_table[1][0].name} "
                             f"({match.score_table[1][0].chess_id})", align="left")
-        self.decorated_text("    2 - Match nul", align="left")
+        self.decorated_text("    0 - Match nul", align="left")
 
     @decoration
     def show_matches_list(self, matches_list):

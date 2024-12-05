@@ -27,8 +27,12 @@ class View:
         return number_players
 
     def show_ranking(self, players_list):
-        self.menu.show('Classement :', CONST.SHOW_RANKING, players_list)
+        self.menu.show('Classement provisoire :', CONST.SHOW_RANKING, players_list)
         input('Appuyer sur une touche pour continuer...')
+        return None
+
+    def show_end_tournament(self, players_list):
+        self.menu.view_menu('Classement final', CONST.SHOW_END_TOURNAMENT, players_list)
         return None
 
     def prompt_for_new_player(self):
