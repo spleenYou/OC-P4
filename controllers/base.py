@@ -29,7 +29,7 @@ class Controller:
                     self.view.show_message("Erreur", "Le nombre de tour minimum est 4")
             else:
                 number_of_rounds = 0
-        min_players = 6
+        min_players = 8
         number_players = 0
         error_message = ''
         while number_players < min_players:

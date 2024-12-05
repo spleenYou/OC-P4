@@ -62,28 +62,36 @@ class Tournament:
         return len(self.rounds_list)
 
     def sort_list(self):
+        list_match = []
         if self.round_number == 0:
             Random().shuffle(self.players_list)
-            self.players_list_sort = self.players_list
+            list_match = self.players_list
         else:
-            new_list_sort = []
-            list_players = self.players_list_sort
-            while len(list_players):
-                i = 1
-                if self.already_meet(list_players[0], list_players[i]):
-                    i = i + 1
-                else:
-                    new_list_sort.append(list_players[0])
-                    new_list_sort.append(list_players[i])
-                    list_players.remove(list_players[i])
-                    list_players.remove(list_players[0])
-            self.players_list_sort = new_list_sort
+            list_players_available = self.players_list_sort
+            while len(list_players_available):
+                first_player = list_players_available[0]
+                list_players_available.remove(first_player)
+                if first_player not in list_players_available:
+                    for second_player in list_players_available:
+                        if not self.have_already_met(first_player, second_player):
+                            list_match.append(first_player)
+                            list_match.append(second_player)
+                            list_players_available.remove(second_player)
+                            break
+                        if len(list_players_available) == 1:
+                            list_players_available.insert(0, list_match[-2])
+                            list_players_available.insert(1, first_player)
+                            list_players_available.append(list_match[-1])
+                            list_match.remove(list_match[-1])
+                            list_match.remove(list_match[-1])
+                            break
+        self.players_list_sort = list_match
 
-    def already_meet(self, player_one, player_two):
+    def have_already_met(self, player_one, player_two):
         for round in self.rounds_list:
             for match in round.matches_list:
-                if (any(player_one in player for player in match.score_table)
-                   and any(player_two in player for player in match.score_table)):
+                if ((player_one == match.score_table[0][0] or player_one == match.score_table[1][0])
+                   and (player_two == match.score_table[0][0] or player_two == match.score_table[1][0])):
                     return True
         return False
 
