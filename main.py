@@ -1,16 +1,15 @@
 import os
 import constant.constant as CONST
 from controllers.base import Controller
-from views.base import View
+from views import base as views
 
 
 def main():
-    view = View()
-    game = Controller(view)
+    game = Controller(views)
     user_menu_choice = None
     tournament_choiced = None
     while user_menu_choice is None:
-        user_menu_choice = game.ask_menu_choice(CONST.MAIN, game.is_first_time())
+        user_menu_choice = game.ask_menu_choice(CONST.MAIN)
         if user_menu_choice == CONST.CREATE_TOURNAMENT:
             tournament_choiced = game.create_tournament()
         elif user_menu_choice == CONST.RESUME_TOURNAMENT:

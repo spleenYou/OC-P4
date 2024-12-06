@@ -45,7 +45,8 @@ class Load:
                     new_match.define_score_table(score_list)
                     if player is not None:
                         new_match.update_score()
-            tournament.sort_list_by_score()
+            if tournament.has_all_players():
+                tournament.sort_list_by_score()
             tournament.count_round_number()
             tournaments_list.append(tournament)
         return tournaments_list

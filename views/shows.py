@@ -2,7 +2,7 @@ import os
 import constant.constant as CONST
 
 
-class Menus:
+class Shows:
     def decoration(function):
         def text_decorated(*args, **kwargs):
             print(CONST.STARS_LINE_FULL)
@@ -22,34 +22,36 @@ class Menus:
             command = 'cls'
         os.system(command)
 
-    def view_menu(self, title, view='', thing_to_show=None):
+    def show(self, title, show='', thing_to_show=None):
         self.clear_screen()
         self.head_menu()
         self.title_menu(title)
-        match view:
+        match show:
             case CONST.MAIN:
                 self.main_menu(thing_to_show)
-            case CONST.MENU_LIST_TOURNAMENTS:
-                self.list_tournaments_menu(thing_to_show)
-            case CONST.SHOW_TOURNAMENT_INFORMATIONS:
-                self.show_tournament_informations(thing_to_show)
-            case CONST.MENU_PLAYER_CHOICE:
-                self.show_player_choice(thing_to_show)
+            case CONST.LISTING_TOURNAMENTS:
+                self.listing_tournaments(thing_to_show)
+            case CONST.TOURNAMENT_INFORMATIONS:
+                self.tournament_informations(thing_to_show)
+            case CONST.PLAYER_CHOICE:
+                self.player_choice(thing_to_show)
             case CONST.UPDATE_PLAYER_CHOICE:
-                self.show_players_with_same_chess_id(thing_to_show)
+                self.players_with_same_chess_id(thing_to_show)
             case CONST.MESSAGE:
-                self.show_message(thing_to_show)
-            case CONST.SHOW_MATCHES_LIST:
-                self.show_matches_list(thing_to_show)
-            case CONST.SHOW_MATCH:
-                self.show_match(thing_to_show)
-            case CONST.SHOW_END_TOURNAMENT:
-                self.show_end_tournament(thing_to_show)
+                self.message(thing_to_show)
+            case CONST.MATCHES_LIST:
+                self.matches_list(thing_to_show)
+            case CONST.MATCH:
+                self.match(thing_to_show)
+            case CONST.END_TOURNAMENT:
+                self.end_tournament(thing_to_show)
+            case CONST.RANKING:
+                self.ranking(thing_to_show)
             case _:
                 pass
 
     @decoration
-    def show_end_tournament(self, players_list):
+    def end_tournament(self, players_list):
         for i in range(len(players_list)):
             self.decorated_text(f"{i + 1} - "
                                 f"{players_list[i].surname} "
@@ -57,18 +59,8 @@ class Menus:
                                 f"({players_list[i].chess_id}) "
                                 f"avec {players_list[i].score} pt(s)")
 
-    def show(self, title, show='', thing_to_show=None):
-        self.clear_screen()
-        self.head_menu()
-        self.title_menu(title)
-        match show:
-            case CONST.SHOW_RANKING:
-                self.show_ranking(thing_to_show)
-            case _:
-                pass
-
     @decoration
-    def show_ranking(self, players_list):
+    def ranking(self, players_list):
         for i in range(len(players_list)):
             player = players_list[i]
             self.decorated_text(f"{i + 1} - "
@@ -78,7 +70,7 @@ class Menus:
                                 f"{player.score}", align="left")
 
     @decoration
-    def show_match(self, match):
+    def match(self, match):
         self.decorated_text(f"    1 - {match.score_table[0][0].surname} "
                             f"{match.score_table[0][0].name} "
                             f"({match.score_table[0][0].chess_id})", align="left")
@@ -88,7 +80,7 @@ class Menus:
         self.decorated_text("    0 - Match nul", align="left")
 
     @decoration
-    def show_matches_list(self, matches_list):
+    def matches_list(self, matches_list):
         for i in range(len(matches_list)):
             white_player = matches_list[i].score_table[0][0]
             black_player = matches_list[i].score_table[1][0]
@@ -103,11 +95,11 @@ class Menus:
                 self.decorated_text("")
 
     @decoration
-    def show_message(self, thing_to_show):
+    def message(self, thing_to_show):
         self.decorated_text(thing_to_show)
 
     @decoration
-    def show_players_with_same_chess_id(self, players_data):
+    def players_with_same_chess_id(self, players_data):
         for player in players_data:
             if players_data.index(player) == 0:
                 self.decorated_text(f"Pour le Chess ID : {player.chess_id}", align="left")
@@ -120,14 +112,14 @@ class Menus:
             self.decorated_text(f" Date de naissance : {player.birthday}", align="left")
 
     @decoration
-    def show_player_choice(self, players_list):
+    def player_choice(self, players_list):
         for player in players_list:
             text = f"{players_list.index(player) + 1} - {player.surname} {player.name} ({player.chess_id})"
             self.decorated_text(text, align="left")
         self.decorated_text(text="0 - Nouveau joueur", align="left")
 
     @decoration
-    def show_tournament_informations(self, tournament):
+    def tournament_informations(self, tournament):
         self.decorated_text(f" Nom : {tournament.name}", align="left")
         self.decorated_text(f" Emplacement : {tournament.place}", align="left")
         self.decorated_text(f" description : {tournament.description}", align="left")
@@ -145,22 +137,27 @@ class Menus:
         self.decorated_text("Gestionnaire de tournoi d'echecs")
 
     @decoration
-    def main_menu(self, first_time):
+    def main_menu(self, have_an_unfinished_tournament):
         self.decorated_text("1- Nouveau tournoi", align="left")
-        if first_time:
-            self.decorated_text("Pas de tournoi enregistré", align="left")
-        else:
+        if have_an_unfinished_tournament:
             self.decorated_text("2- Reprendre un tournoi", align="left")
-        self.decorated_text("3- Liste des tournois", align="left")
-        self.decorated_text("4- Liste des joueurs", align="left")
+        else:
+            self.decorated_text("Pas de tournoi enregistré", align="left")
+        self.decorated_text("3- Gestion des tournois", align="left")
+        self.decorated_text("4- Gestion des joueurs", align="left")
+        self.decorated_text("5- Rapports", align="left")
         self.decorated_text("0- Quitter", align="left")
+
+    @decoration
+    def reports_menu(self):
+        pass
 
     @decoration
     def title_menu(self, title):
         self.decorated_text(title)
 
     @decoration
-    def list_tournaments_menu(self, tounaments_list):
+    def list_tournaments(self, tounaments_list):
         for tournament in tounaments_list:
             tournament_view = f'{tounaments_list.index(tournament) + 1} - {tournament.name}'
             self.decorated_text(tournament_view, align="left")
