@@ -21,9 +21,9 @@ def main():
             tournament_choiced = game.create_tournament()
         elif user_menu_choice == CONST.RESUME_TOURNAMENT and have_an_unfinished_tournament:
             tournament_choiced = game.choice_tournament()
-        elif user_menu_choice == CONST.TOURNAMENTS_MANAGEMENT and have_tournament:
+        elif user_menu_choice == CONST.TOURNAMENTS_UPDATES and have_tournament:
             game.tournaments_updates()
-        elif user_menu_choice == CONST.LIST_PLAYERS:
+        elif user_menu_choice == CONST.PLAYERS_UPDATES:
             print("players")
         elif user_menu_choice == CONST.QUIT:
             print('Au revoir !')

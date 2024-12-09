@@ -210,20 +210,20 @@ class Controller:
     def tournaments_updates(self):
         user_choice = None
         while user_choice is None:
-            user_choice = self.view.prompt_for_tournaments_management(self.tournaments_list)
+            user_choice = self.view.prompt_for_tournament_management_choice(self.tournaments_list)
             if self.is_int(user_choice):
                 user_choice = int(user_choice)
                 if user_choice == 0:
                     return None
                 if user_choice <= len(self.tournaments_list):
-                    self.update_tournament(self.tournaments_list[user_choice - 1])
+                    self.tournament_update(self.tournaments_list[user_choice - 1])
                 if user_choice > len(self.tournaments_list):
                     self.view.message("Erreur", "Le tournoi sélectionné n'est pas dans la liste")
             else:
                 user_choice = None
         return None
 
-    def update_tournament(self, tournament):
+    def tournament_update(self, tournament):
         new_tournament_name = self.view.prompt_for_tournament_name(tournament.name)
         new_tournament_place = self.view.prompt_for_tournament_place(tournament.place)
         new_tournament_description = self.view.prompt_for_tournament_description(tournament.description)
@@ -233,3 +233,4 @@ class Controller:
             tournament.place = new_tournament_place
         if new_tournament_description:
             tournament.description = new_tournament_description
+        self.save.save_tournaments(self.tournaments_list)

@@ -1,4 +1,4 @@
-from views.shows import Show
+from views.show import Show
 
 
 class Prompts:
@@ -12,8 +12,8 @@ class Prompts:
             content = []
             content.append(f"Nom actuel : {name_tournament}")
             content.append("Appuyer sur entrée pour garder le nom actuel")
-            self.show.display("Changement du nom du tournoi", content, "center")
-        tournament_name = input("Quel est le nom du tournoi ? ")
+            self.show.display("Mise à jour d'un tournoi", content, "center")
+        tournament_name = input("Quel est le nouveau nom du tournoi ? ")
         return tournament_name
 
     def prompt_for_tournament_place(self, tournament_place=None):
@@ -23,6 +23,7 @@ class Prompts:
             content = []
             content.append(f"Emplacement actuel : {tournament_place}")
             content.append("Appuyer sur entrée pour garder l'emplacement actuel")
+            self.show.display("Mise à jour d'un tournoi", content, "center")
         tournament_place = input("Où se trouve le tournoi ? ")
         return tournament_place
 
@@ -39,6 +40,11 @@ class Prompts:
     def prompt_for_tournament_description(self, tournament_description=None):
         if not tournament_description:
             self.show.display("Création d'un tournoi", ["Description du tournoi"], "center")
+        else:
+            content = []
+            content.append(f"Emplacement actuel : {tournament_description}")
+            content.append("Appuyer sur entrée pour garder la description actuelle")
+            self.show.display("Mise à jour d'un tournoi", content, "center")
         tournament_description = input("Veuillez entrer la description du tournoi : ")
         return tournament_description
 
@@ -189,7 +195,7 @@ class Prompts:
         tournament_choice = input('Quel tournoi reprendre ? ')
         return tournament_choice
 
-    def prompt_for_tournaments_management(self, tournaments_list):
+    def prompt_for_tournament_management_choice(self, tournaments_list):
         content = []
         for i in range(len(tournaments_list)):
             content.append(f"{i + 1}- {tournaments_list[i].name}")
