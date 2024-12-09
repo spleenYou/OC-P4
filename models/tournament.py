@@ -65,7 +65,9 @@ class Tournament:
             Random().shuffle(self.players_list)
             list_match = self.players_list
         else:
-            list_players_available = self.players_list_sort
+            list_players_available = []
+            for player in self.players_list:
+                list_players_available.append(player)
             while len(list_players_available):
                 first_player = list_players_available[0]
                 list_players_available.remove(first_player)
@@ -83,24 +85,24 @@ class Tournament:
                             list_match.remove(list_match[-1])
                             list_match.remove(list_match[-1])
                             break
-        self.players_list_sort = list_match
+        self.players_list = list_match
 
     def have_already_met(self, player_one, player_two):
         for round in self.rounds_list:
             for match in round.matches_list:
-                if ((player_one == match.score_table[0][0] or player_one == match.score_table[1][0])
-                   and (player_two == match.score_table[0][0] or player_two == match.score_table[1][0])):
+                if ((player_one == match.white_player["player"] or player_one == match.black_player["player"])
+                   and (player_two == match.white_player["player"] or player_two == match.black_player["player"])):
                     return True
         return False
 
     def sort_list_by_score(self):
-        self.players_list_sort = sorted(self.players_list, key=lambda player: player.score, reverse=True)
+        self.players_list = sorted(self.players_list, key=lambda player: player.score, reverse=True)
 
     def next_round(self):
         self.round_number = self.round_number + 1
 
     def make_matches(self):
-        self.rounds_list[self.round_number].make_matches(self.players_list_sort)
+        self.rounds_list[self.round_number].make_matches(self.players_list)
         return None
 
     def __str__(self):

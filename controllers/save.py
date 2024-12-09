@@ -18,13 +18,13 @@ class Save:
                 matches_list = []
                 for match in round.matches_list:
                     scores_list = []
-                    for score in match.score_table:
-                        chess_id = score[0]
-                        if score[0] is not None:
-                            chess_id = score[0].chess_id
-                        else:
-                            chess_id = "null"
-                        scores_list.append([chess_id, score[1]])
+                    white_player_chess_id = ""
+                    black_player_chess_id = ""
+                    if match.have_players():
+                        white_player_chess_id = match.white_player["player"].chess_id
+                        black_player_chess_id = match.black_player["player"].chess_id
+                    scores_list.append([white_player_chess_id, match.white_player["score"]])
+                    scores_list.append([black_player_chess_id, match.black_player["score"]])
                     matches_list.append(scores_list)
                 rounds_list.append(matches_list)
             tournaments_list_dict.append({'name': tournament.name,

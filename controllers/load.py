@@ -15,7 +15,7 @@ class Load:
                                 player_data_dict['chess_id']))
         return players_list
 
-    def read_file_tournaments(self):
+    def read_file_tournaments(self, all_players_list):
         tournaments_list = []
         with open(f'data/{CONST.FILENAME_TOURNAMENTS_LIST}', 'r') as json_data:
             tournaments_list_dict = json.load(json_data)
@@ -29,43 +29,30 @@ class Load:
             for player in tournament_data_dict['players_list']:
                 player_data = []
                 if len(player['chess_id']):
-                    player_data = self.find_player_data_by_chess_id(player['chess_id'])
+                    player_data = self.find_player_data_by_chess_id(player['chess_id'], all_players_list)
                 tournament.add_player(player_data)
             for round in tournament_data_dict['rounds_list']:
                 new_round = tournament.add_round()
                 for match in round:
-                    new_match = new_round.add_match()
                     score_list = []
                     for score in match:
-                        if score[0] == "null":
+                        if score[0] == "":
                             player = None
                         else:
                             player = self.find_player_data_by_chess_id(score[0], tournament.players_list)
                         score_list.append([player, score[1]])
-                    new_match.define_score_table(score_list)
-                    if player is not None:
-                        new_match.update_score()
-            if tournament.has_all_players():
-                tournament.sort_list_by_score()
+                    new_round.add_match(white_player=score_list[0][0],
+                                        black_player=score_list[1][0],
+                                        white_player_score=score_list[0][1],
+                                        black_player_score=score_list[1][1])
             tournament.count_round_number()
             tournaments_list.append(tournament)
         return tournaments_list
 
-    def find_player_data_by_chess_id(self, chess_id, players_list=None):
-        player_find = []
-        if players_list is not None:
-            for player in players_list:
-                if player.chess_id == chess_id:
-                    return player
-        else:
-            players_list_dict = self.read_json_file(CONST.FILENAME_PLAYERS_LIST)
-            for player_data_dict in players_list_dict:
-                if player_data_dict['chess_id'] == chess_id:
-                    player_find = Player(player_data_dict['surname'],
-                                         player_data_dict['name'],
-                                         player_data_dict['birthday'],
-                                         player_data_dict['chess_id'])
-                    return player_find
+    def find_player_data_by_chess_id(self, chess_id, players_list):
+        for player in players_list:
+            if player.chess_id == chess_id:
+                return player
         return None
 
     def read_json_file(self, FILENAME):

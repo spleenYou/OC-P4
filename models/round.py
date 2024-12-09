@@ -11,9 +11,8 @@ class Round:
             self.add_match(Match([self.players_list[i], self.players_list[i + 1]]))
         return True
 
-    def add_match(self, match=None):
-        if match is None:
-            match = Match()
+    def add_match(self, white_player, black_player, white_player_score=0, black_player_score=0):
+        match = Match(white_player, white_player_score, black_player, black_player_score)
         self.matches_list.append(match)
         return match
 
