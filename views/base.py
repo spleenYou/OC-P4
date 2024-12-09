@@ -175,10 +175,10 @@ class Prompts:
         else:
             content.append("2- Pas de tournoi en cours")
         if have_tournament:
-            content.append("3- Gestion des tournois")
+            content.append("3- Mise à jour des tournois")
         else:
             content.append("3- Pas de tournoi enregistré")
-        content.append("4- Gestion des joueurs")
+        content.append("4- Mise à jour des joueurs")
         content.append("5- Rapports")
         content.append("0- Quitter")
         self.show.display("Menu principal", content, "left")
@@ -194,8 +194,8 @@ class Prompts:
         for i in range(len(tournaments_list)):
             content.append(f"{i + 1}- {tournaments_list[i].name}")
         content.append("0- Annuler")
-        self.show.display("Gestion des tournois", content, "left")
-        tournament_choice = input("Quel tournoi souhaitez-vous modifier ? ")
+        self.show.display("Mise à jours des tournois", content, "left")
+        tournament_choice = input("Quel tournoi souhaitez-vous mettre à jour ? ")
         return tournament_choice
 
     def message(self, title, message):

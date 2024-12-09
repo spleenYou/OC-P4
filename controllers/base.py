@@ -207,7 +207,7 @@ class Controller:
         else:
             return None
 
-    def tournaments_management(self):
+    def tournaments_updates(self):
         user_choice = None
         while user_choice is None:
             user_choice = self.view.prompt_for_tournaments_management(self.tournaments_list)
@@ -215,9 +215,9 @@ class Controller:
                 user_choice = int(user_choice)
                 if user_choice == 0:
                     return None
-                if user_choice < len(self.tournaments_list):
+                if user_choice <= len(self.tournaments_list):
                     self.update_tournament(self.tournaments_list[user_choice - 1])
-                if user_choice >= len(self.tournaments_list):
+                if user_choice > len(self.tournaments_list):
                     self.view.message("Erreur", "Le tournoi sélectionné n'est pas dans la liste")
             else:
                 user_choice = None
