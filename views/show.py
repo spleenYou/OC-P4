@@ -72,3 +72,204 @@ class Show:
                   f"{' '*spaces_left}{text}"
                   f"{' '*spaces_right}"
                   f"{'*'*CONST.NUMBER_SIDE_STARS}")
+
+    def wait(self):
+        input('Appuyer sur une touche pour continuer...')
+
+    def tournament_name(self, tournament_name):
+        content = []
+        if not tournament_name:
+            content.append("Nom du tournoi")
+            content.append("Appuyer sur entrée pour annuler")
+            self.display("Création d'un tournoi", content, "center")
+        else:
+            content.append(f"Nom actuel : {tournament_name}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.display("Mise à jour d'un tournoi", content, "center")
+
+    def tournament_place(self, tournament_place):
+        if not tournament_place:
+            self.display("Création d'un tournoi", ["Emplacement du tournoi"], "center")
+        else:
+            content = []
+            content.append(f"Emplacement actuel : {tournament_place}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.display("Mise à jour d'un tournoi", content, "center")
+
+    def tournament_description(self, tournament_description):
+        if not tournament_description:
+            self.display("Création d'un tournoi", ["Description du tournoi"], "center")
+        else:
+            content = []
+            content.append(f"Emplacement actuel : {tournament_description}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.display("Mise à jour d'un tournoi", content, "center")
+
+    def player_name(self, player_name):
+        if not player_name:
+            self.display("Nouveau joueur", ["Prénom du joueur"], "center")
+        else:
+            content = []
+            content.append(f"Prénom actuel : {player_name}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.display("Mise à jour du joueur", content, "center")
+
+    def player_surname(self, player_name, player_surname):
+        if not player_surname:
+            self.display("Nouveau joueur", [f"Nom de {player_name}"], "center")
+        else:
+            content = []
+            content.append(f"Nom actuel : {player_surname}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.display("Mise à jour du joueur", content, "center")
+
+    def player_birthday(self, player_name, player_surname, player_birthday):
+        if not player_birthday:
+            self.display("Nouveau joueur", [f"Date de naissance de {player_surname} {player_name}"], "center")
+        else:
+            content = []
+            content.append(f"Date d'anniversaire actuelle : {player_birthday}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.display("Mise à jour du joueur", content, "center")
+
+    def player_chess_id(self, player_name, player_surname, player_chess_id):
+        if not player_chess_id:
+            self.display("Nouveau joueur", [f"Identifiant international de {player_surname} {player_name}"],
+                         "center")
+        else:
+            content = []
+            content.append(f"Date d'anniversaire actuelle : {player_chess_id}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.display("Mise à jour du joueur", content, "center")
+
+    def main_menu(self, have_tournament, have_an_unfinished_tournament):
+        content = []
+        content.append("1- Nouveau tournoi")
+        if have_tournament and have_an_unfinished_tournament:
+            content.append("2- Reprendre un tournoi")
+        else:
+            content.append("2- Pas de tournoi en cours")
+        if have_tournament:
+            content.append("3- Mise à jour des tournois")
+        else:
+            content.append("3- Pas de tournoi enregistré")
+        content.append("4- Mise à jour des joueurs")
+        content.append("5- Rapports")
+        content.append("0- Quitter")
+        self.display("Menu principal", content, "left")
+
+    def ranking(self, players_list):
+        content = []
+        for player in players_list:
+            content.append(f"{players_list.index(player) + 1} - "
+                           f"{player.surname} "
+                           f"{player.name} "
+                           f"({player.chess_id}) : "
+                           f"{player.score}")
+        self.display("Classement provisoire", content, "left")
+
+    def tournament_information(self, tournament):
+        content = []
+        content.append(f" Nom : {tournament.name}")
+        content.append(f" Emplacement : {tournament.place}")
+        content.append(f" description : {tournament.description}")
+        content.append(f" Nombre de tours : {tournament.number_of_rounds()}")
+        content.append(f" Tour effectué : {tournament.round_number}")
+        content.append(f" Nombre de joueurs : {len(tournament.players_list)}")
+        for player in tournament.players_list:
+            if player:
+                content.append(f" - {player.surname} {player.name}")
+            else:
+                content.append(" - Non défini")
+        self.display("Information sur le tournoi", content, "left")
+        self.wait()
+
+    def reports_menu(self):
+        content = []
+        content.append("1- Liste des joueurs par ordre alphabétique")
+        content.append("2- Liste des tournois")
+        content.append("3- Informations sur un tournoi")
+        content.append("0- Retour")
+        self.display("Rapports", content, "left")
+
+    def tournament_reports_menu(self):
+        content = []
+        content.append("1- Liste des joueurs")
+        content.append("2- Déroulement du tournoi")
+        content.append("0- Retour")
+
+    def matches_list(self, round_number, matches_list):
+        content = []
+        for match in matches_list:
+            content.append("Match :")
+            content.append(f" - Joueur blanc : {match.white_player["player"].surname} "
+                           f"{match.white_player["player"].name} "
+                           f"({match.white_player["player"].chess_id})")
+            content.append(f" - Joueur noir : {match.black_player["player"].surname} "
+                           f"{match.black_player["player"].name} "
+                           f"({match.black_player["player"].chess_id})")
+
+        self.display(f"Voici les matchs du Round {round_number}", content, "left")
+
+    def entire_tournament(self, tournament):
+        content = []
+        for round in tournament.rounds_list:
+            content.append(f"Round {tournament.round_list.index(round)} :")
+            if round.is_finished():
+                for match in round:
+                    content.append("  Match :")
+                    content.append(f"   - {match.white_player["player"].surname} "
+                                   f"{match.white_player["player"].name} "
+                                   f"({match.white_player["player"].chess_id}) : "
+                                   f"{match.white_player["score"]} pt")
+                    content.append(f"   - {match.black_player["player"].surname} "
+                                   f"{match.black_player["player"].name} "
+                                   f"({match.black_player["player"].chess_id}) : "
+                                   f"{match.black_player["score"]} pt\n")
+            else:
+                content.append("  Pas de matchs joués")
+        self.display("Déroulement du tournoi", content, "left")
+
+    def players(self, players_list):
+        content = []
+        for player in players_list:
+            content.append(f"{players_list.index(player) + 1} - {player.surname} {player.name} ({player.chess_id})")
+        content.append("0 - Nouveau joueur")
+        self.display("Liste des joueurs", content, "left")
+
+    def match_result(self, match):
+        content = []
+        content.append(f"    1 - {match.white_player["player"].surname} "
+                       f"{match.white_player["player"].name} "
+                       f"({match.white_player["player"].chess_id})")
+        content.append(f"    2 - {match.black_player["player"].surname} "
+                       f"{match.black_player["player"].name} "
+                       f"({match.black_player["player"].chess_id})")
+        content.append("    0 - Match nul")
+        self.display("Résultat du match", content, "left")
+        winner_player = input("Qui est le vainqueur ? ")
+        return winner_player
+
+    def tournaments_list(self, tournaments_list):
+        content = []
+        for tournament in tournaments_list:
+            content.append(f"{tournaments_list.index(tournament) + 1} - "
+                           f"{tournament.name}")
+        content.append("0 - Annuler")
+        self.display("Liste des tournois", content, "left")
+
+    def end_tournament(self, players_list):
+        content = []
+        for player in players_list:
+            content.append(f"{players_list.index(player) + 1} - "
+                           f"{player.surname} "
+                           f"{player.name} "
+                           f"({player.chess_id}) "
+                           f"avec {player.score} pt(s)")
+
+        self.display("Classement final", content, "left")
+
+    def message(self, title, message):
+        content = [message]
+        self.display(title, content, "center")
+        input('Appuyer sur une touche pour continuer...')

@@ -1,11 +1,12 @@
 import os
 import constant.constant as CONST
 from controllers.base import Controller
-from views import base as views
+from views import prompt
+from views import show
 
 
 def main():
-    game = Controller(views)
+    game = Controller(prompt, show)
     user_menu_choice = None
     tournament_choiced = None
     while user_menu_choice is None:

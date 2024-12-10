@@ -8,49 +8,49 @@ from controllers.save import Save
 
 
 class Controller:
-    def __init__(self, views):
-        self.view = views.Prompts()
+    def __init__(self, prompt, show):
+        self.prompt = prompt.Prompt()
+        self.show = show.Show()
         self.save = Save()
         self.all_players_list = Load().read_file_players()
         self.tournaments_list = Load().read_file_tournaments(self.all_players_list)
 
     def create_tournament(self):
-        name = self.view.prompt_for_tournament_name()
+        name = self.prompt.for_tournament_name()
         if name == '':
             return None
-        place = self.view.prompt_for_tournament_place()
-        description = self.view.prompt_for_tournament_description()
+        place = self.prompt.for_tournament_place()
+        description = self.prompt.for_tournament_description()
         minimum_number_of_rounds = 4
         number_of_rounds = 0
         while number_of_rounds < minimum_number_of_rounds:
-            number_of_rounds = self.view.prompt_for_tournament_number_of_rounds()
+            number_of_rounds = self.prompt.for_tournament_number_of_rounds()
             if self.is_int(number_of_rounds):
                 number_of_rounds = int(number_of_rounds)
                 if number_of_rounds < 4:
-                    self.view.message("Erreur", "Le nombre de tour minimum est 4")
+                    self.show.message("Erreur", "Le nombre de tour minimum est 4")
             else:
-                self.view.message("Erreur", "Veuillez rentrer un nombre")
+                self.show.message("Erreur", "Veuillez rentrer un nombre")
                 number_of_rounds = 0
         minimum_players = number_of_rounds + 3
         if minimum_players % 2:
             minimum_players = minimum_players + 1
         number_players = 0
         while number_players == 0:
-            number_players = self.view.prompt_for_tournament_number_players()
+            number_players = self.prompt.for_tournament_number_players()
             if self.is_int(number_players):
                 number_players = int(number_players)
                 if (number_players % 2) == 0:
                     if number_players < minimum_players:
-                        self.view.message("Erreur", f"Nombre de joueurs minimum : {minimum_players}")
+                        self.show.message("Erreur", f"Nombre de joueurs minimum : {minimum_players}")
                         number_players = 0
                 else:
-                    self.view.message("Erreur", "Nombre de participants impaires")
+                    self.show.message("Erreur", "Nombre de participants impaires")
                     number_players = 0
             else:
-                self.view.message("Erreur", "Veuillez rentrer un nombre")
+                self.show.message("Erreur", "Veuillez rentrer un nombre")
                 number_players = 0
-        tournament = Tournament(id=len(self.tournaments_list)+1,
-                                name=name,
+        tournament = Tournament(name=name,
                                 place=place,
                                 description=description)
         for i in range(number_players):
@@ -68,21 +68,21 @@ class Controller:
         return tournament
 
     def run_tournament(self, tournament):
-        self.view.show_tournament_information(tournament)
+        self.show.tournament_information(tournament)
         if not tournament.has_all_players():
             self.add_player(tournament)
         self.update_tournament_players_scores(tournament)
         while not tournament.is_finished():
-            self.view.show_ranking(tournament.players_list)
+            self.show.ranking(tournament.players_list)
             round_number_show = tournament.round_number + 1
             tournament.sort_list()
             matches_list = tournament.rounds_list[tournament.round_number].matches_list
             tournament.make_matches()
-            self.view.show_matches_list(round_number_show, matches_list)
+            self.show.matches_list(round_number_show, matches_list)
             for match in matches_list:
                 match_define = False
                 while not match_define:
-                    winner_player = self.view.show_match_result(match)
+                    winner_player = self.show.match_result(match)
                     if self.is_int(winner_player):
                         winner_player = int(winner_player)
                         if (winner_player >= 0) and (winner_player <= 2):
@@ -97,9 +97,9 @@ class Controller:
             tournament.sort_list_by_score()
             self.save.save_tournaments(self.tournaments_list)
             tournament.next_round()
-        self.view.message("Tournoi terminé", "Voici le résultat du tournoi")
+        self.show.message("Tournoi terminé", "Voici le résultat du tournoi")
         self.tournament_end(tournament)
-        self.view.show_end_tournament(tournament.players_list)
+        self.show.end_tournament(tournament.players_list)
         return None
 
     def tournament_end(self, tournament):
@@ -118,21 +118,20 @@ class Controller:
         tournaments_finished_list = []
         for tournament in self.tournaments_list:
             if not tournament.is_finished():
-                tournaments_finished_list.append({"tournament": tournament,
-                                                  "index": self.tournaments_list.index(tournament)})
+                tournaments_finished_list.append(tournament)
         while tournament_choice is None:
-            tournament_choice = self.view.prompt_for_tournament_choice(tournaments_finished_list)
+            tournament_choice = self.prompt.for_tournament_choice(tournaments_finished_list)
             if self.is_int(tournament_choice):
                 tournament_choice = int(tournament_choice)
                 if tournament_choice == CONST.QUIT:
                     return None
                 elif tournament_choice > len(tournaments_finished_list):
-                    self.view.message("Erreur", "Veuillez rentrer un tournoi existant")
+                    self.show.message("Erreur", "Veuillez rentrer un tournoi existant")
                     tournament_choice = None
             else:
-                self.view.message("Erreur", "Veuillez rentrer un nombre")
+                self.show.message("Erreur", "Veuillez rentrer un nombre")
                 tournament_choice = None
-        return tournaments_finished_list[tournament_choice - 1]["tournament"]
+        return tournaments_finished_list[tournament_choice - 1]
 
     def add_player(self, tournament):
         players_list_choice = []
@@ -143,7 +142,7 @@ class Controller:
             index_player_to_add = None
             while index_player_to_add is None:
                 if len(players_list_choice):
-                    index_player_to_add = self.view.prompt_for_player_choice(players_list_choice)
+                    index_player_to_add = self.prompt.for_player_choice(players_list_choice)
                 else:
                     index_player_to_add = 0
                 if self.is_int(index_player_to_add):
@@ -177,20 +176,20 @@ class Controller:
     def add_new_player(self):
         birthday_verification_re = re.compile('^[0-9]{2}-[0-9]{2}-[0-9]{4}$')
         chess_id_verification_re = re.compile('^[A-Z]{2}[0-9]{4}$')
-        new_player_name = self.view.prompt_for_new_player_name()
+        new_player_name = self.prompt.for_player_name()
         if new_player_name != "":
-            new_player_surname = self.view.prompt_for_new_player_surname(new_player_name)
+            new_player_surname = self.prompt.for_player_surname(new_player_name)
             new_player_birthday = None
             while not new_player_birthday:
-                new_player_birthday = self.view.prompt_for_new_player_birthday(new_player_name, new_player_surname)
+                new_player_birthday = self.prompt.for_player_birthday(new_player_name, new_player_surname)
                 if not birthday_verification_re.match(new_player_birthday):
-                    self.view.message("Erreur", "Date de naissance incorrecte")
+                    self.show.message("Erreur", "Date de naissance incorrecte")
                     new_player_birthday = None
             new_player_chess_id = None
             while not new_player_chess_id:
-                new_player_chess_id = self.view.prompt_for_new_player_chess_id(new_player_name, new_player_surname)
+                new_player_chess_id = self.prompt.for_player_chess_id(new_player_name, new_player_surname)
                 if not chess_id_verification_re.match(new_player_chess_id):
-                    self.view.message("Erreur", "Chess id invalide")
+                    self.show.message("Erreur", "Chess id invalide")
                     new_player_chess_id = None
             return Player(new_player_surname,
                           new_player_name,
@@ -205,7 +204,7 @@ class Controller:
         return False
 
     def main_menu(self, have_tournament, have_an_unfinished_tournament):
-        menu_choice = self.view.prompt_for_main_menu_choice(have_tournament, have_an_unfinished_tournament)
+        menu_choice = self.prompt.for_main_menu_choice(have_tournament, have_an_unfinished_tournament)
         if self.is_int(menu_choice):
             return int(menu_choice)
         else:
@@ -214,7 +213,7 @@ class Controller:
     def tournaments_updates(self):
         user_choice = None
         while user_choice is None:
-            user_choice = self.view.prompt_for_tournament_management_choice(self.tournaments_list)
+            user_choice = self.prompt.for_tournament_management_choice(self.tournaments_list)
             if self.is_int(user_choice):
                 user_choice = int(user_choice)
                 if user_choice == 0:
@@ -222,15 +221,15 @@ class Controller:
                 if user_choice <= len(self.tournaments_list):
                     self.tournament_update(self.tournaments_list[user_choice - 1])
                 if user_choice > len(self.tournaments_list):
-                    self.view.message("Erreur", "Le tournoi sélectionné n'est pas dans la liste")
+                    self.show.message("Erreur", "Le tournoi sélectionné n'est pas dans la liste")
             else:
                 user_choice = None
         return None
 
     def tournament_update(self, tournament):
-        new_tournament_name = self.view.prompt_for_tournament_name(tournament.name)
-        new_tournament_place = self.view.prompt_for_tournament_place(tournament.place)
-        new_tournament_description = self.view.prompt_for_tournament_description(tournament.description)
+        new_tournament_name = self.prompt.for_tournament_name(tournament.name)
+        new_tournament_place = self.prompt.for_tournament_place(tournament.place)
+        new_tournament_description = self.prompt.for_tournament_description(tournament.description)
         if new_tournament_name != '':
             tournament.name = new_tournament_name
         if new_tournament_place:
@@ -242,7 +241,7 @@ class Controller:
     def players_updates(self):
         user_choice = None
         while user_choice is None:
-            user_choice = self.view.prompt_for_player_choice(self.all_players_list)
+            user_choice = self.prompt.for_player_choice(self.all_players_list)
             if self.is_int(user_choice):
                 user_choice = int(user_choice)
                 if user_choice == 0:
@@ -250,16 +249,16 @@ class Controller:
                 if user_choice <= len(self.all_players_list):
                     self.player_update(self.all_players_list[user_choice - 1])
                 if user_choice > len(self.all_players_list):
-                    self.view.message("Erreur", "Le joueur sélectionné n'est pas dans la liste")
+                    self.show.message("Erreur", "Le joueur sélectionné n'est pas dans la liste")
             else:
                 user_choice = None
         return None
 
     def player_update(self, player):
-        new_player_name = self.view.prompt_for_new_player_name(player.name)
-        new_player_surname = self.view.prompt_for_new_player_surname(player.name, player.surname)
-        new_player_birthday = self.view.prompt_for_new_player_birthday(player.name, player.surname, player.birthday)
-        new_player_chess_id = self.view.prompt_for_new_player_chess_id(player.name, player.surname, player.chess_id)
+        new_player_name = self.prompt.for_player_name(player.name)
+        new_player_surname = self.prompt.for_player_surname(player.name, player.surname)
+        new_player_birthday = self.prompt.for_player_birthday(player.name, player.surname, player.birthday)
+        new_player_chess_id = self.prompt.for_player_chess_id(player.name, player.surname, player.chess_id)
         if new_player_name != '':
             player.name = new_player_name
         if new_player_surname:
@@ -269,3 +268,53 @@ class Controller:
         if new_player_chess_id:
             player.chess_id = new_player_chess_id
         self.save.save_player(self.all_players_list)
+
+    def reports(self):
+        user_menu_choice = None
+        while not user_menu_choice:
+            user_menu_choice = self.prompt.for_reports_menu_choice()
+            if self.is_int(user_menu_choice):
+                match int(user_menu_choice):
+                    case 0:
+                        return None
+                    case 1:
+                        self.show.players(self.all_players_list)
+                    case 2:
+                        self.show.tournaments(self.tournaments_list)
+                    case 3:
+                        tournament_choiced = None
+                        while not tournament_choiced:
+                            tournament_choiced = self.prompt.for_tournament_choice(self.tournaments_list)
+                            if self.is_int(tournament_choiced):
+                                tournament_choiced = int(tournament_choiced)
+                                if tournament_choiced <= len(self.tournaments_list):
+                                    self.tournament_report(self.tournaments_list[tournament_choiced - 1])
+                                    tournament_choiced = None
+                                elif (tournament_choiced < 0) and (tournament_choiced > len(self.tournaments_list)):
+                                    self.show.message("Erreur", "Ce choix n'existe pas")
+                                    tournament_choiced = None
+                            else:
+                                self.show.message("Erreur", "Ce choix n'existe pas")
+                                tournament_choiced = None
+                    case _:
+                        self.show.message("Erreur", "Ce choix n'existe pas")
+                user_menu_choice = None
+            else:
+                user_menu_choice = None
+
+    def tournament_report(self, tournament):
+        user_choice = None
+        while not user_choice:
+            user_choice = self.prompt.for_tournament_reports_menu(tournament)
+            if self.is_int(user_choice):
+                match int(user_choice):
+                    case 0:
+                        return None
+                    case 1:
+                        self.show.players(tournament.players_list)
+                        user_choice = None
+                    case 2:
+                        self.show.entire_tournament(tournament)
+            else:
+                self.show.message("Erreur", "Ce choix n'existe pas")
+                user_choice = None

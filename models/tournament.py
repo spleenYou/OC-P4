@@ -9,7 +9,6 @@ class Tournament:
                  name,
                  place,
                  description,
-                 id,
                  date_start="{:%d-%m-%Y}".format(datetime.date.today()),
                  date_end='',
                  number_of_rounds=4):
@@ -21,7 +20,6 @@ class Tournament:
         self.round_number = 0
         self.players_list = []
         self.description = description
-        self.id = id
 
     def is_finished(self):
         if self.round_number < self.number_of_rounds():

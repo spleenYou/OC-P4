@@ -23,9 +23,8 @@ class Load:
             tournament = Tournament(name=tournament_data_dict['name'],
                                     place=tournament_data_dict['place'],
                                     description=tournament_data_dict['description'],
-                                    id=tournament_data_dict['id'],
                                     date_start=tournament_data_dict['date_start'],
-                                    date_stop=tournament_data_dict['date_stop'])
+                                    date_end=tournament_data_dict['date_end'])
             for player in tournament_data_dict['players_list']:
                 player_data = []
                 if len(player['chess_id']):

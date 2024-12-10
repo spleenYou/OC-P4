@@ -31,9 +31,8 @@ class Save:
                                           'place': tournament.place,
                                           'players_list': players_list,
                                           'description': tournament.description,
-                                          'id': tournament.id,
                                           'date_start': tournament.date_start,
-                                          'date_stop': tournament.date_stop,
+                                          'date_end': tournament.date_end,
                                           'rounds_list': rounds_list})
         self.save_data(CONST.FILENAME_TOURNAMENTS_LIST, tournaments_list_dict)
         return "Tournoi sauvegardé"
