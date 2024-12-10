@@ -161,7 +161,11 @@ class Show:
     def ranking(self, players_list):
         content = []
         for player in players_list:
-            content.append(f"{players_list.index(player) + 1} - "
+            position_in_list = players_list.index(player) + 1
+            zero = ""
+            if position_in_list < 10:
+                zero = "0"
+            content.append(f"{zero}{position_in_list} - "
                            f"{player.surname} "
                            f"{player.name} "
                            f"({player.chess_id}) : "
@@ -182,7 +186,6 @@ class Show:
             else:
                 content.append(" - Non défini")
         self.display("Information sur le tournoi", content, "left")
-        self.wait()
 
     def reports_menu(self):
         content = []
@@ -201,14 +204,17 @@ class Show:
     def matches_list(self, round_number, matches_list):
         content = []
         for match in matches_list:
-            content.append("Match :")
-            content.append(f" - Joueur blanc : {match.white_player["player"].surname} "
+            content.append("  Match :")
+            content.append(f"   - {match.white_player["player"].surname} "
                            f"{match.white_player["player"].name} "
-                           f"({match.white_player["player"].chess_id})")
-            content.append(f" - Joueur noir : {match.black_player["player"].surname} "
+                           f"({match.white_player["player"].chess_id}) : "
+                           f"{match.white_player["player"].score} pt")
+            content.append(f"   - {match.black_player["player"].surname} "
                            f"{match.black_player["player"].name} "
-                           f"({match.black_player["player"].chess_id})")
-
+                           f"({match.black_player["player"].chess_id}) : "
+                           f"{match.black_player["player"].score} pt")
+            if matches_list.index(match) != (len(matches_list) - 1):
+                content.append(" ")
         self.display(f"Voici les matchs du Round {round_number}", content, "left")
 
     def entire_tournament(self, tournament):
@@ -216,16 +222,7 @@ class Show:
         for round in tournament.rounds_list:
             content.append(f"Round {tournament.round_list.index(round)} :")
             if round.is_finished():
-                for match in round:
-                    content.append("  Match :")
-                    content.append(f"   - {match.white_player["player"].surname} "
-                                   f"{match.white_player["player"].name} "
-                                   f"({match.white_player["player"].chess_id}) : "
-                                   f"{match.white_player["score"]} pt")
-                    content.append(f"   - {match.black_player["player"].surname} "
-                                   f"{match.black_player["player"].name} "
-                                   f"({match.black_player["player"].chess_id}) : "
-                                   f"{match.black_player["score"]} pt\n")
+                self.matches_list(round.matches_list)
             else:
                 content.append("  Pas de matchs joués")
         self.display("Déroulement du tournoi", content, "left")
@@ -233,8 +230,13 @@ class Show:
     def players(self, players_list):
         content = []
         for player in players_list:
-            content.append(f"{players_list.index(player) + 1} - {player.surname} {player.name} ({player.chess_id})")
-        content.append("0 - Nouveau joueur")
+            position_in_list = players_list.index(player) + 1
+            zero = ""
+            if position_in_list < 10:
+                zero = "0"
+            content.append(f"{zero}{position_in_list} - {player.surname} {player.name} ({player.chess_id})")
+        content.append(" ")
+        content.append("00 - Nouveau joueur")
         self.display("Liste des joueurs", content, "left")
 
     def match_result(self, match):
@@ -253,23 +255,31 @@ class Show:
     def tournaments_list(self, tournaments_list):
         content = []
         for tournament in tournaments_list:
-            content.append(f"{tournaments_list.index(tournament) + 1} - "
+            position_in_list = tournaments_list.index(tournament) + 1
+            zero = ""
+            if position_in_list < 10:
+                zero = "0"
+            content.append(f"{zero}{position_in_list} - "
                            f"{tournament.name}")
+        content.append(" ")
         content.append("0 - Annuler")
         self.display("Liste des tournois", content, "left")
 
     def end_tournament(self, players_list):
         content = []
         for player in players_list:
+            s = ""
+            if player.score > 1:
+                s = "s"
             content.append(f"{players_list.index(player) + 1} - "
                            f"{player.surname} "
                            f"{player.name} "
                            f"({player.chess_id}) "
-                           f"avec {player.score} pt(s)")
+                           f"avec {player.score} pt{s}")
 
         self.display("Classement final", content, "left")
 
     def message(self, title, message):
         content = [message]
         self.display(title, content, "center")
-        input('Appuyer sur une touche pour continuer...')
+        self.wait()
