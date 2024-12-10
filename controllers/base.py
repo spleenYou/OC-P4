@@ -98,6 +98,7 @@ class Controller:
             self.save.save_tournaments(self.tournaments_list)
             tournament.next_round()
         self.view.message("Tournoi terminé", "Voici le résultat du tournoi")
+        self.tournament_end(tournament)
         self.view.show_end_tournament(tournament.players_list)
         return None
 
@@ -234,3 +235,34 @@ class Controller:
         if new_tournament_description:
             tournament.description = new_tournament_description
         self.save.save_tournaments(self.tournaments_list)
+
+    def players_updates(self):
+        user_choice = None
+        while user_choice is None:
+            user_choice = self.view.prompt_for_player_choice(self.all_players_list)
+            if self.is_int(user_choice):
+                user_choice = int(user_choice)
+                if user_choice == 0:
+                    return None
+                if user_choice <= len(self.all_players_list):
+                    self.player_update(self.all_players_list[user_choice - 1])
+                if user_choice > len(self.all_players_list):
+                    self.view.message("Erreur", "Le joueur sélectionné n'est pas dans la liste")
+            else:
+                user_choice = None
+        return None
+
+    def player_update(self, player):
+        new_player_name = self.view.prompt_for_new_player_name(player.name)
+        new_player_surname = self.view.prompt_for_new_player_surname(player.name, player.surname)
+        new_player_birthday = self.view.prompt_for_new_player_birthday(player.name, player.surname, player.birthday)
+        new_player_chess_id = self.view.prompt_for_new_player_chess_id(player.name, player.surname, player.chess_id)
+        if new_player_name != '':
+            player.name = new_player_name
+        if new_player_surname:
+            player.surname = new_player_surname
+        if new_player_birthday:
+            player.birthday = new_player_birthday
+        if new_player_chess_id:
+            player.chess_id = new_player_chess_id
+        self.save.save_player(self.all_players_list)

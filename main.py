@@ -24,7 +24,9 @@ def main():
         elif user_menu_choice == CONST.TOURNAMENTS_UPDATES and have_tournament:
             game.tournaments_updates()
         elif user_menu_choice == CONST.PLAYERS_UPDATES:
-            print("players")
+            game.players_updates()
+        elif user_menu_choice == CONST.REPORTS_MENU:
+            game.reports()
         elif user_menu_choice == CONST.QUIT:
             print('Au revoir !')
             os._exit(os.EX_OK)

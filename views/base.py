@@ -11,7 +11,7 @@ class Prompts:
         else:
             content = []
             content.append(f"Nom actuel : {name_tournament}")
-            content.append("Appuyer sur entrée pour garder le nom actuel")
+            content.append("Appuyer sur entrée pour ne pas modifier")
             self.show.display("Mise à jour d'un tournoi", content, "center")
         tournament_name = input("Quel est le nouveau nom du tournoi ? ")
         return tournament_name
@@ -22,7 +22,7 @@ class Prompts:
         else:
             content = []
             content.append(f"Emplacement actuel : {tournament_place}")
-            content.append("Appuyer sur entrée pour garder l'emplacement actuel")
+            content.append("Appuyer sur entrée pour ne pas modifier")
             self.show.display("Mise à jour d'un tournoi", content, "center")
         tournament_place = input("Où se trouve le tournoi ? ")
         return tournament_place
@@ -43,7 +43,7 @@ class Prompts:
         else:
             content = []
             content.append(f"Emplacement actuel : {tournament_description}")
-            content.append("Appuyer sur entrée pour garder la description actuelle")
+            content.append("Appuyer sur entrée pour ne pas modifier")
             self.show.display("Mise à jour d'un tournoi", content, "center")
         tournament_description = input("Veuillez entrer la description du tournoi : ")
         return tournament_description
@@ -73,23 +73,48 @@ class Prompts:
         input("Appuyer sur une touche...")
         return None
 
-    def prompt_for_new_player_name(self):
-        self.show.display("Nouveau joueur", ["Prénom du joueur"], "center")
+    def prompt_for_new_player_name(self, player_name=None):
+        if not player_name:
+            self.show.display("Nouveau joueur", ["Prénom du joueur"], "center")
+        else:
+            content = []
+            content.append(f"Prénom actuel : {player_name}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.show.display("Mise à jour du joueur", content, "center")
         new_player_name = input("Quel est le prénom du joueur ? ").capitalize()
         return new_player_name
 
-    def prompt_for_new_player_surname(self, player_name):
-        self.show.display("Nouveau joueur", [f"Nom de {player_name}"], "center")
+    def prompt_for_new_player_surname(self, player_name, player_surname=None):
+        if not player_surname:
+            self.show.display("Nouveau joueur", [f"Nom de {player_name}"], "center")
+        else:
+            content = []
+            content.append(f"Nom actuel : {player_surname}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.show.display("Mise à jour du joueur", content, "center")
         new_player_surname = input(f"Quel est le nom de famille de {player_name} ? ").upper()
         return new_player_surname
 
-    def prompt_for_new_player_birthday(self, player_name, player_surname):
-        self.show.display("Nouveau joueur", [f"Date de naissance de {player_surname} {player_name}"], "center")
+    def prompt_for_new_player_birthday(self, player_name, player_surname, player_birthday=None):
+        if not player_birthday:
+            self.show.display("Nouveau joueur", [f"Date de naissance de {player_surname} {player_name}"], "center")
+        else:
+            content = []
+            content.append(f"Date d'anniversaire actuelle : {player_birthday}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.show.display("Mise à jour du joueur", content, "center")
         new_player_birthday = input(f"Quel est la date de naissance de {player_surname} {player_name} ? [DD-MM-YYYY] ")
         return new_player_birthday
 
-    def prompt_for_new_player_chess_id(self, player_name, player_surname):
-        self.show.display("Nouveau joueur", [f"Identifiant international de {player_surname} {player_name}"], "center")
+    def prompt_for_new_player_chess_id(self, player_name, player_surname, player_chess_id):
+        if not player_chess_id:
+            self.show.display("Nouveau joueur", [f"Identifiant international de {player_surname} {player_name}"],
+                              "center")
+        else:
+            content = []
+            content.append(f"Date d'anniversaire actuelle : {player_chess_id}")
+            content.append("Appuyer sur entrée pour ne pas modifier")
+            self.show.display("Mise à jour du joueur", content, "center")
         new_player_chess_id = input(f"Quel est l'identifiant de {player_surname} {player_name} ? ").upper()
         return new_player_chess_id
 
@@ -203,6 +228,13 @@ class Prompts:
         self.show.display("Mise à jours des tournois", content, "left")
         tournament_choice = input("Quel tournoi souhaitez-vous mettre à jour ? ")
         return tournament_choice
+
+    def show_reports_menu(self):
+        content = []
+        content.append("1- Liste des joueurs par ordre alphabétique")
+        content.append("2- Liste des tournois")
+        content.append("3- Informations sur un tournoi")
+        content.append("0- Retour")
 
     def message(self, title, message):
         content = [message]
