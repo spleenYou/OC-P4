@@ -11,12 +11,12 @@ class Tournament:
                  description,
                  id,
                  date_start="{:%d-%m-%Y}".format(datetime.date.today()),
-                 date_stop='',
+                 date_end='',
                  number_of_rounds=4):
         self.name = name
         self.place = place
         self.date_start = date_start
-        self.date_stop = date_stop
+        self.date_end = date_end
         self.rounds_list = []
         self.round_number = 0
         self.players_list = []
@@ -104,6 +104,9 @@ class Tournament:
     def make_matches(self):
         self.rounds_list[self.round_number].make_matches(self.players_list)
         return None
+
+    def end_of_tournament(self):
+        self.date_end = "{:%d-%m-%Y}".format(datetime.date.today())
 
     def __str__(self):
         for player in self.players_list:

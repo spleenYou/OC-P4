@@ -102,6 +102,9 @@ class Controller:
         self.view.show_end_tournament(tournament.players_list)
         return None
 
+    def tournament_end(self, tournament):
+        tournament.end_of_tournament()
+
     def update_tournament_players_scores(self, tournament):
         for player in tournament.players_list:
             player.score = 0
