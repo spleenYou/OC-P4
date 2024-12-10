@@ -142,7 +142,7 @@ class Show:
             content.append("Appuyer sur entrée pour ne pas modifier")
             self.display("Mise à jour du joueur", content, "center")
 
-    def main_menu(self, have_tournament, have_an_unfinished_tournament):
+    def main_menu(self, have_tournament, have_an_unfinished_tournament, have_player):
         content = []
         content.append("1- Nouveau tournoi")
         if have_tournament and have_an_unfinished_tournament:
@@ -153,7 +153,10 @@ class Show:
             content.append("3- Mise à jour des tournois")
         else:
             content.append("3- Pas de tournoi enregistré")
-        content.append("4- Mise à jour des joueurs")
+        if have_player:
+            content.append("4- Mise à jour des joueurs")
+        else:
+            content.append("4- Pas de joueur enregistré")
         content.append("5- Rapports")
         content.append("0- Quitter")
         self.display("Menu principal", content, "left")

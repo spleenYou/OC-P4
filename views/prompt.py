@@ -77,8 +77,8 @@ class Prompt:
         update_choice = input("Souhaitez-vous mettre à jour le joueur (y/n) ?")
         return update_choice
 
-    def for_main_menu_choice(self, have_tournament, have_an_unfinished_tournament):
-        self.show.main_menu(have_tournament, have_an_unfinished_tournament)
+    def for_main_menu_choice(self, have_tournament, have_an_unfinished_tournament, have_player):
+        self.show.main_menu(have_tournament, have_an_unfinished_tournament, have_player)
         user_choice = input('Que souhaitez-vous faire ? ')
         return user_choice
 

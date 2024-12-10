@@ -22,7 +22,10 @@ class Controller:
         self.show = show.Show()
         self.save = Save()
         self.all_players_list = Load().read_file_players()
-        self.tournaments_list = Load().read_file_tournaments(self.all_players_list)
+        if self.all_players_list:
+            self.tournaments_list = Load().read_file_tournaments(self.all_players_list)
+        else:
+            self.tournaments_list = None
 
     def create_tournament(self):
         """
@@ -282,18 +285,19 @@ class Controller:
             return True
         return False
 
-    def main_menu(self, have_tournament, have_an_unfinished_tournament):
+    def main_menu(self, have_tournament, have_an_unfinished_tournament, have_player):
         """Main menu view and management
 
         Args:
             have_tournament (bool): True if at least one tournament is created
             have_an_unfinished_tournament (bool): True if at least one tournament is unfinished
+            have_player (bool): True if at least one player registered
 
         returns:
             menu_choice (int): The menu choice. None if no choice
 
         """
-        menu_choice = self.prompt.for_main_menu_choice(have_tournament, have_an_unfinished_tournament)
+        menu_choice = self.prompt.for_main_menu_choice(have_tournament, have_an_unfinished_tournament, have_player)
         if self.is_int(menu_choice):
             return int(menu_choice)
         else:

@@ -7,17 +7,25 @@ from views import show
 
 def main():
     game = Controller(prompt, show)
-    user_menu_choice = None
+    if game.all_players_list and game.tournaments_list:
+        user_menu_choice = None
+    else:
+        user_menu_choice = CONST.QUIT
     tournament_choiced = None
     while user_menu_choice is None:
         have_tournament = False
         have_an_unfinished_tournament = False
-        if game.tournaments_list != []:
-            have_tournament = True
+        have_player = False
+        if game.tournaments_list is not None:
+            if len(game.tournaments_list):
+                have_tournament = True
         for tournament in game.tournaments_list:
             if not tournament.is_finished():
                 have_an_unfinished_tournament = True
-        user_menu_choice = game.main_menu(have_tournament, have_an_unfinished_tournament)
+        if game.all_players_list is not None:
+            if len(game.all_players_list):
+                have_player = True
+        user_menu_choice = game.main_menu(have_tournament, have_an_unfinished_tournament, have_player)
         if user_menu_choice == CONST.CREATE_TOURNAMENT:
             tournament_choiced = game.create_tournament()
         elif user_menu_choice == CONST.RESUME_TOURNAMENT and have_an_unfinished_tournament:
