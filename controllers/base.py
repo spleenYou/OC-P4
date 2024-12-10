@@ -283,24 +283,13 @@ class Controller:
                     case 0:
                         return None
                     case 1:
-                        self.show.players(self.all_players_list)
+                        self.show.players(self.all_players_list, True, False)
+                        self.show.wait()
                     case 2:
-                        self.show.tournaments(self.tournaments_list)
+                        self.show.tournaments_list(self.tournaments_list, False)
+                        self.show.wait()
                     case 3:
-                        tournament_choiced = None
-                        while not tournament_choiced:
-                            tournament_choiced = self.prompt.for_tournament_choice(self.tournaments_list)
-                            if self.is_int(tournament_choiced):
-                                tournament_choiced = int(tournament_choiced)
-                                if tournament_choiced <= len(self.tournaments_list):
-                                    self.tournament_report(self.tournaments_list[tournament_choiced - 1])
-                                    tournament_choiced = None
-                                elif (tournament_choiced < 0) and (tournament_choiced > len(self.tournaments_list)):
-                                    self.show.message("Erreur", "Ce choix n'existe pas")
-                                    tournament_choiced = None
-                            else:
-                                self.show.message("Erreur", "Ce choix n'existe pas")
-                                tournament_choiced = None
+                        self.tournament_choice()
                     case _:
                         self.show.message("Erreur", "Ce choix n'existe pas")
                 user_menu_choice = None
@@ -316,10 +305,27 @@ class Controller:
                     case 0:
                         return None
                     case 1:
-                        self.show.players(tournament.players_list)
-                        user_choice = None
+                        self.show.players(tournament.players_list, True, False)
+                        self.show.wait()
                     case 2:
-                        self.show.entire_tournament(tournament)
+                        self.show.rounds_list(tournament.rounds_list)
+                        self.show.wait()
             else:
                 self.show.message("Erreur", "Ce choix n'existe pas")
-                user_choice = None
+            user_choice = None
+
+    def tournament_choice(self):
+        tournament_choiced = None
+        while not tournament_choiced:
+            tournament_choiced = self.prompt.for_tournament_choice(self.tournaments_list)
+            if self.is_int(tournament_choiced):
+                tournament_choiced = int(tournament_choiced)
+                if (tournament_choiced == 0):
+                    return None
+                elif (tournament_choiced < 0) and (tournament_choiced > len(self.tournaments_list)):
+                    self.show.message("Erreur", "Ce choix n'existe pas")
+                else:
+                    self.tournament_report(self.tournaments_list[tournament_choiced - 1])
+            else:
+                self.show.message("Erreur", "Ce choix n'existe pas")
+            tournament_choiced = None

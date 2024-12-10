@@ -50,8 +50,8 @@ class Prompt:
         player_chess_id = input(f"Quel est l'identifiant de {player_surname} {player_name} ? ").upper()
         return player_chess_id
 
-    def for_tournament_choice(self, tournaments_list):
-        self.show.tournaments_list(tournaments_list)
+    def for_tournament_choice(self, tournaments_list, cancel_possible=True):
+        self.show.tournaments_list(tournaments_list, cancel_possible)
         tournament_choice = input("Quel tournoi choisissez-vous ? ")
         return tournament_choice
 
@@ -96,7 +96,7 @@ class Prompt:
         user_choice = input("Quel rapport souhaitez-vous ? ")
         return user_choice
 
-    def for_tournament_reports_menu(self):
-        self.show.tournament_reports_menu()
+    def for_tournament_reports_menu(self, tournament):
+        self.show.tournament_reports_menu(tournament)
         user_choice = input("Que souhaitez-vous voir ? ")
         return user_choice

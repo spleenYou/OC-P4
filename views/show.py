@@ -46,11 +46,11 @@ class Show:
         if text == CONST.TOP_DECORATION:
             print(CONST.STARS_LINE_FULL)
             print(CONST.STARS_LINE)
-            pass
         elif text == CONST.BOTTOM_DECORATION:
             print(CONST.STARS_LINE)
             print(CONST.STARS_LINE_FULL)
-            pass
+        elif text == CONST.STARS_LINE_FULL:
+            print(CONST.STARS_LINE_FULL)
         else:
             spaces_needed = CONST.FRAME_LENGHT - 2*CONST.NUMBER_SIDE_STARS - len(text)
             match align:
@@ -195,11 +195,24 @@ class Show:
         content.append("0- Retour")
         self.display("Rapports", content, "left")
 
-    def tournament_reports_menu(self):
+    def tournament_reports_menu(self, tournament):
         content = []
+        content.append(f"Nom du tournoi :         {tournament.name}")
+        content.append(f"Emplacement du tournoi : {tournament.place}")
+        content.append(f"Description du tournoi : {tournament.description}")
+        content.append(f"Nombre de joueurs :      {len(tournament.players_list)}")
+        content.append(f"Date de début :          {tournament.date_start}")
+        if tournament.is_finished():
+            content.append(f"Date de fin :            {tournament.date_end}")
+        else:
+            content.append("Date de fin :            tournoi non terminé")
+        content.append("")
+        content.append(CONST.STARS_LINE_FULL)
+        content.append("")
         content.append("1- Liste des joueurs")
         content.append("2- Déroulement du tournoi")
         content.append("0- Retour")
+        self.display("Information sur le tournoi", content, "left")
 
     def matches_list(self, round_number, matches_list):
         content = []
@@ -217,17 +230,10 @@ class Show:
                 content.append(" ")
         self.display(f"Voici les matchs du Round {round_number}", content, "left")
 
-    def entire_tournament(self, tournament):
-        content = []
-        for round in tournament.rounds_list:
-            content.append(f"Round {tournament.round_list.index(round)} :")
-            if round.is_finished():
-                self.matches_list(round.matches_list)
-            else:
-                content.append("  Pas de matchs joués")
-        self.display("Déroulement du tournoi", content, "left")
-
-    def players(self, players_list):
+    def players(self, players_list, sort=False, new_player_possible=True):
+        if sort:
+            players_list = sorted(players_list, key=lambda player: player.name)
+            players_list = sorted(players_list, key=lambda player: player.surname)
         content = []
         for player in players_list:
             position_in_list = players_list.index(player) + 1
@@ -235,8 +241,9 @@ class Show:
             if position_in_list < 10:
                 zero = "0"
             content.append(f"{zero}{position_in_list} - {player.surname} {player.name} ({player.chess_id})")
-        content.append(" ")
-        content.append("00 - Nouveau joueur")
+        if new_player_possible:
+            content.append(" ")
+            content.append("00 - Nouveau joueur")
         self.display("Liste des joueurs", content, "left")
 
     def match_result(self, match):
@@ -252,7 +259,7 @@ class Show:
         winner_player = input("Qui est le vainqueur ? ")
         return winner_player
 
-    def tournaments_list(self, tournaments_list):
+    def tournaments_list(self, tournaments_list, cancel_possible=True):
         content = []
         for tournament in tournaments_list:
             position_in_list = tournaments_list.index(tournament) + 1
@@ -261,9 +268,29 @@ class Show:
                 zero = "0"
             content.append(f"{zero}{position_in_list} - "
                            f"{tournament.name}")
-        content.append(" ")
-        content.append("0 - Annuler")
+        if cancel_possible:
+            content.append(" ")
+            content.append("0 - Annuler")
         self.display("Liste des tournois", content, "left")
+
+    def rounds_list(self, rounds_list):
+        content = []
+        for round in rounds_list:
+            content.append(f"Round {rounds_list.index(round) + 1} :")
+            if round.is_finished():
+                for match in round.matches_list:
+                    content.append("   Match :")
+                    content.append(f"      - {match.white_player["player"].surname} "
+                                   f"{match.white_player["player"].name} "
+                                   f"- {match.white_player["score"]}pt")
+                    content.append(f"      - {match.black_player["player"].surname} "
+                                   f"{match.black_player["player"].name} "
+                                   f"- {match.black_player["score"]}pt")
+            else:
+                content.append("    Non joué")
+            if rounds_list.index(round) != (len(rounds_list) - 1):
+                content.append("")
+        self.display("Rounds du tournoi", content, "left")
 
     def end_tournament(self, players_list):
         content = []
