@@ -23,11 +23,11 @@ def main():
         elif user_menu_choice == CONST.RESUME_TOURNAMENT and have_an_unfinished_tournament:
             tournament_choiced = game.choice_tournament()
         elif user_menu_choice == CONST.TOURNAMENTS_UPDATES and have_tournament:
-            game.tournaments_updates()
+            game.tournaments_updates_menu()
         elif user_menu_choice == CONST.PLAYERS_UPDATES:
             game.players_updates()
         elif user_menu_choice == CONST.REPORTS_MENU:
-            game.reports()
+            game.reports_menu()
         elif user_menu_choice == CONST.QUIT:
             print('Au revoir !')
             os._exit(os.EX_OK)
