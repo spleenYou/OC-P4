@@ -39,7 +39,7 @@ class Load:
         """
         tournaments_list = []
         tournaments_list_dict = self.read_json_file(CONST.FILENAME_TOURNAMENTS_LIST)
-        if not tournaments_list_dict:
+        if tournaments_list_dict is None:
             return None
         for tournament_data_dict in tournaments_list_dict:
             tournament = Tournament(name=tournament_data_dict['name'],

@@ -7,7 +7,7 @@ from views import show
 
 def main():
     game = Controller(prompt, show)
-    if game.all_players_list and game.tournaments_list:
+    if game.all_players_list is not None and game.tournaments_list is not None:
         user_menu_choice = None
     else:
         user_menu_choice = CONST.QUIT

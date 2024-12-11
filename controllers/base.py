@@ -98,7 +98,7 @@ class Controller:
         self.show.tournament_information(tournament)
         self.show.wait()
         if not tournament.has_all_players():
-            self.add_player(tournament)
+            self.add_players(tournament)
         self.update_tournament_players_scores(tournament)
         while not tournament.is_finished():
             self.show.ranking(tournament.players_list)
@@ -154,7 +154,7 @@ class Controller:
         for round in tournament.rounds_list:
             if round.is_finished():
                 for match in round.matches_list:
-                    match.update_score()
+                    match.update_scores()
 
     def choice_tournament(self):
         """Choice tournament in the list

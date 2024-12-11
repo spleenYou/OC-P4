@@ -1,4 +1,12 @@
 class Player:
+    """Define a player
+
+    Args:
+        surname (str): player's surname
+        name (str): player's name
+        birthday (str): player's birthday (DD-MM-YYYY)
+        chess_id (str): player's chess ID
+    """
 
     def __init__(self, surname, name, birthday, chess_id):
         self.surname = surname
@@ -7,11 +15,10 @@ class Player:
         self.chess_id = chess_id
         self.score = 0
 
-    def __str__(self):
-        return (f'Nom du joueur : {self.surname}\n'
-                f'Prénom du joueur : {self.name}\n'
-                f'Date de naissance : {self.birthday}\n'
-                f'Chess ID : {self.chess_id}')
-
     def update_score(self, point):
+        """Update the score after a match
+
+        Args:
+            point (int): point to add
+        """
         self.score = self.score + point

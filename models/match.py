@@ -36,8 +36,8 @@ class Match:
     def update_scores(self):
         """Update players total scores after defining the winner
         """
-        self.white_player["player"].score = self.white_player["player"].score + self.white_player["score"]
-        self.black_player["player"].score = self.black_player["player"].score + self.black_player["score"]
+        self.white_player["player"].update_score(self.white_player["score"])
+        self.black_player["player"].update_score(self.black_player["score"])
 
     def define_players_colors(self, players_list):
         """Defining players colors randomly
