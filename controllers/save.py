@@ -4,7 +4,14 @@ from models.player import Player
 
 
 class Save:
+    """Manage saving tournaments and players data in JSON file
+    """
     def save_tournaments(self, tournaments_list):
+        """Transform tournaments data to be save in a JSON file
+
+        Args:
+            tournaments_list (list): list of tournaments object
+        """
         tournaments_list_dict = []
         for tournament in tournaments_list:
             players_list = []
@@ -35,9 +42,10 @@ class Save:
                                           'date_end': tournament.date_end,
                                           'rounds_list': rounds_list})
         self.save_data(CONST.FILENAME_TOURNAMENTS_LIST, tournaments_list_dict)
-        return "Tournoi sauvegardé"
 
     def save_player(self, all_players_list):
+        """Transform players data to be save in a JSON file
+        """
         players_list_to_save = []
         for player in all_players_list:
             players_list_to_save.append({'surname': player.surname,
@@ -47,5 +55,11 @@ class Save:
         self.save_data(CONST.FILENAME_PLAYERS_LIST, players_list_to_save)
 
     def save_data(self, filename, content_file):
+        """Write content_file in a JSON file
+
+        Args:
+            filename (str): Name of the file to save
+            content_file (dict): Content to be save
+        """
         with open(f'data/{filename}', 'w') as file:
             json.dump(content_file, file, indent=4, sort_keys=True)

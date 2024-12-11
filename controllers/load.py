@@ -6,7 +6,7 @@ import constant.constant as CONST
 
 
 class Load:
-    """Manage tournaments and players data loading
+    """Manage tournaments and players data load from JSON file
     """
     def __init__(self):
         self.show = Show()
