@@ -5,13 +5,21 @@ from models.round import Round
 
 
 class Tournament:
+    """Define and manage a tournament
+
+    Args:
+        name (str): tournament's name
+        place (str): tournament's place
+        description (str): tournament's description
+        date_start (str): tournament's start date if not filled in, day's date
+        date_end (str): tournament's end date if not filled in, it's empty
+    """
     def __init__(self,
                  name,
                  place,
                  description,
                  date_start="{:%d-%m-%Y}".format(datetime.date.today()),
-                 date_end='',
-                 number_of_rounds=4):
+                 date_end=""):
         self.name = name
         self.place = place
         self.date_start = date_start
@@ -22,11 +30,17 @@ class Tournament:
         self.description = description
 
     def is_finished(self):
+        """Returns wether the tournament is over or not
+        """
         if self.round_number < self.number_of_rounds():
             return False
         return True
 
     def count_round_number(self):
+        """Count the number of round completed
+
+        Returns
+        """
         for round in self.rounds_list:
             if not round.is_finished():
                 return None
@@ -58,32 +72,23 @@ class Tournament:
         return len(self.rounds_list)
 
     def sort_list(self):
-        list_match = []
+        players_list = []
         if self.round_number == 0:
             Random().shuffle(self.players_list)
-            list_match = self.players_list
+            players_list = self.players_list
         else:
-            list_players_available = []
             for player in self.players_list:
-                list_players_available.append(player)
-            while len(list_players_available):
-                first_player = list_players_available[0]
-                list_players_available.remove(first_player)
-                if first_player not in list_players_available:
-                    for second_player in list_players_available:
-                        if not self.have_already_met(first_player, second_player):
-                            list_match.append(first_player)
-                            list_match.append(second_player)
-                            list_players_available.remove(second_player)
-                            break
-                        if len(list_players_available) == 1:
-                            list_players_available.insert(0, list_match[-2])
-                            list_players_available.insert(1, first_player)
-                            list_players_available.append(list_match[-1])
-                            list_match.remove(list_match[-1])
-                            list_match.remove(list_match[-1])
-                            break
-        self.players_list = list_match
+                players_list.append(player)
+            number_matches = int(len(players_list) / 2)
+            matches_possible = True
+            while not matches_possible:
+                for i in range(number_matches):
+                    if not self.have_already_met(players_list[2 * i], players_list[2 * i + 1]):
+                        player_to_move = players_list[2 * i + 1]
+                        players_list.remove(player_to_move)
+                        players_list.append(player_to_move)
+
+        self.players_list = players_list
 
     def have_already_met(self, player_one, player_two):
         for round in self.rounds_list:
