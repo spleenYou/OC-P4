@@ -46,6 +46,7 @@ def main():
             user_menu_choice = game.run_tournament(tournament_choiced)
         else:
             user_menu_choice = None
+        tournament_choiced = None
 
 
 if __name__ == "__main__":
