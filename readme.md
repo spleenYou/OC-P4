@@ -165,4 +165,4 @@ It will create a HTML file with the result in the folder "flake8-html"
 
 ## Data saved
 
-Data of the tournaments and the players are saved in separate JSON files in the directory "data"
+Tournament and player data are stored in separate JSON files in the "data" directory
