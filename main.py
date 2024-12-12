@@ -27,10 +27,14 @@ def main():
             if len(game.all_players_list):
                 have_player = True
         user_menu_choice = game.main_menu(
-            have_tournament, have_an_unfinished_tournament, have_player)
+            have_tournament, have_an_unfinished_tournament, have_player
+        )
         if user_menu_choice == CONST.CREATE_TOURNAMENT:
             tournament_choiced = game.create_tournament()
-        elif user_menu_choice == CONST.RESUME_TOURNAMENT and have_an_unfinished_tournament:
+        elif (
+            user_menu_choice == CONST.RESUME_TOURNAMENT
+            and have_an_unfinished_tournament
+        ):
             tournament_choiced = game.choice_tournament()
         elif user_menu_choice == CONST.TOURNAMENTS_UPDATES and have_tournament:
             game.tournaments_updates_menu()
@@ -39,7 +43,7 @@ def main():
         elif user_menu_choice == CONST.REPORTS_MENU:
             game.reports_menu()
         elif user_menu_choice == CONST.QUIT:
-            print('Au revoir !')
+            print("Au revoir !")
             os._exit(os.EX_OK)
         else:
             user_menu_choice = None

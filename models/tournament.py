@@ -15,12 +15,14 @@ class Tournament:
         date_end (str): tournament's end date if not filled in, it's empty
     """
 
-    def __init__(self,
-                 name,
-                 place,
-                 description,
-                 date_start="{:%d-%m-%Y}".format(datetime.date.today()),
-                 date_end=""):
+    def __init__(
+        self,
+        name,
+        place,
+        description,
+        date_start="{:%d-%m-%Y}".format(datetime.date.today()),
+        date_end="",
+    ):
         self.name = name
         self.place = place
         self.date_start = date_start
@@ -31,8 +33,7 @@ class Tournament:
         self.description = description
 
     def is_finished(self):
-        """Returns wether the tournament is over or not
-        """
+        """Returns wether the tournament is over or not"""
         if self.round_number < self.number_of_rounds():
             return False
         return True
@@ -44,7 +45,7 @@ class Tournament:
                 self.round_number = self.round_number + 1
 
     def add_player(self, new_player):
-        """ Add player in players_list
+        """Add player in players_list
 
         Args:
             new_player (object): New player to be added to the list, can be None for list creation
@@ -95,7 +96,9 @@ class Tournament:
             matches_possible = True
             while not matches_possible:
                 for i in range(number_matches):
-                    if not self.have_already_met(players_list[2 * i], players_list[2 * i + 1]):
+                    if not self.have_already_met(
+                        players_list[2 * i], players_list[2 * i + 1]
+                    ):
                         player_to_move = players_list[2 * i + 1]
                         players_list.remove(player_to_move)
                         players_list.append(player_to_move)
@@ -111,15 +114,21 @@ class Tournament:
         """
         for round in self.rounds_list:
             for match in round.matches_list:
-                if ((player_one == match.white_player["player"] or player_one == match.black_player["player"])
-                   and (player_two == match.white_player["player"] or player_two == match.black_player["player"])):
+                if (
+                    player_one == match.white_player["player"]
+                    or player_one == match.black_player["player"]
+                ) and (
+                    player_two == match.white_player["player"]
+                    or player_two == match.black_player["player"]
+                ):
                     return True
         return False
 
     def sort_list_by_score(self):
         "Sort the list of players by score (high in first)"
         self.players_list = sorted(
-            self.players_list, key=lambda player: player.score, reverse=True)
+            self.players_list, key=lambda player: player.score, reverse=True
+        )
 
     def next_round(self):
         "Increases by one the round number"

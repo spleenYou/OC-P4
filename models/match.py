@@ -11,11 +11,11 @@ class Match:
         black_player_score (int): score of the black player
     """
 
-    def __init__(self, white_player, white_player_score, black_player, black_player_score):
-        self.white_player = {"player": white_player,
-                             "score": white_player_score}
-        self.black_player = {"player": black_player,
-                             "score": black_player_score}
+    def __init__(
+        self, white_player, white_player_score, black_player, black_player_score
+    ):
+        self.white_player = {"player": white_player, "score": white_player_score}
+        self.black_player = {"player": black_player, "score": black_player_score}
 
     def define_score(self, winner_player):
         """Define players scores
@@ -37,8 +37,7 @@ class Match:
         return True
 
     def update_scores(self):
-        """Update players total scores after defining the winner
-        """
+        """Update players total scores after defining the winner"""
         self.white_player["player"].update_score(self.white_player["score"])
         self.black_player["player"].update_score(self.black_player["score"])
 
@@ -68,6 +67,8 @@ class Match:
         Returns:
             bool: True if players, False if not
         """
-        if (self.white_player["player"] is not None) and (self.black_player["player"] is not None):
+        if (self.white_player["player"] is not None) and (
+            self.black_player["player"] is not None
+        ):
             return True
         return False

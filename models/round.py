@@ -2,13 +2,14 @@ from models.match import Match
 
 
 class Round:
-    """Define and manage a round
-    """
+    """Define and manage a round"""
 
     def __init__(self):
         self.matches_list = []
 
-    def add_match(self, white_player, black_player, white_player_score=0, black_player_score=0):
+    def add_match(
+        self, white_player, black_player, white_player_score=0, black_player_score=0
+    ):
         """Add a match in matches list
 
         Args:
@@ -20,8 +21,9 @@ class Round:
         Returns:
             match (object): a match's object
         """
-        match = Match(white_player, white_player_score,
-                      black_player, black_player_score)
+        match = Match(
+            white_player, white_player_score, black_player, black_player_score
+        )
         self.matches_list.append(match)
         return match
 
@@ -44,4 +46,5 @@ class Round:
         """
         for i in range(0, len(self.matches_list)):
             self.matches_list[i].define_players_colors(
-                [players_list[i * 2], players_list[(i * 2) + 1]])
+                [players_list[i * 2], players_list[(i * 2) + 1]]
+            )
