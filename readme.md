@@ -89,14 +89,14 @@ The main menu look like that :
 3. Pas de tournoi enregistré / Mise à jour des tournois
 4. Pas de tournoi enregistré / Mise à jour des joueurs
 5. Rapports
-   1. Liste des joueurs par ordre alphabétique
-   2. Liste des tournois
-   3. Information sur un tournoi
-      1. Liste des joueurs
-      2. Déroulement du tournoi
-      0. Retour
+    1. Liste des joueurs par ordre alphabétique
+    2. Liste des tournois
+    3. Information sur un tournoi
+        1. Liste des joueurs
+        2. Déroulement du tournoi
+        0. Retour
    0. Retour
-0. Quitter
+0-  Quitter
 
 > Menu 1 - New tournament
 
