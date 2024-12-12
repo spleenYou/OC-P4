@@ -73,7 +73,8 @@ class Show:
         elif text == CONST.STARS_LINE_FULL:
             print(CONST.STARS_LINE_FULL)
         else:
-            spaces_needed = CONST.FRAME_LENGHT - 2*CONST.NUMBER_SIDE_STARS - len(text)
+            spaces_needed = CONST.FRAME_LENGHT - 2 * \
+                CONST.NUMBER_SIDE_STARS - len(text)
             match align:
                 case "left":
                     spaces_left = CONST.SPACE_REQUIRED
@@ -126,7 +127,8 @@ class Show:
             content.append("Appuyer sur entrée pour ne pas modifier")
             self.display("Mise à jour d'un tournoi", content, "center")
         else:
-            self.display("Création d'un tournoi", ["Emplacement du tournoi"], "center")
+            self.display("Création d'un tournoi", [
+                         "Emplacement du tournoi"], "center")
 
     def tournament_description(self, tournament_description=None):
         """Shows the tournament's description
@@ -140,7 +142,8 @@ class Show:
             content.append("Appuyer sur entrée pour ne pas modifier")
             self.display("Mise à jour d'un tournoi", content, "center")
         else:
-            self.display("Création d'un tournoi", ["Description du tournoi"], "center")
+            self.display("Création d'un tournoi", [
+                         "Description du tournoi"], "center")
 
     def player_name(self, player_name=None):
         """Shows the player's name
@@ -185,7 +188,8 @@ class Show:
             content.append("Appuyer sur entrée pour ne pas modifier")
             self.display("Mise à jour du joueur", content, "center")
         else:
-            self.display("Nouveau joueur", [f"Date de naissance de {player_surname} {player_name}"], "center")
+            self.display("Nouveau joueur", [f"Date de naissance de {
+                         player_surname} {player_name}"], "center")
 
     def player_chess_id(self, player_name, player_surname, player_chess_id):
         """Shows the player's chess id
@@ -288,7 +292,8 @@ class Show:
         content.append(f"Nom du tournoi :         {tournament.name}")
         content.append(f"Emplacement du tournoi : {tournament.place}")
         content.append(f"Description du tournoi : {tournament.description}")
-        content.append(f"Nombre de joueurs :      {len(tournament.players_list)}")
+        content.append(f"Nombre de joueurs :      {
+                       len(tournament.players_list)}")
         content.append(f"Date de début :          {tournament.date_start}")
         if tournament.is_finished():
             content.append(f"Date de fin :            {tournament.date_end}")
@@ -322,7 +327,8 @@ class Show:
                            f"{match.black_player["player"].score} pt")
             if matches_list.index(match) != (len(matches_list) - 1):
                 content.append(" ")
-        self.display(f"Voici les matchs du Round {round_number}", content, "left")
+        self.display(f"Voici les matchs du Round {
+                     round_number}", content, "left")
 
     def players(self, players_list, sort=False, new_player_possible=True):
         """Shows all the players in a list. Can be sort. Cancel proposal view is optional
@@ -337,15 +343,18 @@ class Show:
             if isinstance(player, Player):
                 players_to_show.append(player)
         if sort:
-            players_to_show = sorted(players_to_show, key=lambda player: player.name)
-            players_to_show = sorted(players_to_show, key=lambda player: player.surname)
+            players_to_show = sorted(
+                players_to_show, key=lambda player: player.name)
+            players_to_show = sorted(
+                players_to_show, key=lambda player: player.surname)
         content = []
         for player in players_to_show:
             position_in_list = players_to_show.index(player) + 1
             zero = ""
             if position_in_list < 10:
                 zero = "0"
-            content.append(f"{zero}{position_in_list} - {player.surname} {player.name} ({player.chess_id})")
+            content.append(
+                f"{zero}{position_in_list} - {player.surname} {player.name} ({player.chess_id})")
         for i in range(len(players_to_show), len(players_list)):
             content.append("-- - Joueur non renseigné")
         if new_player_possible:

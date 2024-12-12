@@ -26,7 +26,8 @@ def main():
         if game.all_players_list is not None:
             if len(game.all_players_list):
                 have_player = True
-        user_menu_choice = game.main_menu(have_tournament, have_an_unfinished_tournament, have_player)
+        user_menu_choice = game.main_menu(
+            have_tournament, have_an_unfinished_tournament, have_player)
         if user_menu_choice == CONST.CREATE_TOURNAMENT:
             tournament_choiced = game.create_tournament()
         elif user_menu_choice == CONST.RESUME_TOURNAMENT and have_an_unfinished_tournament:

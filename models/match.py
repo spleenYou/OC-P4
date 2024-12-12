@@ -10,9 +10,12 @@ class Match:
         black_player (object or str): if known it's a player object, if not, it's ""
         black_player_score (int): score of the black player
     """
+
     def __init__(self, white_player, white_player_score, black_player, black_player_score):
-        self.white_player = {"player": white_player, "score": white_player_score}
-        self.black_player = {"player": black_player, "score": black_player_score}
+        self.white_player = {"player": white_player,
+                             "score": white_player_score}
+        self.black_player = {"player": black_player,
+                             "score": black_player_score}
 
     def define_score(self, winner_player):
         """Define players scores

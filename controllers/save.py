@@ -6,6 +6,7 @@ from models.player import Player
 class Save:
     """Manage saving tournaments and players data in JSON file
     """
+
     def save_tournaments(self, tournaments_list):
         """Transform tournaments data to be save in a JSON file
 
@@ -30,8 +31,10 @@ class Save:
                     if match.have_players():
                         white_player_chess_id = match.white_player["player"].chess_id
                         black_player_chess_id = match.black_player["player"].chess_id
-                    scores_list.append([white_player_chess_id, match.white_player["score"]])
-                    scores_list.append([black_player_chess_id, match.black_player["score"]])
+                    scores_list.append(
+                        [white_player_chess_id, match.white_player["score"]])
+                    scores_list.append(
+                        [black_player_chess_id, match.black_player["score"]])
                     matches_list.append(scores_list)
                 rounds_list.append(matches_list)
             tournaments_list_dict.append({'name': tournament.name,

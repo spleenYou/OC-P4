@@ -46,7 +46,8 @@ class Controller:
             if self.is_int(number_of_rounds):
                 number_of_rounds = int(number_of_rounds)
                 if number_of_rounds < 4:
-                    self.show.message("Erreur", "Le nombre de tour minimum est 4")
+                    self.show.message(
+                        "Erreur", "Le nombre de tour minimum est 4")
             else:
                 self.show.message("Erreur", "Veuillez rentrer un nombre")
                 number_of_rounds = 0
@@ -60,10 +61,12 @@ class Controller:
                 number_players = int(number_players)
                 if (number_players % 2) == 0:
                     if number_players < minimum_players:
-                        self.show.message("Erreur", f"Nombre de joueurs minimum : {minimum_players}")
+                        self.show.message("Erreur", f"Nombre de joueurs minimum : {
+                                          minimum_players}")
                         number_players = 0
                 else:
-                    self.show.message("Erreur", "Nombre de participants impaires")
+                    self.show.message(
+                        "Erreur", "Nombre de participants impaires")
                     number_players = 0
             else:
                 self.show.message("Erreur", "Veuillez rentrer un nombre")
@@ -169,13 +172,15 @@ class Controller:
             if not tournament.is_finished():
                 tournaments_finished_list.append(tournament)
         while tournament_choice is None:
-            tournament_choice = self.prompt.for_tournament_choice(tournaments_finished_list)
+            tournament_choice = self.prompt.for_tournament_choice(
+                tournaments_finished_list)
             if self.is_int(tournament_choice):
                 tournament_choice = int(tournament_choice)
                 if tournament_choice == CONST.QUIT:
                     return None
                 elif tournament_choice > len(tournaments_finished_list):
-                    self.show.message("Erreur", "Veuillez rentrer un tournoi existant")
+                    self.show.message(
+                        "Erreur", "Veuillez rentrer un tournoi existant")
                     tournament_choice = None
             else:
                 self.show.message("Erreur", "Veuillez rentrer un nombre")
@@ -201,7 +206,8 @@ class Controller:
             index_player_to_add = None
             while index_player_to_add is None:
                 if len(players_list_choice):
-                    index_player_to_add = self.prompt.for_player_choice(players_list_choice)
+                    index_player_to_add = self.prompt.for_player_choice(
+                        players_list_choice)
                 else:
                     index_player_to_add = 0
                 if self.is_int(index_player_to_add):
@@ -253,16 +259,19 @@ class Controller:
         chess_id_verification_re = re.compile('^[A-Z]{2}[0-9]{4}$')
         new_player_name = self.prompt.for_player_name()
         if new_player_name != "":
-            new_player_surname = self.prompt.for_player_surname(new_player_name)
+            new_player_surname = self.prompt.for_player_surname(
+                new_player_name)
             new_player_birthday = None
             while not new_player_birthday:
-                new_player_birthday = self.prompt.for_player_birthday(new_player_name, new_player_surname)
+                new_player_birthday = self.prompt.for_player_birthday(
+                    new_player_name, new_player_surname)
                 if not birthday_verification_re.match(new_player_birthday):
                     self.show.message("Erreur", "Date de naissance incorrecte")
                     new_player_birthday = None
             new_player_chess_id = None
             while not new_player_chess_id:
-                new_player_chess_id = self.prompt.for_player_chess_id(new_player_name, new_player_surname)
+                new_player_chess_id = self.prompt.for_player_chess_id(
+                    new_player_name, new_player_surname)
                 if not chess_id_verification_re.match(new_player_chess_id):
                     self.show.message("Erreur", "Chess id invalide")
                     new_player_chess_id = None
@@ -297,7 +306,8 @@ class Controller:
             menu_choice (int): The menu choice. None if no choice
 
         """
-        menu_choice = self.prompt.for_main_menu_choice(have_tournament, have_an_unfinished_tournament, have_player)
+        menu_choice = self.prompt.for_main_menu_choice(
+            have_tournament, have_an_unfinished_tournament, have_player)
         if self.is_int(menu_choice):
             return int(menu_choice)
         else:
@@ -308,15 +318,18 @@ class Controller:
         """
         user_choice = None
         while user_choice is None:
-            user_choice = self.prompt.for_tournament_management_choice(self.tournaments_list)
+            user_choice = self.prompt.for_tournament_management_choice(
+                self.tournaments_list)
             if self.is_int(user_choice):
                 user_choice = int(user_choice)
                 if user_choice == 0:
                     return None
                 if user_choice <= len(self.tournaments_list):
-                    self.tournament_update(self.tournaments_list[user_choice - 1])
+                    self.tournament_update(
+                        self.tournaments_list[user_choice - 1])
                 if user_choice > len(self.tournaments_list):
-                    self.show.message("Erreur", "Le tournoi sélectionné n'est pas dans la liste")
+                    self.show.message(
+                        "Erreur", "Le tournoi sélectionné n'est pas dans la liste")
             else:
                 user_choice = None
 
@@ -328,8 +341,10 @@ class Controller:
 
         """
         new_tournament_name = self.prompt.for_tournament_name(tournament.name)
-        new_tournament_place = self.prompt.for_tournament_place(tournament.place)
-        new_tournament_description = self.prompt.for_tournament_description(tournament.description)
+        new_tournament_place = self.prompt.for_tournament_place(
+            tournament.place)
+        new_tournament_description = self.prompt.for_tournament_description(
+            tournament.description)
         if new_tournament_name != '':
             tournament.name = new_tournament_name
         if new_tournament_place:
@@ -351,7 +366,8 @@ class Controller:
                 if user_choice <= len(self.all_players_list):
                     self.player_update(self.all_players_list[user_choice - 1])
                 if user_choice > len(self.all_players_list):
-                    self.show.message("Erreur", "Le joueur sélectionné n'est pas dans la liste")
+                    self.show.message(
+                        "Erreur", "Le joueur sélectionné n'est pas dans la liste")
             else:
                 user_choice = None
 
@@ -362,9 +378,12 @@ class Controller:
             player (object): player to update
         """
         new_player_name = self.prompt.for_player_name(player.name)
-        new_player_surname = self.prompt.for_player_surname(player.name, player.surname)
-        new_player_birthday = self.prompt.for_player_birthday(player.name, player.surname, player.birthday)
-        new_player_chess_id = self.prompt.for_player_chess_id(player.name, player.surname, player.chess_id)
+        new_player_surname = self.prompt.for_player_surname(
+            player.name, player.surname)
+        new_player_birthday = self.prompt.for_player_birthday(
+            player.name, player.surname, player.birthday)
+        new_player_chess_id = self.prompt.for_player_chess_id(
+            player.name, player.surname, player.chess_id)
         if new_player_name != '':
             player.name = new_player_name
         if new_player_surname:
@@ -390,7 +409,8 @@ class Controller:
                         self.show.players(self.all_players_list, True, False)
                         self.show.wait()
                     case 2:
-                        self.show.tournaments_list(self.tournaments_list, False)
+                        self.show.tournaments_list(
+                            self.tournaments_list, False)
                         self.show.wait()
                     case 3:
                         self.tournament_choice()
@@ -433,7 +453,8 @@ class Controller:
         """
         tournament_choiced = None
         while not tournament_choiced:
-            tournament_choiced = self.prompt.for_tournament_choice(self.tournaments_list)
+            tournament_choiced = self.prompt.for_tournament_choice(
+                self.tournaments_list)
             if self.is_int(tournament_choiced):
                 tournament_choiced = int(tournament_choiced)
                 if (tournament_choiced == 0):

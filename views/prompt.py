@@ -3,6 +3,7 @@ from views.show import Show
 
 class Prompt:
     "Manage the prompts"
+
     def __init__(self):
         self.show = Show()
 
@@ -38,7 +39,8 @@ class Prompt:
         Returns:
             number_of_rounds (str)
         """
-        self.show.display("Création d'un tournoi", ["Nombre de tours"], "center")
+        self.show.display("Création d'un tournoi", [
+                          "Nombre de tours"], "center")
         number_of_rounds = input("Combien de tours comprend le tournoi ? ")
         return number_of_rounds
 
@@ -48,7 +50,8 @@ class Prompt:
         Returns:
             number_players (str)
         """
-        self.show.display("Création d'un tournoi", ["Nombre de joueurs"], "center")
+        self.show.display("Création d'un tournoi", [
+                          "Nombre de joueurs"], "center")
         number_players = input("Combien de joueurs participent au tournoi ? ")
         return number_players
 
@@ -62,7 +65,8 @@ class Prompt:
             tournament_description (str)
         """
         self.show.tournament_description(tournament_description)
-        tournament_description = input("Veuillez entrer la description du tournoi : ")
+        tournament_description = input(
+            "Veuillez entrer la description du tournoi : ")
         return tournament_description
 
     def for_player_name(self, player_name=None):
@@ -88,7 +92,8 @@ class Prompt:
             player_surname (str)
         """
         self.show.player_surname(player_name, player_surname)
-        player_surname = input(f"Quel est le nom de famille de {player_name} ? ").upper()
+        player_surname = input(f"Quel est le nom de famille de {
+                               player_name} ? ").upper()
         return player_surname
 
     def for_player_birthday(self, player_name, player_surname, player_birthday=None):
@@ -103,7 +108,8 @@ class Prompt:
             player_birthday (str)
         """
         self.show.player_birthday(player_name, player_surname, player_birthday)
-        player_birthday = input(f"Quel est la date de naissance de {player_surname} {player_name} ? [DD-MM-YYYY] ")
+        player_birthday = input(f"Quel est la date de naissance de {
+                                player_surname} {player_name} ? [DD-MM-YYYY] ")
         return player_birthday
 
     def for_player_chess_id(self, player_name, player_surname, player_chess_id=None):
@@ -118,7 +124,8 @@ class Prompt:
             player_chess_id (str)
         """
         self.show.player_chess_id(player_name, player_surname, player_chess_id)
-        player_chess_id = input(f"Quel est l'identifiant de {player_surname} {player_name} ? ").upper()
+        player_chess_id = input(f"Quel est l'identifiant de {
+                                player_surname} {player_name} ? ").upper()
         return player_chess_id
 
     def for_tournament_choice(self, tournaments_list, cancel_possible=True):
@@ -159,7 +166,8 @@ class Prompt:
         Returns:
             user_choice (str)
         """
-        self.show.main_menu(have_tournament, have_an_unfinished_tournament, have_player)
+        self.show.main_menu(
+            have_tournament, have_an_unfinished_tournament, have_player)
         user_choice = input('Que souhaitez-vous faire ? ')
         return user_choice
 
@@ -173,7 +181,8 @@ class Prompt:
             tournament_choiced (str)
         """
         self.show.tournaments_list(tournaments_list)
-        tournament_choiced = input("Quel tournoi souhaitez-vous mettre à jour ? ")
+        tournament_choiced = input(
+            "Quel tournoi souhaitez-vous mettre à jour ? ")
         return tournament_choiced
 
     def for_reports_menu_choice(self):

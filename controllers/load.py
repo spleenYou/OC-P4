@@ -8,6 +8,7 @@ import constant.constant as CONST
 class Load:
     """Manage tournaments and players data load from JSON file
     """
+
     def __init__(self):
         self.show = Show()
 
@@ -38,7 +39,8 @@ class Load:
             tournaments_list (list): all the tournament's objects list
         """
         tournaments_list = []
-        tournaments_list_dict = self.read_json_file(CONST.FILENAME_TOURNAMENTS_LIST)
+        tournaments_list_dict = self.read_json_file(
+            CONST.FILENAME_TOURNAMENTS_LIST)
         if tournaments_list_dict is None:
             return None
         for tournament_data_dict in tournaments_list_dict:
@@ -50,7 +52,8 @@ class Load:
             for player in tournament_data_dict['players_list']:
                 player_data = None
                 if len(player['chess_id']):
-                    player_data = self.find_player_by_chess_id(player['chess_id'], all_players_list)
+                    player_data = self.find_player_by_chess_id(
+                        player['chess_id'], all_players_list)
                 tournament.add_player(player_data)
             for round in tournament_data_dict['rounds_list']:
                 new_round = tournament.add_round()
@@ -60,7 +63,8 @@ class Load:
                         if score[0] == "":
                             player = None
                         else:
-                            player = self.find_player_by_chess_id(score[0], tournament.players_list)
+                            player = self.find_player_by_chess_id(
+                                score[0], tournament.players_list)
                         score_list.append([player, score[1]])
                     new_round.add_match(white_player=score_list[0][0],
                                         black_player=score_list[1][0],

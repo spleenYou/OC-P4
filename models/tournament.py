@@ -14,6 +14,7 @@ class Tournament:
         date_start (str): tournament's start date if not filled in, day's date
         date_end (str): tournament's end date if not filled in, it's empty
     """
+
     def __init__(self,
                  name,
                  place,
@@ -117,7 +118,8 @@ class Tournament:
 
     def sort_list_by_score(self):
         "Sort the list of players by score (high in first)"
-        self.players_list = sorted(self.players_list, key=lambda player: player.score, reverse=True)
+        self.players_list = sorted(
+            self.players_list, key=lambda player: player.score, reverse=True)
 
     def next_round(self):
         "Increases by one the round number"

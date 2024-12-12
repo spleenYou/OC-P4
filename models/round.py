@@ -4,6 +4,7 @@ from models.match import Match
 class Round:
     """Define and manage a round
     """
+
     def __init__(self):
         self.matches_list = []
 
@@ -19,7 +20,8 @@ class Round:
         Returns:
             match (object): a match's object
         """
-        match = Match(white_player, white_player_score, black_player, black_player_score)
+        match = Match(white_player, white_player_score,
+                      black_player, black_player_score)
         self.matches_list.append(match)
         return match
 
@@ -41,4 +43,5 @@ class Round:
             players_list (list): Round's players list
         """
         for i in range(0, len(self.matches_list)):
-            self.matches_list[i].define_players_colors([players_list[i * 2], players_list[(i * 2) + 1]])
+            self.matches_list[i].define_players_colors(
+                [players_list[i * 2], players_list[(i * 2) + 1]])
