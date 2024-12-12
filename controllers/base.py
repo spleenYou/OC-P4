@@ -62,8 +62,7 @@ class Controller:
                     if number_players < minimum_players:
                         self.show.message(
                             "Erreur",
-                            f"Nombre de joueurs minimum : {
-                                          minimum_players}",
+                            f"Nombre de joueurs minimum : {minimum_players}",
                         )
                         number_players = 0
                 else:

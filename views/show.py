@@ -92,10 +92,10 @@ class Show:
                     spaces_left = CONST.SPACE_REQUIRED
                     spaces_right = CONST.SPACE_REQUIRED
             print(
-                f"{'*'*CONST.NUMBER_SIDE_STARS}"
-                f"{' '*spaces_left}{text}"
-                f"{' '*spaces_right}"
-                f"{'*'*CONST.NUMBER_SIDE_STARS}"
+                f"{'*' * CONST.NUMBER_SIDE_STARS}"
+                f"{' ' * spaces_left}{text}"
+                f"{' ' * spaces_right}"
+                f"{'*' * CONST.NUMBER_SIDE_STARS}"
             )
 
     def wait(self):
@@ -193,7 +193,7 @@ class Show:
                 "Nouveau joueur",
                 [
                     f"Date de naissance de {
-                         player_surname} {player_name}"
+                        player_surname} {player_name}"
                 ],
                 "center",
             )
@@ -306,7 +306,7 @@ class Show:
         content.append(f"Description du tournoi : {tournament.description}")
         content.append(
             f"Nombre de joueurs :      {
-                       len(tournament.players_list)}"
+                len(tournament.players_list)}"
         )
         content.append(f"Date de début :          {tournament.date_start}")
         if tournament.is_finished():
@@ -347,7 +347,7 @@ class Show:
                 content.append(" ")
         self.display(
             f"Voici les matchs du Round {
-                     round_number}",
+                round_number}",
             content,
             "left",
         )
