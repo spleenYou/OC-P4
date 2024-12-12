@@ -112,7 +112,7 @@ class Controller:
             for match in matches_list:
                 match_define = False
                 while not match_define:
-                    winner_player = self.show.match_result(match)
+                    winner_player = self.prompt.for_match_result(match)
                     if self.is_int(winner_player):
                         winner_player = int(winner_player)
                         if (winner_player >= 0) and (winner_player <= 2):

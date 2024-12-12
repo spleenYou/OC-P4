@@ -198,3 +198,16 @@ class Prompt:
         self.show.tournament_reports_menu(tournament)
         user_choice = input("Que souhaitez-vous voir ? ")
         return user_choice
+
+    def for_match_result(self, match):
+        """Prompt for the match result
+
+        Args:
+            match (object): Match you want to tell the result
+
+        Returns:
+            winner_player (str)
+        """
+        self.show.match_result(match)
+        winner_player = input("Qui est le vainqueur ? ")
+        return winner_player
