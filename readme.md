@@ -133,23 +133,23 @@ Shows the list of all the tournaments
 
 Shows the list of all tournaments and select the tournament on which you wish to obtain information
 
-###### 5.3.1 - List of players
+###### 3.1 - List of players
 
 Shows the list tournament's players in alphabetical order
 
-###### 5.3.2. - Tournament progress
+###### 3.2. - Tournament progress
 
 Shows the tournament's rounds and matches
 
-###### 5.3.0. - Go back
+###### 3.0. - Go back
 
 Go back to the previous menu
 
-##### 5.0. Go back
+##### 0. Go back
 
 Go back to the previous menu
 
-#### 0 - Quit
+#### Menu 0 - Quit
 
 Quit the script
 
