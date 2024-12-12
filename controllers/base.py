@@ -393,8 +393,7 @@ class Controller:
                         self.show.tournaments_list(self.tournaments_list, False)
                         self.show.wait()
                     case 3:
-                        tournament = self.tournament_choice()
-                        self.tournament_report(tournament)
+                        self.tournament_choice()
                     case _:
                         self.show.message("Erreur", "Ce choix n'existe pas")
                 user_menu_choice = None
@@ -443,7 +442,7 @@ class Controller:
                     self.show.message("Erreur", "Ce choix n'existe pas")
                 else:
                     tournament_choiced = self.tournaments_list[tournament_choiced - 1]
-                    return tournament_choiced
+                    self.tournament_report(tournament_choiced)
             else:
                 self.show.message("Erreur", "Ce choix n'existe pas")
             tournament_choiced = None
