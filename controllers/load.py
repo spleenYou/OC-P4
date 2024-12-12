@@ -48,7 +48,7 @@ class Load:
                                     date_start=tournament_data_dict['date_start'],
                                     date_end=tournament_data_dict['date_end'])
             for player in tournament_data_dict['players_list']:
-                player_data = []
+                player_data = None
                 if len(player['chess_id']):
                     player_data = self.find_player_by_chess_id(player['chess_id'], all_players_list)
                 tournament.add_player(player_data)

@@ -1,5 +1,6 @@
 import os
 import constant.constant as CONST
+from models.player import Player
 
 
 class Show:
@@ -234,16 +235,22 @@ class Show:
         self.display(f"Voici les matchs du Round {round_number}", content, "left")
 
     def players(self, players_list, sort=False, new_player_possible=True):
-        if sort:
-            players_list = sorted(players_list, key=lambda player: player.name)
-            players_list = sorted(players_list, key=lambda player: player.surname)
-        content = []
+        players_to_show = []
         for player in players_list:
-            position_in_list = players_list.index(player) + 1
+            if isinstance(player, Player):
+                players_to_show.append(player)
+        if sort:
+            players_to_show = sorted(players_to_show, key=lambda player: player.name)
+            players_to_show = sorted(players_to_show, key=lambda player: player.surname)
+        content = []
+        for player in players_to_show:
+            position_in_list = players_to_show.index(player) + 1
             zero = ""
             if position_in_list < 10:
                 zero = "0"
             content.append(f"{zero}{position_in_list} - {player.surname} {player.name} ({player.chess_id})")
+        for i in range(len(players_to_show), len(players_list)):
+            content.append("-- - Joueur non renseigné")
         if new_player_possible:
             content.append(" ")
             content.append("00 - Nouveau joueur")
