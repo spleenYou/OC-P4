@@ -191,10 +191,7 @@ class Show:
         else:
             self.display(
                 "Nouveau joueur",
-                [
-                    f"Date de naissance de {
-                        player_surname} {player_name}"
-                ],
+                [f"Date de naissance de {player_surname} {player_name}"],
                 "center",
             )
 
@@ -304,10 +301,7 @@ class Show:
         content.append(f"Nom du tournoi :         {tournament.name}")
         content.append(f"Emplacement du tournoi : {tournament.place}")
         content.append(f"Description du tournoi : {tournament.description}")
-        content.append(
-            f"Nombre de joueurs :      {
-                len(tournament.players_list)}"
-        )
+        content.append(f"Nombre de joueurs :      {len(tournament.players_list)}")
         content.append(f"Date de début :          {tournament.date_start}")
         if tournament.is_finished():
             content.append(f"Date de fin :            {tournament.date_end}")
@@ -331,26 +325,24 @@ class Show:
         content = []
         for match in matches_list:
             content.append("  Match :")
+            white_player = match.white_player["player"]
+            black_player = match.black_player["player"]
+            content.append(f"   - {white_player.surname} "
+                           f"{white_player.name} "
+                           f"({white_player.chess_id}) : "
+                           f"{white_player.score} pt")
             content.append(
-                f"   - {match.white_player["player"].surname} "
-                f"{match.white_player["player"].name} "
-                f"({match.white_player["player"].chess_id}) : "
-                f"{match.white_player["player"].score} pt"
-            )
-            content.append(
-                f"   - {match.black_player["player"].surname} "
-                f"{match.black_player["player"].name} "
-                f"({match.black_player["player"].chess_id}) : "
-                f"{match.black_player["player"].score} pt"
+                f"   - {black_player.surname} "
+                f"{black_player.name} "
+                f"({black_player.chess_id}) : "
+                f"{black_player.score} pt"
             )
             if matches_list.index(match) != (len(matches_list) - 1):
                 content.append(" ")
-        self.display(
-            f"Voici les matchs du Round {
-                round_number}",
-            content,
-            "left",
-        )
+        self.display(f"Voici les matchs du Round {round_number}",
+                     content,
+                     "left",
+                     )
 
     def players(self, players_list, sort=False, new_player_possible=True):
         """Shows all the players in a list. Can be sort. Cancel proposal view is optional
@@ -390,15 +382,17 @@ class Show:
             match (object): Match you want to see
         """
         content = []
+        white_player = match.white_player["player"]
+        black_player = match.black_player["player"]
         content.append(
-            f"    1 - {match.white_player["player"].surname} "
-            f"{match.white_player["player"].name} "
-            f"({match.white_player["player"].chess_id})"
+            f"    1 - {white_player.surname} "
+            f"{white_player.name} "
+            f"({white_player.chess_id})"
         )
         content.append(
-            f"    2 - {match.black_player["player"].surname} "
-            f"{match.black_player["player"].name} "
-            f"({match.black_player["player"].chess_id})"
+            f"    2 - {black_player.surname} "
+            f"{black_player.name} "
+            f"({black_player.chess_id})"
         )
         content.append("    0 - Match nul")
         self.display("Résultat du match", content, "left")
@@ -433,16 +427,18 @@ class Show:
             content.append(f"Round {rounds_list.index(round) + 1} :")
             if round.is_finished():
                 for match in round.matches_list:
+                    white_player = match.white_player["player"]
+                    black_player = match.black_player["player"]
                     content.append("   Match :")
                     content.append(
-                        f"      - {match.white_player["player"].surname} "
-                        f"{match.white_player["player"].name} "
-                        f"- {match.white_player["score"]}pt"
+                        f"      - {white_player.surname} "
+                        f"{white_player.name} "
+                        f"- {white_player}pt"
                     )
                     content.append(
-                        f"      - {match.black_player["player"].surname} "
-                        f"{match.black_player["player"].name} "
-                        f"- {match.black_player["score"]}pt"
+                        f"      - {black_player.surname} "
+                        f"{black_player.name} "
+                        f"- {black_player}pt"
                     )
             else:
                 content.append("    Non joué")

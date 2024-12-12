@@ -89,10 +89,7 @@ class Prompt:
             player_surname (str)
         """
         self.show.player_surname(player_name, player_surname)
-        player_surname = input(
-            f"Quel est le nom de famille de {
-                player_name} ? "
-        ).upper()
+        player_surname = input(f"Quel est le nom de famille de {player_name} ? ").upper()
         return player_surname
 
     def for_player_birthday(self, player_name, player_surname, player_birthday=None):
@@ -107,10 +104,7 @@ class Prompt:
             player_birthday (str)
         """
         self.show.player_birthday(player_name, player_surname, player_birthday)
-        player_birthday = input(
-            f"Quel est la date de naissance de {
-                player_surname} {player_name} ? [DD-MM-YYYY] "
-        )
+        player_birthday = input(f"Quel est la date de naissance de {player_surname} {player_name} ? [DD-MM-YYYY] ")
         return player_birthday
 
     def for_player_chess_id(self, player_name, player_surname, player_chess_id=None):
@@ -126,9 +120,7 @@ class Prompt:
         """
         self.show.player_chess_id(player_name, player_surname, player_chess_id)
         player_chess_id = input(
-            f"Quel est l'identifiant de {
-                player_surname} {player_name} ? "
-        ).upper()
+            f"Quel est l'identifiant de {player_surname} {player_name} ? ").upper()
         return player_chess_id
 
     def for_tournament_choice(self, tournaments_list, cancel_possible=True):
