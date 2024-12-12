@@ -6,7 +6,6 @@ from views import show
 
 
 def main():
-    "Main function for the chess tournaments program"
     game = Controller(prompt, show)
     if game.all_players_list is not None and game.tournaments_list is not None:
         user_menu_choice = None
