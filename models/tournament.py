@@ -55,10 +55,8 @@ class Tournament:
                 if self.players_list[i] is None:
                     self.players_list[i] = new_player
                     break
-            self.players_list.append(new_player)
         else:
             self.players_list.append(new_player)
-        return None
 
     def add_round(self):
         """Add a new round to the tournament

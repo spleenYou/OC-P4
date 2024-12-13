@@ -54,12 +54,13 @@ class Load:
                 date_end=tournament_data_dict["date_end"],
             )
             for player in tournament_data_dict["players_list"]:
-                player_data = None
+                tournament.add_player(None)
+            for player in tournament_data_dict["players_list"]:
                 if len(player["chess_id"]):
                     player_data = self.find_player_by_chess_id(
                         player["chess_id"], all_players_list
                     )
-                tournament.add_player(player_data)
+                    tournament.add_player(player_data)
             for round in tournament_data_dict["rounds_list"]:
                 new_round = tournament.add_round()
                 for match in round:
@@ -68,9 +69,7 @@ class Load:
                         if score[0] == "":
                             player = None
                         else:
-                            player = self.find_player_by_chess_id(
-                                score[0], tournament.players_list
-                            )
+                            player = self.find_player_by_chess_id(score[0], tournament.players_list)
                         score_list.append([player, score[1]])
                     new_round.add_match(
                         white_player=score_list[0][0],
