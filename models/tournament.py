@@ -88,18 +88,53 @@ class Tournament:
             Random().shuffle(self.players_list)
             players_list = self.players_list
         else:
-            for player in self.players_list:
-                players_list.append(player)
-            number_matches = int(len(players_list) / 2)
-            matches_possible = True
+            players_list = self.players_list.copy()
+            number_of_matches = int(len(players_list) / 2)
+            matches_possible = False
+            matches_result = []
+            number_of_try = 1
+            index_move = 0
+            number_of_move = 0
+            index_high = 0
+            last_index_cible = None
             while not matches_possible:
-                for i in range(number_matches):
-                    if not self.have_already_met(
-                        players_list[2 * i], players_list[2 * i + 1]
-                    ):
-                        player_to_move = players_list[2 * i + 1]
-                        players_list.remove(player_to_move)
-                        players_list.append(player_to_move)
+                matches_result.clear()
+                for i in range(1, number_of_matches):
+                    if not self.have_already_met(players_list[2 * i], players_list[2 * i + 1]):
+                        matches_result.append(True)
+                    else:
+                        matches_result.append(False)
+                if False in matches_result:
+                    index_cible = 2 * matches_result.index(False) + 1
+                    if index_cible >= (number_of_matches - 2) and number_of_try <= 3:
+                        number_of_try = number_of_try + 1
+                        player = players_list[-3]
+                        players_list.remove(player)
+                        players_list.append(player)
+                    else:
+                        number_of_move = number_of_move + 1
+                        if number_of_try > 3:
+                            index_cible = index_cible - 4
+                        number_of_try = 0
+                        index_move = index_cible + number_of_move + 1
+                        if index_move == len(players_list):
+                            if last_index_cible != index_cible:
+                                index_high = 0
+                                last_index_cible = index_cible
+                            player_move = players_list[index_cible]
+                            players_list.remove(player_move)
+                            players_list.append(player_move)
+                            number_of_move = 0
+                            index_high = index_high + 1
+                            index_move = index_cible + 1 + index_high
+                        player_move = players_list[index_move]
+                        player_cible = players_list[index_cible]
+                        players_list.remove(player_move)
+                        players_list.remove(player_cible)
+                        players_list.insert(index_cible, player_move)
+                        players_list.insert(index_move, player_cible)
+                else:
+                    matches_possible = True
 
         self.players_list = players_list
 
