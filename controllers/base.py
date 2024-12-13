@@ -60,10 +60,8 @@ class Controller:
                 number_players = int(number_players)
                 if (number_players % 2) == 0:
                     if number_players < minimum_players:
-                        self.show.message(
-                            "Erreur",
-                            f"Nombre de joueurs minimum : {minimum_players}",
-                        )
+                        self.show.message("Erreur",
+                                          f"Nombre de joueurs minimum : {minimum_players}")
                         number_players = 0
                 else:
                     self.show.message("Erreur", "Nombre de participants impaires")
@@ -73,7 +71,7 @@ class Controller:
                 number_players = 0
         tournament = Tournament(name=name, place=place, description=description)
         for i in range(number_players):
-            tournament.add_player([])
+            tournament.add_player(None)
         matches_number = int(number_players / 2)
         for i in range(number_of_rounds):
             tournament.add_round()
