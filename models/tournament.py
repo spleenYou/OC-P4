@@ -83,44 +83,40 @@ class Tournament:
         """If it's the first round, shuffle the list of players.
         For the next rounds, sort the list of players to make sure the players have never met each other
         """
-        players_list = []
         if self.round_number == 0:
             Random().shuffle(self.players_list)
-            players_list = self.players_list
         else:
-            players_list = self.players_list.copy()
-            match = []
-            i = 1
-            depart = 0
-            while i != len(players_list):
-                for j in range(depart, len(players_list)):
-                    player = players_list[j]
-                    if player not in match:
+            new_match = []
+            number_of_player_in_match = 1
+            start_index = 0
+            while number_of_player_in_match != len(self.players_list):
+                for j in range(start_index, len(self.players_list)):
+                    player = self.players_list[j]
+                    if player not in new_match:
                         break
-                if len(match) % 2 == 0:
-                    match.append(player)
+                if len(new_match) % 2 == 0:
+                    new_match.append(player)
                 else:
-                    if not self.have_already_met(players_list[players_list.index(match[-1])], player):
-                        match.append(player)
-                        depart = 1
-                        if len(match) == len(players_list):
-                            i = i + 1
+                    if not self.have_already_met(self.players_list[self.players_list.index(new_match[-1])], player):
+                        new_match.append(player)
+                        start_index = 1
+                        if len(new_match) == len(self.players_list):
+                            number_of_player_in_match = number_of_player_in_match + 1
                         else:
-                            i = i + 2
+                            number_of_player_in_match = number_of_player_in_match + 2
                     else:
-                        if len(players_list) - len(match) == 1 or players_list.index(player) == (len(players_list) - 1):
-                            match.pop(-1)
-                            depart = players_list.index(match.pop(-1)) + 1
-                            i = i - 2
-                            if depart == 10:
-                                match.pop(-1)
-                                depart = players_list.index(match.pop(-1)) + 1
-                                i = i - 2
+                        if (len(self.players_list) - len(new_match) == 1
+                                or self.players_list.index(player) == (len(self.players_list) - 1)):
+                            new_match.pop(-1)
+                            start_index = self.players_list.index(new_match.pop(-1)) + 1
+                            number_of_player_in_match = number_of_player_in_match - 2
+                            if start_index == 10:
+                                new_match.pop(-1)
+                                start_index = self.players_list.index(new_match.pop(-1)) + 1
+                                number_of_player_in_match = number_of_player_in_match - 2
                         else:
-                            depart = players_list.index(player) + 1
-            players_list = match
-
-        self.players_list = players_list
+                            start_index = self.players_list.index(player) + 1
+            self.players_list = new_match
 
     def have_already_met(self, player_one, player_two):
         """Returns if two players already met each other
