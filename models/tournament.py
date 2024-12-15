@@ -89,51 +89,35 @@ class Tournament:
             players_list = self.players_list
         else:
             players_list = self.players_list.copy()
-            nb_match = int(len(players_list) / 2)
-            last_match = [None, None, None, None, None, None, None, None]
-            last_result = []
             match = []
-            decalage = 0
-            i = 0
-            wrong = 0
-            while i != nb_match:
-                # check match_precedent
-                if i == 0:
-                    match.append(players_list[0])
-                else:
-                    for j in range(0 + decalage, len(players_list)):
-                        player = players_list[j]
-                        if player not in match:
-                            match.append(player)
-                            break
-                for j in range(1, len(players_list)):
+            i = 1
+            depart = 0
+            while i != len(players_list):
+                for j in range(depart, len(players_list)):
                     player = players_list[j]
                     if player not in match:
-                        if (not self.have_already_met(players_list[players_list.index(match[-1])], player)
-                                and players_list[players_list.index(match[-1])] != player):
-                            if player != last_match[2 * wrong] and player != last_match[2 * wrong + 1]:
-                                last_result.append(True)
-                                match.append(player)
-                                break
-                if len(match) % 2:
-                    if len(match) == len(players_list) - 1:
-                        last_match = match.copy()
-                        last_match.append(player)
-                        wrong = last_result.count(True) - 1
-                        if wrong == 0:
-                            decalage = decalage + 1
-                        elif (wrong == int(len(last_match) / 2) - 2
-                              and players_list.index(last_match[-3]) == len(players_list) - 1):
-                            wrong = wrong - 2
-                        match.clear()
-                        last_result.clear()
-                        i = 0
-                    else:
-                        i = i - 1
-                        match.pop(-1)
+                        break
+                if len(match) % 2 == 0:
+                    match.append(player)
                 else:
-                    decalage = 0
-                    i = i + 1
+                    if not self.have_already_met(players_list[players_list.index(match[-1])], player):
+                        match.append(player)
+                        depart = 1
+                        if len(match) == len(players_list):
+                            i = i + 1
+                        else:
+                            i = i + 2
+                    else:
+                        if len(players_list) - len(match) == 1 or players_list.index(player) == (len(players_list) - 1):
+                            match.pop(-1)
+                            depart = players_list.index(match.pop(-1)) + 1
+                            i = i - 2
+                            if depart == 10:
+                                match.pop(-1)
+                                depart = players_list.index(match.pop(-1)) + 1
+                                i = i - 2
+                        else:
+                            depart = players_list.index(player) + 1
             players_list = match
 
         self.players_list = players_list

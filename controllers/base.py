@@ -50,7 +50,7 @@ class Controller:
             else:
                 self.show.message("Erreur", "Veuillez rentrer un nombre")
                 number_of_rounds = 0
-        minimum_players = number_of_rounds + 3
+        minimum_players = number_of_rounds + 1
         if minimum_players % 2:
             minimum_players = minimum_players + 1
         number_players = 0
