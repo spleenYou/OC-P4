@@ -89,52 +89,52 @@ class Tournament:
             players_list = self.players_list
         else:
             players_list = self.players_list.copy()
-            number_of_matches = int(len(players_list) / 2)
-            matches_possible = False
-            matches_result = []
-            number_of_try = 1
-            index_move = 0
-            number_of_move = 0
-            index_high = 0
-            last_index_cible = None
-            while not matches_possible:
-                matches_result.clear()
-                for i in range(1, number_of_matches):
-                    if not self.have_already_met(players_list[2 * i], players_list[2 * i + 1]):
-                        matches_result.append(True)
-                    else:
-                        matches_result.append(False)
-                if False in matches_result:
-                    index_cible = 2 * matches_result.index(False) + 1
-                    if index_cible >= (number_of_matches - 2) and number_of_try <= 3:
-                        number_of_try = number_of_try + 1
-                        player = players_list[-3]
-                        players_list.remove(player)
-                        players_list.append(player)
-                    else:
-                        number_of_move = number_of_move + 1
-                        if number_of_try > 3:
-                            index_cible = index_cible - 4
-                        number_of_try = 0
-                        index_move = index_cible + number_of_move + 1
-                        if index_move == len(players_list):
-                            if last_index_cible != index_cible:
-                                index_high = 0
-                                last_index_cible = index_cible
-                            player_move = players_list[index_cible]
-                            players_list.remove(player_move)
-                            players_list.append(player_move)
-                            number_of_move = 0
-                            index_high = index_high + 1
-                            index_move = index_cible + 1 + index_high
-                        player_move = players_list[index_move]
-                        player_cible = players_list[index_cible]
-                        players_list.remove(player_move)
-                        players_list.remove(player_cible)
-                        players_list.insert(index_cible, player_move)
-                        players_list.insert(index_move, player_cible)
+            nb_match = int(len(players_list) / 2)
+            last_match = [None, None, None, None, None, None, None, None]
+            last_result = []
+            match = []
+            decalage = 0
+            i = 0
+            wrong = 0
+            while i != nb_match:
+                # check match_precedent
+                if i == 0:
+                    match.append(players_list[0])
                 else:
-                    matches_possible = True
+                    for j in range(0 + decalage, len(players_list)):
+                        player = players_list[j]
+                        if player not in match:
+                            match.append(player)
+                            break
+                for j in range(1, len(players_list)):
+                    player = players_list[j]
+                    if player not in match:
+                        if (not self.have_already_met(players_list[players_list.index(match[-1])], player)
+                                and players_list[players_list.index(match[-1])] != player):
+                            if player != last_match[2 * wrong] and player != last_match[2 * wrong + 1]:
+                                last_result.append(True)
+                                match.append(player)
+                                break
+                if len(match) % 2:
+                    if len(match) == len(players_list) - 1:
+                        last_match = match.copy()
+                        last_match.append(player)
+                        wrong = last_result.count(True) - 1
+                        if wrong == 0:
+                            decalage = decalage + 1
+                        elif (wrong == int(len(last_match) / 2) - 2
+                              and players_list.index(last_match[-3]) == len(players_list) - 1):
+                            wrong = wrong - 2
+                        match.clear()
+                        last_result.clear()
+                        i = 0
+                    else:
+                        i = i - 1
+                        match.pop(-1)
+                else:
+                    decalage = 0
+                    i = i + 1
+            players_list = match
 
         self.players_list = players_list
 
@@ -147,21 +147,14 @@ class Tournament:
         """
         for round in self.rounds_list:
             for match in round.matches_list:
-                if (
-                    player_one == match.white_player["player"]
-                    or player_one == match.black_player["player"]
-                ) and (
-                    player_two == match.white_player["player"]
-                    or player_two == match.black_player["player"]
-                ):
+                if ((player_one == match.white_player["player"] or player_one == match.black_player["player"])
+                        and (player_two == match.white_player["player"] or player_two == match.black_player["player"])):
                     return True
         return False
 
     def sort_list_by_score(self):
         "Sort the list of players by score (high in first)"
-        self.players_list = sorted(
-            self.players_list, key=lambda player: player.score, reverse=True
-        )
+        self.players_list = sorted(self.players_list, key=lambda player: player.score, reverse=True)
 
     def next_round(self):
         "Increases by one the round number"

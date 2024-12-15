@@ -45,6 +45,4 @@ class Round:
             players_list (list): Round's players list
         """
         for i in range(0, len(self.matches_list)):
-            self.matches_list[i].define_players_colors(
-                [players_list[i * 2], players_list[(i * 2) + 1]]
-            )
+            self.matches_list[i].define_players_colors([players_list[i * 2], players_list[(i * 2) + 1]])

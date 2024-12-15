@@ -429,16 +429,18 @@ class Show:
                 for match in round.matches_list:
                     white_player = match.white_player["player"]
                     black_player = match.black_player["player"]
+                    score_white_player = match.white_player["score"]
+                    score_black_player = match.black_player["score"]
                     content.append("   Match :")
                     content.append(
                         f"      - {white_player.surname} "
                         f"{white_player.name} "
-                        f"- {white_player}pt"
+                        f"- {score_white_player} pt"
                     )
                     content.append(
                         f"      - {black_player.surname} "
                         f"{black_player.name} "
-                        f"- {black_player}pt"
+                        f"- {score_black_player} pt"
                     )
             else:
                 content.append("    Non joué")
