@@ -87,9 +87,8 @@ class Tournament:
             Random().shuffle(self.players_list)
         else:
             new_match = []
-            number_of_player_in_match = 1
             start_index = 0
-            while number_of_player_in_match != len(self.players_list):
+            while len(new_match) != len(self.players_list):
                 for j in range(start_index, len(self.players_list)):
                     player = self.players_list[j]
                     if player not in new_match:
@@ -100,20 +99,14 @@ class Tournament:
                     if not self.have_already_met(self.players_list[self.players_list.index(new_match[-1])], player):
                         new_match.append(player)
                         start_index = 1
-                        if len(new_match) == len(self.players_list):
-                            number_of_player_in_match = number_of_player_in_match + 1
-                        else:
-                            number_of_player_in_match = number_of_player_in_match + 2
                     else:
                         if (len(self.players_list) - len(new_match) == 1
                                 or self.players_list.index(player) == (len(self.players_list) - 1)):
                             new_match.pop(-1)
                             start_index = self.players_list.index(new_match.pop(-1)) + 1
-                            number_of_player_in_match = number_of_player_in_match - 2
                             if start_index == 10:
                                 new_match.pop(-1)
                                 start_index = self.players_list.index(new_match.pop(-1)) + 1
-                                number_of_player_in_match = number_of_player_in_match - 2
                         else:
                             start_index = self.players_list.index(player) + 1
             self.players_list = new_match
