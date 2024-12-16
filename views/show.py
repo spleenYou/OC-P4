@@ -253,12 +253,15 @@ class Show:
             zero = ""
             if position_in_list < 10:
                 zero = "0"
+            s = ""
+            if player.score > 1:
+                s = "s"
             content.append(
                 f"{zero}{position_in_list} - "
                 f"{player.surname} "
                 f"{player.name} "
                 f"({player.chess_id}) : "
-                f"{player.score}"
+                f"{player.score} pt{s}"
             )
         self.display("Classement provisoire", content, "left")
 
@@ -327,15 +330,21 @@ class Show:
             content.append("  Match :")
             white_player = match.white_player["player"]
             black_player = match.black_player["player"]
+            white_s = ""
+            black_s = ""
+            if white_player.score > 1:
+                white_s = "s"
+            if black_player.score > 1:
+                black_s = "s"
             content.append(f"   - {white_player.surname} "
                            f"{white_player.name} "
                            f"({white_player.chess_id}) : "
-                           f"{white_player.score} pt")
+                           f"{white_player.score} pt{white_s}")
             content.append(
                 f"   - {black_player.surname} "
                 f"{black_player.name} "
                 f"({black_player.chess_id}) : "
-                f"{black_player.score} pt"
+                f"{black_player.score} pt{black_s}"
             )
             if matches_list.index(match) != (len(matches_list) - 1):
                 content.append(" ")

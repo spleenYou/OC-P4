@@ -22,3 +22,6 @@ class Player:
             point (int): point to add
         """
         self.score = self.score + point
+        if isinstance(self.score, float):
+            if int(self.score) == self.score:
+                self.score = int(self.score)

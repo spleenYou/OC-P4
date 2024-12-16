@@ -128,7 +128,8 @@ class Tournament:
         for round in self.rounds_list:
             for match in round.matches_list:
                 if ((player_one == match.white_player["player"] or player_one == match.black_player["player"])
-                        and (player_two == match.white_player["player"] or player_two == match.black_player["player"])):
+                        and (player_two == match.white_player["player"]
+                             or player_two == match.black_player["player"])):
                     return True
         return False
 
