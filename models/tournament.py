@@ -96,15 +96,15 @@ class Tournament:
                 if len(new_match) % 2 == 0:
                     new_match.append(player)
                 else:
-                    if not self.have_already_met(self.players_list[self.players_list.index(new_match[-1])], player):
+                    if not self.have_already_met(new_match[-1], player):
                         new_match.append(player)
-                        start_index = 1
+                        start_index = 0
                     else:
                         if (len(self.players_list) - len(new_match) == 1
                                 or self.players_list.index(player) == (len(self.players_list) - 1)):
                             new_match.pop(-1)
                             start_index = self.players_list.index(new_match.pop(-1)) + 1
-                            if start_index == len(self.players):
+                            if start_index == len(self.players_list):
                                 new_match.pop(-1)
                                 start_index = self.players_list.index(new_match.pop(-1)) + 1
                         else:
