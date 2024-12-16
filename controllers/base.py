@@ -50,7 +50,7 @@ class Controller:
             else:
                 self.show.message("Erreur", "Veuillez rentrer un nombre")
                 number_of_rounds = 0
-        minimum_players = number_of_rounds + 1
+        minimum_players = number_of_rounds + 3
         if minimum_players % 2:
             minimum_players = minimum_players + 1
         number_players = 0
@@ -99,35 +99,40 @@ class Controller:
         if not tournament.has_all_players():
             self.add_players(tournament)
         self.update_tournament_players_scores(tournament)
-        while not tournament.is_finished():
-            self.show.ranking(tournament.players_list)
-            self.show.wait()
+        tournament_stop_by_user = False
+        while not tournament.is_finished() and not tournament_stop_by_user:
             round_number_show = tournament.round_number + 1
             tournament.sort_list()
             matches_list = tournament.rounds_list[tournament.round_number].matches_list
             tournament.make_matches()
-            self.show.matches_list(round_number_show, matches_list)
-            self.show.wait()
-            for match in matches_list:
-                match_define = False
-                while not match_define:
-                    winner_player = self.prompt.for_match_result(match)
-                    if self.is_int(winner_player):
-                        winner_player = int(winner_player)
-                        if (winner_player >= 0) and (winner_player <= 2):
-                            match winner_player:
-                                case 0:
-                                    winner_player = None
-                                case 1:
-                                    winner_player = match.white_player
-                                case 2:
-                                    winner_player = match.black_player
-                            match_define = match.define_score(winner_player)
-            tournament.sort_list_by_score()
+            user_choice = self.prompt.stop_tournament(tournament.players_list)
+            if not self.is_int(user_choice):
+                self.show.matches_list(round_number_show, matches_list)
+                self.show.wait()
+                for match in matches_list:
+                    match_define = False
+                    while not match_define:
+                        winner_player = self.prompt.for_match_result(match)
+                        if self.is_int(winner_player):
+                            winner_player = int(winner_player)
+                            if (winner_player >= 0) and (winner_player <= 2):
+                                match winner_player:
+                                    case 0:
+                                        winner_player = None
+                                    case 1:
+                                        winner_player = match.white_player
+                                    case 2:
+                                        winner_player = match.black_player
+                                match_define = match.define_score(winner_player)
+                tournament.sort_list_by_score()
+                tournament.next_round()
+            else:
+                if int(user_choice) == 0:
+                    tournament_stop_by_user = True
             self.save.save_tournaments(self.tournaments_list)
-            tournament.next_round()
-        self.show.message("Tournoi terminé", "Voici le résultat du tournoi")
-        self.tournament_end(tournament)
+        if not tournament_stop_by_user:
+            self.show.message("Tournoi terminé", "Voici le résultat du tournoi")
+            self.tournament_end(tournament)
         return None
 
     def tournament_end(self, tournament):

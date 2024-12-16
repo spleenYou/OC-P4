@@ -263,6 +263,9 @@ class Show:
                 f"({player.chess_id}) : "
                 f"{player.score} pt{s}"
             )
+        content.append("")
+        content.append("Appuyer sur entrée pour continuer")
+        content.append("Appuyer sur 0 pour arrêter et sauvegarder ce tournoi")
         self.display("Classement provisoire", content, "left")
 
     def tournament_information(self, tournament):
@@ -283,7 +286,7 @@ class Show:
                 content.append(f" - {player.surname} {player.name}")
             else:
                 content.append(" - Non défini")
-        self.display("Information sur le tournoi", content, "left")
+        self.display("Informations sur le tournoi", content, "left")
 
     def reports_menu(self):
         "Shows the menu for reports"
@@ -301,22 +304,23 @@ class Show:
             tournament (object): Tournament you want to know information
         """
         content = []
-        content.append(f"Nom du tournoi :         {tournament.name}")
-        content.append(f"Emplacement du tournoi : {tournament.place}")
-        content.append(f"Description du tournoi : {tournament.description}")
-        content.append(f"Nombre de joueurs :      {len(tournament.players_list)}")
-        content.append(f"Date de début :          {tournament.date_start}")
+        content.append(f"Nom du tournoi :            {tournament.name}")
+        content.append(f"Emplacement du tournoi :    {tournament.place}")
+        content.append(f"Description du tournoi :    {tournament.description}")
+        content.append(f"Nombre de joueurs :         {len(tournament.players_list)}")
+        content.append(f"Date de début :             {tournament.date_start}")
         if tournament.is_finished():
-            content.append(f"Date de fin :            {tournament.date_end}")
+            content.append(f"Date de fin :               {tournament.date_end}")
         else:
-            content.append("Date de fin :            tournoi non terminé")
+            content.append("Date de fin :               tournoi non terminé")
+            content.append(f"Nombre de tours effectués : {tournament.round_number}/{len(tournament.rounds_list)}")
         content.append("")
         content.append(CONST.STARS_LINE_FULL)
         content.append("")
         content.append("1- Liste des joueurs")
         content.append("2- Déroulement du tournoi")
         content.append("0- Retour")
-        self.display("Information sur le tournoi", content, "left")
+        self.display("Informations sur le tournoi", content, "left")
 
     def matches_list(self, round_number, matches_list):
         """Shows the list of matches of one round

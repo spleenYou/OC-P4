@@ -215,3 +215,8 @@ class Prompt:
         self.show.match_result(match)
         winner_player = input("Qui est le vainqueur ? ")
         return winner_player
+
+    def stop_tournament(self, players_list):
+        self.show.ranking(players_list)
+        user_choice = input("Quel est votre choix ?")
+        return user_choice

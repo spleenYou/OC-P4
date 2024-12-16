@@ -104,7 +104,7 @@ class Tournament:
                                 or self.players_list.index(player) == (len(self.players_list) - 1)):
                             new_match.pop(-1)
                             start_index = self.players_list.index(new_match.pop(-1)) + 1
-                            if start_index == 10:
+                            if start_index == len(self.players):
                                 new_match.pop(-1)
                                 start_index = self.players_list.index(new_match.pop(-1)) + 1
                         else:
