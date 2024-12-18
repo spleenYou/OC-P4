@@ -19,7 +19,7 @@
 
 ## Introduction
 
-This script can handle chess contest in local mode.
+Logiciel pour le gestion de tournoi d'échecs en mode local.
 
 ## Getting started
 
@@ -35,7 +35,7 @@ This script can handle chess contest in local mode.
 
 #### Creation
 
-Create the virtual environment
+Create the virtual environment.
 
 Replace :
 - \<version> by your version number of python
@@ -47,7 +47,7 @@ python<version> -m venv <nom_de_l_environnement_virtuel>
 
 #### Activation
 
-Activate the virtual environment
+Activate the virtual environment.
 
 For windows
 ```
@@ -62,14 +62,15 @@ source .<nom_de_l_environnement_virtuel>/bin/activate
 
 #### Packages
 
-Install needed packages for the script
+Install needed packages for the script.
 
 ```
 pip install -r requirements.txt
 ```
 ## Use
 
-launch the script and choose what you want to do
+launch the script and choose what you want to do.
+
 ```
 python main.py
 
@@ -82,7 +83,7 @@ python3 main.py
 
 #### Main menu
 
-The main menu has 5 choices
+The main menu has 5 choices.
 
 #### Menu 1 - New tournament
 
@@ -94,11 +95,11 @@ The minimum number of players is eight.
 
 #### Menu 2 - No tournament in progress / Resume a tournament
 
-If at least a tournament is in progress, you can resume it
+If at least a tournament is in progress, you can resume it.
 
-A list of unfinished tournaments will be displayed
+A list of unfinished tournaments will be displayed.
 
-Choose one and continue
+Choose one and continue.
 
 #### Menu 3 - No tournament registered / Tournament update
 
@@ -119,35 +120,35 @@ If at least one tournament is registered, you can update the following data:
 
 #### Menu 5 - Reports
 
-The reports menu has 3 choices
+The reports menu has 3 choices.
 
 ###### 1 - List of players in alphabetical order
 
-Shows the list of all the players in alphabetical order
+Shows the list of all the players in alphabetical order.
 
 ###### 2 - List of tournaments
 
-Shows the list of all the tournaments
+Shows the list of all the tournaments.
 
 ###### 3 - Tournament's information
 
-Shows the list of all tournaments and select the tournament on which you wish to obtain information
+Shows the list of all tournaments and select the tournament on which you wish to obtain information.
 
 ###### 3.1 - List of players
 
-Shows the list tournament's players in alphabetical order
+Shows the list tournament's players in alphabetical order.
 
 ###### 3.2. - Tournament progress
 
-Shows the tournament's rounds and matches
+Shows the tournament's rounds and matches.
 
 ###### 3.0. - Go back
 
-Go back to the previous menu
+Go back to the previous menu.
 
 ##### 0. Go back
 
-Go back to the previous menu
+Go back to the previous menu.
 
 #### Menu 0 - Quit
 
@@ -155,14 +156,14 @@ Quit the script
 
 ## Check the code
 
-Use flake8 to check if the project follow pep-8 guide for python code
+Use flake8 to check if the project follow pep-8 guide for python code.
 
 ```
 flake8 --format=html --htmldir=flake8-html
 ```
 
-It will create a HTML file with the result in the folder "flake8-html"
+It will create a HTML file with the result in the folder "flake8-html".
 
 ## Data saved
 
-Tournament and player data are stored in separate JSON files in the "data" directory
+Tournament and player data are stored in separate JSON files in the "data" directory.
