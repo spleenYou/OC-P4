@@ -19,7 +19,7 @@
 
 ## Introduction
 
-Logiciel pour le gestion de tournoi d'échecs en mode local.
+Local chess tournament management software.
 
 ## Getting started
 
